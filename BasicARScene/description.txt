@@ -1,0 +1,1 @@
+Project to show a basic AR session/scene setup and object placement.

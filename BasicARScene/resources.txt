@@ -1,0 +1,8 @@
+Basic session setup and debug info
+https://developer.apple.com/documentation/arkit/building_your_first_ar_experience
+
+Delegate methods
+https://www.raywenderlich.com/172543/augmented-reality-and-arkit-tutorial
+
+Object placement and autolayout
+https://www.appcoda.com/arkit-introduction-scenekit/
