@@ -9,3 +9,16 @@ Week 2, Jan 23:
 Week 3, Jan 30:
     DynamicObjectPlacement
 
+Week 4, Feb 06:
+    Planned
+        Tab Bar controler for prototyping
+        Different objects for placement
+        Objects from .dae files
+        Object movement relative to user, not world origin
+        Object physics/collision
+        Object color
+
+Future:
+    SceneKit editor
+    Clean up previous code as discussed
+    
