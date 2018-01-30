@@ -1,0 +1,8 @@
+Tap gesture recognizer / hit test / object placement at nodes
+https://www.appcoda.com/arkit-introduction-scenekit/
+
+Pinch gesture recognizer
+https://developer.apple.com/documentation/uikit/touches_presses_and_gestures/handling_uikit_gestures/handling_pinch_gestures
+
+Node actions
+https://developer.apple.com/documentation/scenekit/scnnode
