@@ -1,0 +1,11 @@
+The topic listed was done the  previous week.
+
+Week 1, Jan 16:
+    Discuss ...
+
+Week 2, Jan 23:
+    BasicARScene
+
+Week 3, Jan 30:
+    DynamicObjectPlacement
+
