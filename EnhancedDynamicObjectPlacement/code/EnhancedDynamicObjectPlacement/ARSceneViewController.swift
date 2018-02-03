@@ -28,7 +28,7 @@ class ARSceneViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        arSceneView.session.pause()
+//        arSceneView.session.pause()
     }
     
     override func viewDidLayoutSubviews() {
@@ -199,24 +199,27 @@ class ARSceneViewController: UIViewController {
     
     // MARK: Gestures
     func addGestureRecognizersToSceneView() {
-        addSwipeGestureToSceneView()
-        addTapGestureToSceneView()
-        addPinchGestureToSceneView()
+        addSwipeGesture()
+        addTapGesture()
+        addPinchGesture()
     }
     
     // MARK: Swipe Gesture
-    func addSwipeGestureToSceneView() {
+    func addSwipeGesture() {
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didSwipe(withGestureRecognizer:)))
         swipeGestureRecognizer.direction = .left
         self.arSceneView.addGestureRecognizer(swipeGestureRecognizer)
     }
     
     @objc func didSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
-        print(recognizer.direction)
+        let storyboard = UIStoryboard(name: "Main", bundle: nil)
+        let vc = storyboard.instantiateViewController(withIdentifier: "configurationViewController")
+        guard let navigationController = navigationController else { return }
+        navigationController.pushViewController(vc, animated: true)
     }
     
     // MARK: Tap Gesture
-    func addTapGestureToSceneView() {
+    func addTapGesture() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didTap(withGestureRecognizer:)))
         self.arSceneView.addGestureRecognizer(tapGestureRecognizer)
     }
@@ -250,7 +253,7 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Pinch gesture
-    func addPinchGestureToSceneView() {
+    func addPinchGesture() {
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPinch(withGestureRecognizer:)))
         self.arSceneView.addGestureRecognizer(pinchGestureRecognizer)
     }
