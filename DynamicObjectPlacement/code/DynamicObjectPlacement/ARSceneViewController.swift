@@ -33,31 +33,7 @@ class ARSceneViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        
-        
-        guard let firstSubview = self.arSceneView.subviews.first else {return }
-        
-        if firstSubview.accessibilityIdentifier == "controlPanelView" {
-            let controlPanelView = firstSubview
-            
-            var arStatusBarHeight = CGFloat(0.0)
-            if arSceneView.showsStatistics {
-                arStatusBarHeight = CGFloat(20.0)
-            }
-            
-            let controlPanelHeight = CGFloat(50.0)
-            let controlPanelWidth = self.arSceneView.bounds.width
-            let numberOfButtons = CGFloat(controlPanelView.subviews.count)
-            let buttonWidth = controlPanelWidth / numberOfButtons
-            
-            controlPanelView.frame = CGRect(x: 0.0, y: self.arSceneView.bounds.height - (arStatusBarHeight + controlPanelHeight), width: controlPanelWidth, height: controlPanelHeight)
-            
-            var buttonIndex = 0
-            for button in controlPanelView.subviews {
-                button.frame = CGRect(x: buttonWidth * CGFloat(buttonIndex), y: 0.0, width: buttonWidth, height: controlPanelHeight)
-                buttonIndex += 1
-            }
-        }
+        layoutControlPanelView()
     }
     
     // MARK: Configuration Functions
@@ -100,32 +76,6 @@ class ARSceneViewController: UIViewController {
                                     ARSCNDebugOptions.showWorldOrigin]
     }
     
-    // MARK: Debug Functions
-    func toggleDebugConfiguration() {
-        arSceneView.showsStatistics = !arSceneView.showsStatistics
-        if arSceneView.debugOptions.isEmpty {
-            arSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
-                                        ARSCNDebugOptions.showWorldOrigin]
-        } else {
-            arSceneView.debugOptions = []
-        }
-        
-    }
-    
-    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        if motion == UIEventSubtype.motionShake {
-            handleShake()
-        }
-    }
-    
-    func handleShake() {
-        toggleDebugConfiguration()
-        self.viewDidLayoutSubviews()
-    }
-}
-
-// Mark: Current Work
-extension ARSceneViewController {
     func addControlPanelView() {
         var arStatusBarHeight = CGFloat(0.0)
         if arSceneView.showsStatistics {
@@ -177,6 +127,59 @@ extension ARSceneViewController {
         
         self.arSceneView.addSubview(controlPanelView)
     }
+    
+    func layoutControlPanelView() {
+        guard let firstSubview = self.arSceneView.subviews.first else {return }
+        
+        if firstSubview.accessibilityIdentifier == "controlPanelView" {
+            let controlPanelView = firstSubview
+            
+            var arStatusBarHeight = CGFloat(0.0)
+            if arSceneView.showsStatistics {
+                arStatusBarHeight = CGFloat(20.0)
+            }
+            
+            let controlPanelHeight = CGFloat(50.0)
+            let controlPanelWidth = self.arSceneView.bounds.width
+            let numberOfButtons = CGFloat(controlPanelView.subviews.count)
+            let buttonWidth = controlPanelWidth / numberOfButtons
+            
+            controlPanelView.frame = CGRect(x: 0.0, y: self.arSceneView.bounds.height - (arStatusBarHeight + controlPanelHeight), width: controlPanelWidth, height: controlPanelHeight)
+            
+            var buttonIndex = 0
+            for button in controlPanelView.subviews {
+                button.frame = CGRect(x: buttonWidth * CGFloat(buttonIndex), y: 0.0, width: buttonWidth, height: controlPanelHeight)
+                buttonIndex += 1
+            }
+        }
+    }
+    
+    // MARK: Debug Functions
+    func toggleDebugConfiguration() {
+        arSceneView.showsStatistics = !arSceneView.showsStatistics
+        if arSceneView.debugOptions.isEmpty {
+            arSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
+                                        ARSCNDebugOptions.showWorldOrigin]
+        } else {
+            arSceneView.debugOptions = []
+        }
+        
+    }
+    
+    func handleShake() {
+        toggleDebugConfiguration()
+        layoutControlPanelView()
+    }
+    
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == UIEventSubtype.motionShake {
+            handleShake()
+        }
+    }
+}
+
+// Mark: Current Work
+extension ARSceneViewController {
     
     func getSelectedNode() -> SCNNode? {
         for child in arSceneView.scene.rootNode.childNodes {
