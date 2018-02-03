@@ -50,8 +50,7 @@ class ARSceneViewController: UIViewController {
         arSceneView.delegate = self
         
         // add gesture recognizers
-        addTapGestureToSceneView()
-        addPinchGestureToSceneView()
+        addGestureRecognizersToSceneView()
     }
     
     func configureConstraints() {
@@ -200,12 +199,28 @@ class ARSceneViewController: UIViewController {
     
     // MARK: Gestures
     // MARK: Tap Gesture
+    func addGestureRecognizersToSceneView() {
+        addSwipeGestureToSceneView()
+        addTapGestureToSceneView()
+        addPinchGestureToSceneView()
+    }
+    
+    func addSwipeGestureToSceneView() {
+        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didSwipe(withGestureRecognizer:)))
+        swipeGestureRecognizer.direction = .left
+        self.arSceneView.addGestureRecognizer(swipeGestureRecognizer)
+    }
+    
+    @objc func didSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
+        print(recognizer.direction)
+    }
+    
     func addTapGestureToSceneView() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didTap(withGestureRecognizer:)))
         self.arSceneView.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    @objc func didTap(withGestureRecognizer recognizer: UIGestureRecognizer) {
+    @objc func didTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: self.arSceneView)
         
         let hitTestResults = self.arSceneView.hitTest(tapLocation)
