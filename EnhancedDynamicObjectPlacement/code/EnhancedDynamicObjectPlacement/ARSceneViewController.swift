@@ -198,13 +198,13 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Gestures
-    // MARK: Tap Gesture
     func addGestureRecognizersToSceneView() {
         addSwipeGestureToSceneView()
         addTapGestureToSceneView()
         addPinchGestureToSceneView()
     }
     
+    // MARK: Swipe Gesture
     func addSwipeGestureToSceneView() {
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didSwipe(withGestureRecognizer:)))
         swipeGestureRecognizer.direction = .left
@@ -215,6 +215,7 @@ class ARSceneViewController: UIViewController {
         print(recognizer.direction)
     }
     
+    // MARK: Tap Gesture
     func addTapGestureToSceneView() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didTap(withGestureRecognizer:)))
         self.arSceneView.addGestureRecognizer(tapGestureRecognizer)
@@ -266,7 +267,7 @@ class ARSceneViewController: UIViewController {
         
     }
     
-    // MARK: Debug Functions
+    // MARK: Shake for Debug Options
     func toggleDebugConfiguration() {
         arSceneView.showsStatistics = !arSceneView.showsStatistics
         if arSceneView.debugOptions.isEmpty {
