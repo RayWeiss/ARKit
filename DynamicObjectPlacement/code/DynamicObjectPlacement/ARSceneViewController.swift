@@ -154,32 +154,15 @@ class ARSceneViewController: UIViewController {
         }
     }
     
-    // MARK: Debug Functions
-    func toggleDebugConfiguration() {
-        arSceneView.showsStatistics = !arSceneView.showsStatistics
-        if arSceneView.debugOptions.isEmpty {
-            arSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
-                                        ARSCNDebugOptions.showWorldOrigin]
-        } else {
-            arSceneView.debugOptions = []
-        }
-        
+    // MARK: Object Interaction Functions
+    func addSphere(withRadius radius: Float = 0.1, atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
+        let sphere = SCNSphere(radius: CGFloat(radius))
+        let sphereNode = SCNNode()
+        sphereNode.geometry = sphere
+        sphereNode.position = posistion
+        sphereNode.isSelected = false
+        self.arSceneView.scene.rootNode.addChildNode(sphereNode)
     }
-    
-    func handleShake() {
-        toggleDebugConfiguration()
-        layoutControlPanelView()
-    }
-    
-    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
-        if motion == UIEventSubtype.motionShake {
-            handleShake()
-        }
-    }
-}
-
-// Mark: Current Work
-extension ARSceneViewController {
     
     func getSelectedNode() -> SCNNode? {
         for child in arSceneView.scene.rootNode.childNodes {
@@ -215,12 +198,13 @@ extension ARSceneViewController {
         node.deleteNode()
     }
     
+    // MARK: Gestures
     // MARK: Tap Gesture
     func addTapGestureToSceneView() {
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didTap(withGestureRecognizer:)))
         self.arSceneView.addGestureRecognizer(tapGestureRecognizer)
     }
-
+    
     @objc func didTap(withGestureRecognizer recognizer: UIGestureRecognizer) {
         let tapLocation = recognizer.location(in: self.arSceneView)
         
@@ -258,7 +242,7 @@ extension ARSceneViewController {
     @objc func didPinch(withGestureRecognizer recognizer: UIPinchGestureRecognizer) {
         guard recognizer.state == .ended else { return }
         guard let node = getSelectedNode() else { return }
-
+        
         if recognizer.scale < 1.0 {
             node.moveForward()
         } else {
@@ -266,15 +250,28 @@ extension ARSceneViewController {
         }
         
     }
-
-    // MARK: Add Object Function
-    func addSphere(withRadius radius: Float = 0.1, atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
-        let sphere = SCNSphere(radius: CGFloat(radius))
-        let sphereNode = SCNNode()
-        sphereNode.geometry = sphere
-        sphereNode.position = posistion
-        sphereNode.isSelected = false
-        self.arSceneView.scene.rootNode.addChildNode(sphereNode)
+    
+    // MARK: Debug Functions
+    func toggleDebugConfiguration() {
+        arSceneView.showsStatistics = !arSceneView.showsStatistics
+        if arSceneView.debugOptions.isEmpty {
+            arSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
+                                        ARSCNDebugOptions.showWorldOrigin]
+        } else {
+            arSceneView.debugOptions = []
+        }
+        
+    }
+    
+    func handleShake() {
+        toggleDebugConfiguration()
+        layoutControlPanelView()
+    }
+    
+    override func motionEnded(_ motion: UIEventSubtype, with event: UIEvent?) {
+        if motion == UIEventSubtype.motionShake {
+            handleShake()
+        }
     }
     
 }

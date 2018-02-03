@@ -8,12 +8,6 @@ Week 2, Jan 23:
 
 Week 3, Jan 30:
     DynamicObjectPlacement
-        To Fix
-            Move ContolPanelView setup to function
-            Call function in willLayoutSubviews
-            Call function in handleShake
-            Move ARViewController functions out of extension
-            Move node extension to seperate file or subclass
 
 Week 4, Feb 06:
     Planned
