@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */; };
 		71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F1201B696A005EC277 /* AppDelegate.swift */; };
 		71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F3201B696A005EC277 /* ARSceneViewController.swift */; };
 		71FE57F7201B696A005EC277 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71FE57F5201B696A005EC277 /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNodeExtension.swift; sourceTree = "<group>"; };
 		71FE57EE201B696A005EC277 /* DynamicObjectPlacement.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DynamicObjectPlacement.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71FE57F1201B696A005EC277 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71FE57F3201B696A005EC277 /* ARSceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSceneViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			children = (
 				71FE57F1201B696A005EC277 /* AppDelegate.swift */,
 				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
+				711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */,
 				71FE57F5201B696A005EC277 /* Main.storyboard */,
 				71FE57F8201B696A005EC277 /* Assets.xcassets */,
 				71FE57FA201B696A005EC277 /* LaunchScreen.storyboard */,
@@ -137,6 +140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */,
+				711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */,
 				71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
