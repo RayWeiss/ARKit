@@ -1,0 +1,14 @@
+Stop sharing geometry of nodes for single object selection
+https://stackoverflow.com/questions/39902802/stop-sharing-nodes-geometry-with-its-clone-programmatically
+
+Placement of object from files and model files
+https://www.appcoda.com/arkit-3d-object/
+
+UIColor Extension for String names
+https://stackoverflow.com/questions/44672594/is-it-possible-to-get-color-name-in-swift
+
+Blend mode for object selection
+https://developer.apple.com/documentation/scenekit/scnmaterial/1462585-blendmode
+
+CIFilter for object selection
+https://developer.apple.com/documentation/coreimage/cifilter/1437894-init

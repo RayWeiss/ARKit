@@ -7,7 +7,7 @@
 //
 import UIKit
 
-// Source https://stackoverflow.com/questions/44672594/is-it-possible-to-get-color-name-in-swift
+// https://stackoverflow.com/questions/44672594/is-it-possible-to-get-color-name-in-swift
 
 extension UIColor {
     var name: String? {
