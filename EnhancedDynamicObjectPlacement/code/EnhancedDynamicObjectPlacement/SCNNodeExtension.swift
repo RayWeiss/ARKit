@@ -9,46 +9,6 @@
 import SceneKit
 
 extension SCNNode {
-    var isSelected: Bool {
-        get {
-            return !self.isPaused
-        }
-        set {
-            self.isPaused = !newValue
-        }
-    }
-    
-    func selectNode() {
-        self.isSelected = true
-        
-        // Blend Mode for selection
-        self.geometry?.firstMaterial?.blendMode = .multiply //.subtract, .screen work too
-
-        // CIFilter for selection
-//        guard let gaussianBlurFilter = CIFilter(name: "CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: 5]) else { return }
-//        self.filters = [gaussianBlurFilter]
-
-        // Color for selection
-//        let color = SCNMaterial()
-//        color.diffuse.contents = UIColor.blue
-//        self.geometry?.materials = [color]
-    }
-    
-    func unselectNode() {
-        self.isSelected = false
-        
-        // Blend Mode for selection
-        self.geometry?.firstMaterial?.blendMode = .alpha
-        
-        // CIFilter for selection
-//        self.filters = nil
-
-        // Color for selection
-//        let color = SCNMaterial()
-//        color.diffuse.contents = UIColor.white
-//        self.geometry?.materials = [color]
-    }
-    
     func moveUp() {
         let up = SCNVector3(0.0, 0.1, 0.0)
         let moveUp = SCNAction.move(by: up, duration: 0.5)

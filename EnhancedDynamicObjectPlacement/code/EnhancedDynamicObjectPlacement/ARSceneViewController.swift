@@ -28,7 +28,7 @@ class ARSceneViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-//        arSceneView.session.pause()
+        //        arSceneView.session.pause()
     }
     
     override func viewDidLayoutSubviews() {
@@ -154,67 +154,69 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Object Interaction
-        let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
-                                                  "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
+    let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
+                                              "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
     
-        func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
-            guard let delegate =  UIApplication.shared.delegate as? AppDelegate else { return }
-            guard let anyObject = objectsDict[delegate.objectToPlaceType] else {
-                addObjectFromFile(fileName: delegate.objectToPlaceType, atPosition: posistion)
-                return
-            }
-            let objectNode = SCNNode()
-
-            switch anyObject {
-            case is SCNBox:
-                objectNode.geometry = anyObject as! SCNBox
-            case is SCNCapsule:
-                objectNode.geometry = anyObject as! SCNCapsule
-            case is SCNCone:
-                objectNode.geometry = anyObject as! SCNCone
-            case is SCNCylinder:
-                objectNode.geometry = anyObject as! SCNCylinder
-            case is SCNSphere:
-                objectNode.geometry = anyObject as! SCNSphere
-            case is SCNTorus:
-                objectNode.geometry = anyObject as! SCNTorus
-            case is SCNTube:
-                objectNode.geometry = anyObject as! SCNTube
-            case is SCNPyramid:
-                objectNode.geometry = anyObject as! SCNPyramid
-            default:
-                return
-            }
-            
-            objectNode.geometry = objectNode.geometry!.copy() as? SCNGeometry   // copy to unshare geometry
-            objectNode.geometry?.firstMaterial = objectNode.geometry?.firstMaterial!.copy() as? SCNMaterial   // copy to unshare material
-            
-            objectNode.geometry?.firstMaterial!.diffuse.contents = delegate.objectToPlaceColor
-            
-            objectNode.scale = SCNVector3(0.1,0.1,0.1)
-            objectNode.position = posistion
-            objectNode.isSelected = false
-            self.arSceneView.scene.rootNode.addChildNode(objectNode)
+    func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
+        guard let delegate =  UIApplication.shared.delegate as? AppDelegate else { return }
+        guard let anyObject = objectsDict[delegate.objectToPlaceType] else {
+            addObjectFromFile(fileName: delegate.objectToPlaceType, atPosition: posistion)
+            return
         }
+        let objectNode = SelectableNode()
+        
+        switch anyObject {
+        case is SCNBox:
+            objectNode.geometry = anyObject as! SCNBox
+        case is SCNCapsule:
+            objectNode.geometry = anyObject as! SCNCapsule
+        case is SCNCone:
+            objectNode.geometry = anyObject as! SCNCone
+        case is SCNCylinder:
+            objectNode.geometry = anyObject as! SCNCylinder
+        case is SCNSphere:
+            objectNode.geometry = anyObject as! SCNSphere
+        case is SCNTorus:
+            objectNode.geometry = anyObject as! SCNTorus
+        case is SCNTube:
+            objectNode.geometry = anyObject as! SCNTube
+        case is SCNPyramid:
+            objectNode.geometry = anyObject as! SCNPyramid
+        default:
+            return
+        }
+        
+        objectNode.geometry = objectNode.geometry!.copy() as? SCNGeometry   // copy to unshare geometry
+        objectNode.geometry?.firstMaterial = objectNode.geometry?.firstMaterial!.copy() as? SCNMaterial   // copy to unshare material
+        
+        objectNode.geometry?.firstMaterial!.diffuse.contents = delegate.objectToPlaceColor
+        
+        objectNode.scale = SCNVector3(0.1,0.1,0.1)
+        objectNode.position = posistion
+        self.arSceneView.scene.rootNode.addChildNode(objectNode)
+    }
     
     func addObjectFromFile(fileName name: String, atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         guard let objectScene = SCNScene(named: name) else { return }
         let objectSceneChildNodes = objectScene.rootNode.childNodes
-        let objectNode = SCNNode()
-        
+        let objectNode = SelectableNode()
         for childNode in objectSceneChildNodes {
-            objectNode.addChildNode(childNode)
+            let childNodeAsSelectable = SelectableNode(geometry: childNode.geometry)
+            childNodeAsSelectable.name = "selectableChild"
+            objectNode.addChildNode(childNodeAsSelectable)
         }
         
         objectNode.position = posistion
-        objectNode.isSelected = false
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
-    func getSelectedNode() -> SCNNode? {
+    func getSelectedNode() -> SelectableNode? {
         for child in arSceneView.scene.rootNode.childNodes {
-            if child.isSelected {
-                return child
+            if child is SelectableNode {
+                let selectableNode = child as! SelectableNode
+                if selectableNode.isSelected {
+                    return selectableNode
+                }
             }
         }
         return nil
@@ -278,16 +280,23 @@ class ARSceneViewController: UIViewController {
         let hitTestResults = self.arSceneView.hitTest(tapLocation)
         
         if let node = hitTestResults.first?.node {
-            if node.isSelected {
-                node.unselectNode()
-            } else {
-                // unselect other nodes
-                for child in arSceneView.scene.rootNode.childNodes {
-                    if child.isSelected {
-                        child.unselectNode()
+            guard var selectableNode = node as? SelectableNode else { return }
+            if selectableNode.name == "selectableChild" {
+                if let parent = selectableNode.parent {
+                    if parent is SelectableNode {
+                        let parentAsSelectable = parent as! SelectableNode
+                        selectableNode = parentAsSelectable
                     }
                 }
-                node.selectNode()
+            }
+            
+            if selectableNode.isSelected {
+                selectableNode.unselectNode()
+            } else {
+                if let selectedNode = getSelectedNode() {
+                    selectedNode.unselectNode()
+                }
+                selectableNode.selectNode()
             }
             
         } else {
@@ -369,8 +378,8 @@ extension ARSceneViewController: ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
         print("Session interruption ended")
         // runs old session configuration relative to current position
-//        arSceneView.session.run(configuration)
-//        guard let configuration = session.configuration else { return }
+        //        arSceneView.session.run(configuration)
+        //        guard let configuration = session.configuration else { return }
         
         // resets session completely
         let configuration = ARWorldTrackingConfiguration()
@@ -379,5 +388,5 @@ extension ARSceneViewController: ARSCNViewDelegate {
                                 options: [.resetTracking,
                                           .removeExistingAnchors])
     }
-
+    
 }

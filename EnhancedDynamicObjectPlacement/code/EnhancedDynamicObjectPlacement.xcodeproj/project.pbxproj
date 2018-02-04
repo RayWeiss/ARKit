@@ -17,6 +17,7 @@
 		71FE57F7201B696A005EC277 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71FE57F5201B696A005EC277 /* Main.storyboard */; };
 		71FE57F9201B696A005EC277 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 71FE57F8201B696A005EC277 /* Assets.xcassets */; };
 		71FE57FC201B696A005EC277 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71FE57FA201B696A005EC277 /* LaunchScreen.storyboard */; };
+		71FFB2E22027B9B600747450 /* SelectableNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FFB2E12027B9B600747450 /* SelectableNode.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +33,7 @@
 		71FE57F8201B696A005EC277 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		71FE57FB201B696A005EC277 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		71FE57FD201B696A005EC277 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		71FFB2E12027B9B600747450 /* SelectableNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectableNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -77,6 +79,7 @@
 				71FE57F1201B696A005EC277 /* AppDelegate.swift */,
 				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
 				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
+				71FFB2E12027B9B600747450 /* SelectableNode.swift */,
 				714DB0A12027580000C702DD /* UIColorExtension.swift */,
 				711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */,
 				71FE57F5201B696A005EC277 /* Main.storyboard */,
@@ -168,6 +171,7 @@
 				71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */,
 				714DB0A020266F2100C702DD /* ConfigurationViewController.swift in Sources */,
 				714DB0A22027580000C702DD /* UIColorExtension.swift in Sources */,
+				71FFB2E22027B9B600747450 /* SelectableNode.swift in Sources */,
 				711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */,
 				71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */,
 			);
