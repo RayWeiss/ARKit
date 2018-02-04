@@ -14,7 +14,7 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     @IBOutlet weak var colorPicker: UIPickerView!
     
     let objects: [String] = ["box", "capsule", "cone", "cylinder",
-                             "sphere", "torus", "tube", "pyramid"]
+                             "sphere", "torus", "tube", "pyramid", "paperPlane.scn", "car.dae"]
     
     let colors: [UIColor] = [.black, .blue, .brown, .cyan, .darkGray,
                              .gray, .green, .lightGray, .magenta, .orange,

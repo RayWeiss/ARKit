@@ -159,7 +159,10 @@ class ARSceneViewController: UIViewController {
     
         func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
             guard let delegate =  UIApplication.shared.delegate as? AppDelegate else { return }
-            guard let anyObject = objectsDict[delegate.objectToPlaceType] else { return }
+            guard let anyObject = objectsDict[delegate.objectToPlaceType] else {
+                addObjectFromFile(fileName: delegate.objectToPlaceType, atPosition: posistion)
+                return
+            }
             let objectNode = SCNNode()
 
             switch anyObject {
@@ -194,13 +197,18 @@ class ARSceneViewController: UIViewController {
             self.arSceneView.scene.rootNode.addChildNode(objectNode)
         }
     
-    func addSphere(withRadius radius: Float = 0.1, atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
-        let sphere = SCNSphere(radius: CGFloat(radius))
-        let sphereNode = SCNNode()
-        sphereNode.geometry = sphere
-        sphereNode.position = posistion
-        sphereNode.isSelected = false
-        self.arSceneView.scene.rootNode.addChildNode(sphereNode)
+    func addObjectFromFile(fileName name: String, atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
+        guard let objectScene = SCNScene(named: name) else { return }
+        let objectSceneChildNodes = objectScene.rootNode.childNodes
+        let objectNode = SCNNode()
+        
+        for childNode in objectSceneChildNodes {
+            objectNode.addChildNode(childNode)
+        }
+        
+        objectNode.position = posistion
+        objectNode.isSelected = false
+        self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
     func getSelectedNode() -> SCNNode? {
@@ -287,7 +295,6 @@ class ARSceneViewController: UIViewController {
             if let firstResult = featurePointHitTestResult.first {
                 let hitLocation = firstResult.worldTransform.columns.3
                 let position = SCNVector3(hitLocation.x, hitLocation.y, hitLocation.z)
-//                addSphere(atPosition: position)
                 addObject(atPosition: position)
             }
         }

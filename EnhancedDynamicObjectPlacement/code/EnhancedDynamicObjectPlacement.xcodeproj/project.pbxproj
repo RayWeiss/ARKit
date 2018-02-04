@@ -10,6 +10,8 @@
 		711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */; };
 		714DB0A020266F2100C702DD /* ConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DB09F20266F2100C702DD /* ConfigurationViewController.swift */; };
 		714DB0A22027580000C702DD /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DB0A12027580000C702DD /* UIColorExtension.swift */; };
+		714DB0AD20278D5900C702DD /* paperPlane.scn in Resources */ = {isa = PBXBuildFile; fileRef = 714DB0AB20278D5900C702DD /* paperPlane.scn */; };
+		714DB0AE20278D5900C702DD /* car.dae in Resources */ = {isa = PBXBuildFile; fileRef = 714DB0AC20278D5900C702DD /* car.dae */; };
 		71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F1201B696A005EC277 /* AppDelegate.swift */; };
 		71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F3201B696A005EC277 /* ARSceneViewController.swift */; };
 		71FE57F7201B696A005EC277 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71FE57F5201B696A005EC277 /* Main.storyboard */; };
@@ -21,6 +23,8 @@
 		711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNodeExtension.swift; sourceTree = "<group>"; };
 		714DB09F20266F2100C702DD /* ConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewController.swift; sourceTree = "<group>"; };
 		714DB0A12027580000C702DD /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
+		714DB0AB20278D5900C702DD /* paperPlane.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = paperPlane.scn; sourceTree = "<group>"; };
+		714DB0AC20278D5900C702DD /* car.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = car.dae; sourceTree = "<group>"; };
 		71FE57EE201B696A005EC277 /* EnhancedDynamicObjectPlacement.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnhancedDynamicObjectPlacement.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71FE57F1201B696A005EC277 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71FE57F3201B696A005EC277 /* ARSceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSceneViewController.swift; sourceTree = "<group>"; };
@@ -41,6 +45,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		714DB0AA20278D2400C702DD /* 3D_objects */ = {
+			isa = PBXGroup;
+			children = (
+				714DB0AC20278D5900C702DD /* car.dae */,
+				714DB0AB20278D5900C702DD /* paperPlane.scn */,
+			);
+			path = 3D_objects;
+			sourceTree = "<group>";
+		};
 		71FE57E5201B696A005EC277 = {
 			isa = PBXGroup;
 			children = (
@@ -60,6 +73,7 @@
 		71FE57F0201B696A005EC277 /* EnhancedDynamicObjectPlacement */ = {
 			isa = PBXGroup;
 			children = (
+				714DB0AA20278D2400C702DD /* 3D_objects */,
 				71FE57F1201B696A005EC277 /* AppDelegate.swift */,
 				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
 				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
@@ -136,8 +150,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				714DB0AD20278D5900C702DD /* paperPlane.scn in Resources */,
 				71FE57FC201B696A005EC277 /* LaunchScreen.storyboard in Resources */,
 				71FE57F9201B696A005EC277 /* Assets.xcassets in Resources */,
+				714DB0AE20278D5900C702DD /* car.dae in Resources */,
 				71FE57F7201B696A005EC277 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
