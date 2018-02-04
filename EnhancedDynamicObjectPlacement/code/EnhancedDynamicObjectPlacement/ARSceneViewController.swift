@@ -153,7 +153,47 @@ class ARSceneViewController: UIViewController {
         }
     }
     
-    // MARK: Object Interaction Functions
+    // MARK: Object Interaction
+        let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
+                                                  "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
+    
+        func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
+            guard let delegate =  UIApplication.shared.delegate as? AppDelegate else { return }
+            guard let anyObject = objectsDict[delegate.objectToPlaceType] else { return }
+            let objectNode = SCNNode()
+
+            switch anyObject {
+            case is SCNBox:
+                objectNode.geometry = anyObject as! SCNBox
+            case is SCNCapsule:
+                objectNode.geometry = anyObject as! SCNCapsule
+            case is SCNCone:
+                objectNode.geometry = anyObject as! SCNCone
+            case is SCNCylinder:
+                objectNode.geometry = anyObject as! SCNCylinder
+            case is SCNSphere:
+                objectNode.geometry = anyObject as! SCNSphere
+            case is SCNTorus:
+                objectNode.geometry = anyObject as! SCNTorus
+            case is SCNTube:
+                objectNode.geometry = anyObject as! SCNTube
+            case is SCNPyramid:
+                objectNode.geometry = anyObject as! SCNPyramid
+            default:
+                return
+            }
+            
+            objectNode.geometry = objectNode.geometry!.copy() as? SCNGeometry   // copy to unshare geometry
+            objectNode.geometry?.firstMaterial = objectNode.geometry?.firstMaterial!.copy() as? SCNMaterial   // copy to unshare material
+            
+            objectNode.geometry?.firstMaterial!.diffuse.contents = delegate.objectToPlaceColor
+            
+            objectNode.scale = SCNVector3(0.1,0.1,0.1)
+            objectNode.position = posistion
+            objectNode.isSelected = false
+            self.arSceneView.scene.rootNode.addChildNode(objectNode)
+        }
+    
     func addSphere(withRadius radius: Float = 0.1, atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         let sphere = SCNSphere(radius: CGFloat(radius))
         let sphereNode = SCNNode()
@@ -247,7 +287,8 @@ class ARSceneViewController: UIViewController {
             if let firstResult = featurePointHitTestResult.first {
                 let hitLocation = firstResult.worldTransform.columns.3
                 let position = SCNVector3(hitLocation.x, hitLocation.y, hitLocation.z)
-                addSphere(atPosition: position)
+//                addSphere(atPosition: position)
+                addObject(atPosition: position)
             }
         }
     }

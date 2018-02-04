@@ -20,16 +20,33 @@ extension SCNNode {
     
     func selectNode() {
         self.isSelected = true
-        let color = SCNMaterial()
-        color.diffuse.contents = UIColor.blue
-        self.geometry?.materials = [color]
+        
+        // Blend Mode for selection
+        self.geometry?.firstMaterial?.blendMode = .multiply //.subtract, .screen work too
+
+        // CIFilter for selection
+//        guard let gaussianBlurFilter = CIFilter(name: "CIGaussianBlur", withInputParameters: [kCIInputRadiusKey: 5]) else { return }
+//        self.filters = [gaussianBlurFilter]
+
+        // Color for selection
+//        let color = SCNMaterial()
+//        color.diffuse.contents = UIColor.blue
+//        self.geometry?.materials = [color]
     }
     
     func unselectNode() {
         self.isSelected = false
-        let color = SCNMaterial()
-        color.diffuse.contents = UIColor.white
-        self.geometry?.materials = [color]
+        
+        // Blend Mode for selection
+        self.geometry?.firstMaterial?.blendMode = .alpha
+        
+        // CIFilter for selection
+//        self.filters = nil
+
+        // Color for selection
+//        let color = SCNMaterial()
+//        color.diffuse.contents = UIColor.white
+//        self.geometry?.materials = [color]
     }
     
     func moveUp() {

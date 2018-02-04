@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */; };
 		714DB0A020266F2100C702DD /* ConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DB09F20266F2100C702DD /* ConfigurationViewController.swift */; };
+		714DB0A22027580000C702DD /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DB0A12027580000C702DD /* UIColorExtension.swift */; };
 		71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F1201B696A005EC277 /* AppDelegate.swift */; };
 		71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F3201B696A005EC277 /* ARSceneViewController.swift */; };
 		71FE57F7201B696A005EC277 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71FE57F5201B696A005EC277 /* Main.storyboard */; };
@@ -19,6 +20,7 @@
 /* Begin PBXFileReference section */
 		711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNodeExtension.swift; sourceTree = "<group>"; };
 		714DB09F20266F2100C702DD /* ConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewController.swift; sourceTree = "<group>"; };
+		714DB0A12027580000C702DD /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		71FE57EE201B696A005EC277 /* EnhancedDynamicObjectPlacement.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EnhancedDynamicObjectPlacement.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71FE57F1201B696A005EC277 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71FE57F3201B696A005EC277 /* ARSceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSceneViewController.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 				71FE57F1201B696A005EC277 /* AppDelegate.swift */,
 				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
 				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
+				714DB0A12027580000C702DD /* UIColorExtension.swift */,
 				711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */,
 				71FE57F5201B696A005EC277 /* Main.storyboard */,
 				71FE57F8201B696A005EC277 /* Assets.xcassets */,
@@ -96,6 +99,10 @@
 		71FE57E6201B696A005EC277 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				KnownAssetTags = (
+					colorPicker,
+					objectPicker,
+				);
 				LastSwiftUpdateCheck = 0920;
 				LastUpgradeCheck = 0920;
 				ORGANIZATIONNAME = ray;
@@ -144,6 +151,7 @@
 			files = (
 				71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */,
 				714DB0A020266F2100C702DD /* ConfigurationViewController.swift in Sources */,
+				714DB0A22027580000C702DD /* UIColorExtension.swift in Sources */,
 				711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */,
 				71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */,
 			);
