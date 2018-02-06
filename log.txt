@@ -1,7 +1,7 @@
 The topic listed was done the previous week.
 
 Week 1, Jan 16:
-    Discussed course expectations.
+    Discussed course expectations
 
 Week 2, Jan 23:
     BasicARScene
@@ -10,13 +10,19 @@ Week 3, Jan 30:
     DynamicObjectPlacement
 
 Week 4, Feb 06:
+    EnhancedDynamicObjectPlacement
+
+Week 5, Feb 13:
+    Fix
+        Move model to root VC
+        Make ConfigurationViewController a property of ARSceneViewController
+        Use touchesEnded method
     Planned
-        Tab Bar controler for prototyping
-        Different objects for placement
-        Objects from .dae files
         Object movement relative to user, not world origin
         Object physics/collision
-        Object color
+        Plane recognition and placement of plane objects
+        Double tap on object to move to closest plane (gravity)
+        Slide object across plane so that it can "lead user", fixed distance from user
 
 Future:
     SceneKit editor
