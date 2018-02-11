@@ -79,7 +79,7 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     
     // MARK: Swipe Gesture
     func addSwipeGesture() {
-        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didSwipe(withGestureRecognizer:)))
+        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ConfigurationViewController.didSwipe(withGestureRecognizer:)))
         swipeGestureRecognizer.direction = .right
         self.view.addGestureRecognizer(swipeGestureRecognizer)
     }
@@ -89,3 +89,4 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
         navigationController.popViewController(animated: true)
     }
 }
+

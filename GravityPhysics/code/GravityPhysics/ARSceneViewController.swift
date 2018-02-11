@@ -260,19 +260,19 @@ class ARSceneViewController: UIViewController {
     
     // MARK: Gestures
     func addGestureRecognizersToSceneView() {
-        addSwipeGesture()
-        addTapGesture()
-        addPinchGesture()
+        addLeftSwipeGestureRecognizer()
+        addTapGestureRecognizers()
+        addPinchGestureRecognizer()
     }
     
-    // MARK: Swipe Gesture
-    func addSwipeGesture() {
-        let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didSwipe(withGestureRecognizer:)))
-        swipeGestureRecognizer.direction = .left
-        self.arSceneView.addGestureRecognizer(swipeGestureRecognizer)
+    // MARK: Left Swipe Gesture
+    func addLeftSwipeGestureRecognizer() {
+        let leftSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformLeftSwipe(withGestureRecognizer:)))
+        leftSwipeGestureRecognizer.direction = .left
+        self.arSceneView.addGestureRecognizer(leftSwipeGestureRecognizer)
     }
     
-    @objc func didSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
+    @objc func didPerformLeftSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
         self.navigateToConfigurationViewController()
     }
     
@@ -281,13 +281,19 @@ class ARSceneViewController: UIViewController {
         navigationController.pushViewController(self.configurationViewController, animated: true)
     }
     
-    // MARK: Tap Gesture
-    func addTapGesture() {
-        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didTap(withGestureRecognizer:)))
-        self.arSceneView.addGestureRecognizer(tapGestureRecognizer)
+    // MARK: Tap Gestures
+    func addTapGestureRecognizers() {
+        let doubleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformDoubleTap(withGestureRecognizer:)))
+        doubleTapGestureRecognizer.numberOfTapsRequired = 2
+        
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformSingleTap(withGestureRecognizer:)))
+        singleTapGestureRecognizer.require(toFail: doubleTapGestureRecognizer)
+        
+        self.arSceneView.addGestureRecognizer(doubleTapGestureRecognizer)
+        self.arSceneView.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
-    @objc func didTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
+    @objc func didPerformSingleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: self.arSceneView)
         
         let hitTestResults = self.arSceneView.hitTest(tapLocation)
@@ -322,8 +328,12 @@ class ARSceneViewController: UIViewController {
         }
     }
     
-    // MARK: Pinch gesture
-    func addPinchGesture() {
+    @objc func didPerformDoubleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
+        print("tap tap")
+    }
+    
+    // MARK: Pinch Gesture
+    func addPinchGestureRecognizer() {
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPinch(withGestureRecognizer:)))
         self.arSceneView.addGestureRecognizer(pinchGestureRecognizer)
     }
@@ -403,3 +413,4 @@ extension ARSceneViewController: ARSCNViewDelegate {
     }
     
 }
+
