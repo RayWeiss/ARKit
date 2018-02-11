@@ -13,10 +13,13 @@ class ARSceneViewController: UIViewController {
     var arSceneView = ARSCNView()
     var configurationViewController: ConfigurationViewController!
     
+    var defaultObjectToPlaceType: String = "sphere"
+    var defaultObjectToPlaceColor: UIColor = .white
+    
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        instantiateConfigurationViewController()
+        setupConfigurationViewController()
         setupARSceneView()
         addControlPanelView()
     }
@@ -77,9 +80,10 @@ class ARSceneViewController: UIViewController {
                                     ARSCNDebugOptions.showWorldOrigin]
     }
     
-    func instantiateConfigurationViewController() {
+    func setupConfigurationViewController() {
         let sotryboard = UIStoryboard(name: "Main", bundle: nil)
         self.configurationViewController = sotryboard.instantiateViewController(withIdentifier: "configurationViewController") as! ConfigurationViewController
+        self.configurationViewController.arSceneViewController = self
     }
     
     func addControlPanelView() {
@@ -165,11 +169,11 @@ class ARSceneViewController: UIViewController {
                                               "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
     
     func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
-        guard let delegate =  UIApplication.shared.delegate as? AppDelegate else { return }
-        guard let anyObject = objectsDict[delegate.objectToPlaceType] else {
-            addObjectFromFile(fileName: delegate.objectToPlaceType, atPosition: posistion)
+        guard let anyObject = objectsDict[self.defaultObjectToPlaceType] else {
+            addObjectFromFile(fileName: self.defaultObjectToPlaceType, atPosition: posistion)
             return
         }
+        
         let objectNode = SelectableNode()
         
         switch anyObject {
@@ -196,7 +200,7 @@ class ARSceneViewController: UIViewController {
         objectNode.geometry = objectNode.geometry!.copy() as? SCNGeometry   // copy to unshare geometry
         objectNode.geometry?.firstMaterial = objectNode.geometry?.firstMaterial!.copy() as? SCNMaterial   // copy to unshare material
         
-        objectNode.geometry?.firstMaterial!.diffuse.contents = delegate.objectToPlaceColor
+        objectNode.geometry?.firstMaterial!.diffuse.contents = self.defaultObjectToPlaceColor
         
         objectNode.scale = SCNVector3(0.1,0.1,0.1)
         objectNode.position = posistion

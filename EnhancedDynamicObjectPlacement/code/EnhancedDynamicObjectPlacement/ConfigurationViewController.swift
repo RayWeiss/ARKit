@@ -12,6 +12,7 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     
     @IBOutlet weak var objectPicker: UIPickerView!
     @IBOutlet weak var colorPicker: UIPickerView!
+    var arSceneViewController: ARSceneViewController!
     
     let objects: [String] = ["box", "capsule", "cone", "cylinder",
                              "sphere", "torus", "tube", "pyramid", "paperPlane.scn", "car.dae"]
@@ -33,16 +34,14 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     func setupObjectPickerView() {
-        guard let delegate =  UIApplication.shared.delegate as? AppDelegate else { return }
-        let selectedObject = delegate.objectToPlaceType
+        let selectedObject = self.arSceneViewController.defaultObjectToPlaceType
         guard let selectedObjectIndex = objects.index(of: selectedObject) else { return }
         objectPicker.selectRow(selectedObjectIndex, inComponent: 0, animated: false)
         objectPicker.reloadComponent(0)
     }
     
     func setupColorPickerView() {
-        guard let delegate =  UIApplication.shared.delegate as? AppDelegate else { return }
-        let selectedColor = delegate.objectToPlaceColor
+        let selectedColor = self.arSceneViewController.defaultObjectToPlaceColor
         guard let selectedColorIndex = colors.index(of: selectedColor) else { return }
         colorPicker.selectRow(selectedColorIndex, inComponent: 0, animated: false)
         colorPicker.reloadComponent(0)
@@ -71,11 +70,10 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        guard let delegate =  UIApplication.shared.delegate as? AppDelegate else { return }
         if pickerView.accessibilityIdentifier == "objectPicker" {
-            delegate.objectToPlaceType = objects[row]
+            self.arSceneViewController.defaultObjectToPlaceType = objects[row]
         } else if pickerView.accessibilityIdentifier == "colorPicker" {
-            delegate.objectToPlaceColor = colors[row]
+            self.arSceneViewController.defaultObjectToPlaceColor = colors[row]
         }
     }
     
