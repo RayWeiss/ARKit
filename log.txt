@@ -32,12 +32,14 @@ Week 4, Feb 06:
 		+Placement of objects from model files
 
 Week 5, Feb 13:
-	To Fix
-		Move model to root VC
-		Make ConfigurationViewController a property of ARSceneViewController
-		Use touchesEnded method
+	Did Fix
+		-Moved model to root VC
+		-Made ConfigurationViewController a property of ARSceneViewController
 	
-	Planned
+	Did Not Fix
+		Use touchesEnded method: still using gesture recognizers
+	
+	GravityPhysics
 		Object movement relative to user, not world origin
 		Object physics/collision
 		Plane recognition and placement of plane objects
