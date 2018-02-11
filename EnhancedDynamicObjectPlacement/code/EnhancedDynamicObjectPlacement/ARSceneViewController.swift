@@ -11,10 +11,12 @@ import ARKit
 class ARSceneViewController: UIViewController {
     
     var arSceneView = ARSCNView()
+    var configurationViewController: ConfigurationViewController!
     
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        instantiateConfigurationViewController()
         setupARSceneView()
         addControlPanelView()
     }
@@ -73,6 +75,11 @@ class ARSceneViewController: UIViewController {
         arSceneView.showsStatistics = true
         arSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
                                     ARSCNDebugOptions.showWorldOrigin]
+    }
+    
+    func instantiateConfigurationViewController() {
+        let sotryboard = UIStoryboard(name: "Main", bundle: nil)
+        self.configurationViewController = sotryboard.instantiateViewController(withIdentifier: "configurationViewController") as! ConfigurationViewController
     }
     
     func addControlPanelView() {
@@ -262,10 +269,12 @@ class ARSceneViewController: UIViewController {
     }
     
     @objc func didSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc = storyboard.instantiateViewController(withIdentifier: "configurationViewController")
+        self.navigateToConfigurationViewController()
+    }
+    
+    func navigateToConfigurationViewController() {
         guard let navigationController = navigationController else { return }
-        navigationController.pushViewController(vc, animated: true)
+        navigationController.pushViewController(self.configurationViewController, animated: true)
     }
     
     // MARK: Tap Gesture
