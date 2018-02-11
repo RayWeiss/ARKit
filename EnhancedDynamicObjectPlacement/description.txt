@@ -1,5 +1,0 @@
-Update to DynamicObjectPlacement to add the following features:
-    Additional view to handle configuration options for prototyping
-    Placement of different shape objects
-    Coloring of objects
-    Placement of objects from model files

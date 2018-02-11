@@ -1,5 +1,0 @@
-Project that allows a user to add spheres to a scene with a tap gesture.
-Spheres can then be selected with another tap gesture.
-Selected spheres can be moved around or removed from the scene.
-Movement/removal is done via buttons and the pinch gesture.
-
