@@ -1,30 +1,50 @@
-The topic listed was done the previous week.
+The work listed was completed the previous week and reviewed at the specified date.
+
 
 Week 1, Jan 16:
-    Discussed course expectations
+	Discussed course expectations
+	Planned work to complete for next meeting
 
 Week 2, Jan 23:
-    BasicARScene
+	BasicARScene
+		+Shows a basic AR scene/session setup and static object placement
 
 Week 3, Jan 30:
-    DynamicObjectPlacement
+	DynamicObjectPlacement
+		+Allows a user to add spheres to a scene with a tap gesture
+		+Spheres can be selected by tapping on them
+		+Selected spheres can be moved around or removed from the scene
+		+Movement/removal is done via buttons/pinch gesture
 
 Week 4, Feb 06:
-    EnhancedDynamicObjectPlacement
+	Did Fix
+		-Moved SCNNode extension to separate file
+		-Moved ControlPanel layout logic to function
+		-Removed explicit call to viewDidLayoutSubviews, called in handleShake instead
+		-Moved code from ARSceneViewController extension to class
+
+	EnhancedDynamicObjectPlacement
+		+Additional view to handle configuration options for prototyping, accessed via swipe gesture
+		+Placement of different shape objects
+		+Updated object selection style
+		+Moved code to "select" objects from SCNNode extension to SCNNode subclass -> SelectableNode
+		+Can select color of object to be placed
+		+Placement of objects from model files
 
 Week 5, Feb 13:
-    Fix
-        Move model to root VC
-        Make ConfigurationViewController a property of ARSceneViewController
-        Use touchesEnded method
-    Planned
-        Object movement relative to user, not world origin
-        Object physics/collision
-        Plane recognition and placement of plane objects
-        Double tap on object to move to closest plane (gravity)
-        Slide object across plane so that it can "lead user", fixed distance from user
+	To Fix
+		Move model to root VC
+		Make ConfigurationViewController a property of ARSceneViewController
+		Use touchesEnded method
+	
+	Planned
+		Object movement relative to user, not world origin
+		Object physics/collision
+		Plane recognition and placement of plane objects
+		Double tap on object to move to closest plane (gravity)
+		Slide object across plane so that it can "lead user", fixed distance from user
 
 Future:
-    SceneKit editor
-    CoreLocation
-    CoreML
+	SceneKit editor
+	CoreLocation
+	CoreML
