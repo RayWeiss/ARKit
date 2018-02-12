@@ -49,12 +49,20 @@ extension SCNNode {
         self.removeFromParentNode()
     }
     
+    func moveRight(ofCamera camera: matrix_float4x4) {
+        let distance: Float = 0.1
+        let cameraDirection = SCNVector3(camera.columns.2.x, 0.0, camera.columns.2.z)
+        let adjustedRightDirection = SCNVector3(distance * cameraDirection.z, 0.0, -1 * distance * cameraDirection.x)
+        let moveRight = SCNAction.move(by: adjustedRightDirection, duration: 0.5)
+        self.runAction(moveRight)
+    }
+    
     func moveLeft(ofCamera camera: matrix_float4x4) {
         let distance: Float = 0.1
         let cameraDirection = SCNVector3(camera.columns.2.x, 0.0, camera.columns.2.z)
-        let adjustedDirection = SCNVector3(-1 * distance * cameraDirection.z, 0.0, distance * cameraDirection.x)
-        let moveLeftAction = SCNAction.move(by: adjustedDirection, duration: 0.5)
-        self.runAction(moveLeftAction)
+        let adjustedLeftDirection = SCNVector3(-1 * distance * cameraDirection.z, 0.0, distance * cameraDirection.x)
+        let moveLeft = SCNAction.move(by: adjustedLeftDirection, duration: 0.5)
+        self.runAction(moveLeft)
     }
 }
 

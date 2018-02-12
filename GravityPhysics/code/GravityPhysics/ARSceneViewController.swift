@@ -253,7 +253,9 @@ class ARSceneViewController: UIViewController {
     
     @objc func moveRight(_ sender: UIButton) {
         guard let node = getSelectedNode() else { return }
-        node.moveRight()
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        let cameraTransform = currentFrame.camera.transform
+        node.moveRight(ofCamera: cameraTransform) 
     }
     
     @objc func deleteSelected(_ sender: UIButton) {
