@@ -1,0 +1,139 @@
+    // MARK: Floor
+    func setupFloor() {
+        let floor = SCNFloor()
+        let floorNode = SCNNode()
+        floorNode.geometry = floor
+        floorNode.position = SCNVector3(0.0, -1.0, 0.0)
+        floorNode.opacity = 0.25
+        floorNode.name = "floor"
+        floorNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+        arSceneView.scene.rootNode.addChildNode(floorNode)
+//        let floorWidth: CGFloat = 0.5
+//        let floorLength: CGFloat = floorWidth
+//        let floorOrigin = SCNVector3(floorWidth / 2.0, -1.0, floorLength / 2.0)
+//        let floorOpacityValue: CGFloat = 0.25
+//
+//        let wallHeight: CGFloat = 0.25
+//        let wallOpacityValue: CGFloat = 0.25
+//
+//        let floorNode = SelectableNode()
+//        floorNode.geometry = SCNPlane(width: floorWidth, height: floorLength)
+//        floorNode.eulerAngles.x = -.pi / 2
+//        floorNode.opacity = floorOpacityValue
+//        floorNode.position = floorOrigin
+//        floorNode.name = "floor"
+//        floorNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+//
+//        let wallNode1 = SelectableNode()
+//        wallNode1.geometry = SCNPlane(width: floorWidth, height: wallHeight)
+//        wallNode1.opacity = wallOpacityValue
+//        wallNode1.position = SCNVector3(floorOrigin.x, floorOrigin.y + Float(wallHeight / 2.0), floorOrigin.z - Float(floorLength) / 2.0)
+//        wallNode1.name = "wall1"
+//        wallNode1.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+//        self.arSceneView.scene.rootNode.addChildNode(wallNode1)
+//
+//        let wallNode2 = SelectableNode()
+//        wallNode2.geometry = SCNPlane(width: floorWidth, height: wallHeight)
+//        wallNode2.opacity = wallOpacityValue
+//        wallNode2.position = SCNVector3(floorOrigin.x, floorOrigin.y + Float(wallHeight / 2.0), floorOrigin.z + Float(floorLength) / 2.0)
+//        wallNode2.name = "wall2"
+//        wallNode2.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+//        self.arSceneView.scene.rootNode.addChildNode(wallNode2)
+//
+//        self.arSceneView.scene.rootNode.addChildNode(floorNode)
+        //        arSceneView.scene.physicsWorld.gravity = SCNVector3(0, 0, 0)
+    }
+
+
+//extension ARSceneViewController {
+//    /// - Tag: PlaceARContent
+//    func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+//        // Place content only for anchors found by plane detection.
+//        guard let planeAnchor = anchor as? ARPlaneAnchor else { return }
+//
+//        // Create a SceneKit plane to visualize the plane anchor using its position and extent.
+//        let plane = SCNPlane(width: CGFloat(planeAnchor.extent.x), height: CGFloat(planeAnchor.extent.z))
+//        let planeNode = SCNNode(geometry: plane)
+//        planeNode.simdPosition = float3(planeAnchor.center.x, 0, planeAnchor.center.z)
+//        planeNode.physicsBody = SCNPhysicsBody(type: .kinematic, shape: nil)
+//        // `SCNPlane` is vertically oriented in its local coordinate space, so
+//        // rotate the plane to match the horizontal orientation of `ARPlaneAnchor`.
+//        planeNode.eulerAngles.x = -.pi / 2
+//
+//        // Make the plane visualization semitransparent to clearly show real-world placement.
+//        planeNode.opacity = 0.25
+//
+//        // Add the plane visualization to the ARKit-managed node so that it tracks
+//        // changes in the plane anchor as plane estimation continues.
+//        node.addChildNode(planeNode)
+//    }
+//
+//    /// - Tag: UpdateARContent
+//    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+//        // Update content only for plane anchors and nodes matching the setup created in `renderer(_:didAdd:for:)`.
+//        guard let planeAnchor = anchor as?  ARPlaneAnchor,
+//            let planeNode = node.childNodes.first,
+//            let plane = planeNode.geometry as? SCNPlane
+//            else { return }
+//
+//        // Plane estimation may shift the center of a plane relative to its anchor's transform.
+//        planeNode.simdPosition = float3(planeAnchor.center.x, 0, planeAnchor.center.z)
+//
+//        // Plane estimation may also extend planes, or remove one plane to merge its extent into another.
+//        plane.width = CGFloat(planeAnchor.extent.x)
+//        plane.height = CGFloat(planeAnchor.extent.z)
+//    }
+//}
+
+    func moveLeft(relativeToTransform transform: matrix_float4x4) {
+        var translation = matrix_identity_float4x4
+        translation.columns.3.z = -0.1
+        //        var test = transform * translation
+        let cameraToTheLeft = transform * translation
+        let positionBasedOnCamera = SCNVector3(cameraToTheLeft.columns.3.x, cameraToTheLeft.columns.3.y, cameraToTheLeft.columns.3.z)
+        let cameraMove = SCNAction.move(to: positionBasedOnCamera, duration: 0.5)
+        self.runAction(cameraMove)
+//        IN PROGRESS
+//        var translation = matrix_identity_float4x4
+//        translation.columns.3.z = -0.1
+//        //        var test = transform * translation
+//        let cameraToTheLeft = transform * translation
+//        let positionBasedOnCamera = SCNVector3(cameraToTheLeft.columns.3.x, cameraToTheLeft.columns.3.y, cameraToTheLeft.columns.3.z)
+//        let cameraMove = SCNAction.move(to: positionBasedOnCamera, duration: 0.5)
+//        self.runAction(cameraMove)
+
+        
+//        var translation = transform
+//        translation.columns.3.x = -0.1
+//        let leftTransform = transform * translation
+//        let left = SCNVector3(leftTransform.columns.3.x, leftTransform.columns.3.y, leftTransform.columns.3.z)
+////        let moveLeft = SCNAction.move(by: left, duration: 0.5)
+//        let moveLeft = SCNAction.move(to: left, duration: 0.5)
+//        self.runAction(moveLeft)
+        
+//
+//        let nodePosition = self.position
+////        let dontMove = SCNAction.move(to: nodePosition, duration: 0.5)
+////        self.runAction(dontMove)
+//        let nodeTransform = self.simdTransform
+//        let leftOfNode = nodeTransform * translation
+//        let position = SCNVector3(leftOfNode.columns.3.x, leftOfNode.columns.3.y, leftOfNode.columns.3.z)
+//        let moveLeft = SCNAction.move(to: position, duration: 0.5)
+//        self.runAction(moveLeft)
+//
+        
+//        var nodePosition = self.simdTransform
+//        nodePosition.columns.3.x = -0.1
+//        let leftTransform = transform * nodePosition
+//        let left = SCNVector3(leftTransform.columns.3.x, leftTransform.columns.3.y, leftTransform.columns.3.z)
+//        //        let moveLeft = SCNAction.move(by: left, duration: 0.5)
+//        let moveLeft = SCNAction.move(by: left, duration: 0.5)
+//        self.runAction(moveLeft)
+
+    }
+
+//        IN PROGRESS
+//        guard let node = getSelectedNode() else { return }
+//        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+//        let cameraTransform = currentFrame.camera.transform
+//        node.moveLeft(relativeToTransform: cameraTransform)

@@ -16,6 +16,9 @@ class ARSceneViewController: UIViewController {
     var defaultObjectToPlaceType: String = "sphere"
     var defaultObjectToPlaceColor: UIColor = .white
     
+    let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
+                                              "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
+    
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -165,9 +168,6 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Object Interaction
-    let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
-                                              "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
-    
     func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         guard let anyObject = objectsDict[self.defaultObjectToPlaceType] else {
             addObjectFromFile(fileName: self.defaultObjectToPlaceType, atPosition: posistion)
@@ -204,6 +204,7 @@ class ARSceneViewController: UIViewController {
         
         objectNode.scale = SCNVector3(0.1,0.1,0.1)
         objectNode.position = posistion
+//        objectNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
@@ -289,8 +290,13 @@ class ARSceneViewController: UIViewController {
         let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformSingleTap(withGestureRecognizer:)))
         singleTapGestureRecognizer.require(toFail: doubleTapGestureRecognizer)
         
+        let twoFingerSingleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformTwoFingerSingleTap(withGestureRecognizer:)))
+        twoFingerSingleTapGestureRecognizer.numberOfTouchesRequired = 2
+        twoFingerSingleTapGestureRecognizer.require(toFail: doubleTapGestureRecognizer)
+        
         self.arSceneView.addGestureRecognizer(doubleTapGestureRecognizer)
         self.arSceneView.addGestureRecognizer(singleTapGestureRecognizer)
+        self.arSceneView.addGestureRecognizer(twoFingerSingleTapGestureRecognizer)
     }
     
     @objc func didPerformSingleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
@@ -326,6 +332,10 @@ class ARSceneViewController: UIViewController {
                 addObject(atPosition: position)
             }
         }
+    }
+    
+    @objc func didPerformTwoFingerSingleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
+        print("Two finger tap")
     }
     
     @objc func didPerformDoubleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {

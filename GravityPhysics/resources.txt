@@ -1,0 +1,8 @@
+Turn off gravity
+https://stackoverflow.com/questions/36273314/anti-gravity-physics-in-scenekit
+
+Attach Object to Camera Position
+https://stackoverflow.com/questions/44531963/how-do-you-attach-an-object-to-your-camera-position-with-arkit-swift
+
+Transform / Translation
+https://www.raywenderlich.com/172543/augmented-reality-and-arkit-tutorial
