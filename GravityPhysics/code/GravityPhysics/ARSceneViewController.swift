@@ -355,11 +355,13 @@ class ARSceneViewController: UIViewController {
     @objc func didPinch(withGestureRecognizer recognizer: UIPinchGestureRecognizer) {
         guard recognizer.state == .ended else { return }
         guard let node = getSelectedNode() else { return }
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        let cameraTransform = currentFrame.camera.transform
         
         if recognizer.scale < 1.0 {
-            node.moveForward()
+            node.moveTowards(camera: cameraTransform)
         } else {
-            node.moveBackward()
+            node.moveAwayFrom(camera: cameraTransform)
         }
         
     }

@@ -49,6 +49,14 @@ extension SCNNode {
         self.removeFromParentNode()
     }
     
+    func moveLeft(ofCamera camera: matrix_float4x4) {
+        let distance: Float = 0.1
+        let cameraDirection = SCNVector3(camera.columns.2.x, 0.0, camera.columns.2.z)
+        let adjustedLeftDirection = SCNVector3(-1 * distance * cameraDirection.z, 0.0, distance * cameraDirection.x)
+        let moveLeft = SCNAction.move(by: adjustedLeftDirection, duration: 0.5)
+        self.runAction(moveLeft)
+    }
+    
     func moveRight(ofCamera camera: matrix_float4x4) {
         let distance: Float = 0.1
         let cameraDirection = SCNVector3(camera.columns.2.x, 0.0, camera.columns.2.z)
@@ -57,12 +65,20 @@ extension SCNNode {
         self.runAction(moveRight)
     }
     
-    func moveLeft(ofCamera camera: matrix_float4x4) {
-        let distance: Float = 0.1
+    func moveTowards(camera: matrix_float4x4) {
+        let distance: Float = 0.2
         let cameraDirection = SCNVector3(camera.columns.2.x, 0.0, camera.columns.2.z)
-        let adjustedLeftDirection = SCNVector3(-1 * distance * cameraDirection.z, 0.0, distance * cameraDirection.x)
-        let moveLeft = SCNAction.move(by: adjustedLeftDirection, duration: 0.5)
-        self.runAction(moveLeft)
+        let adjustedTowardsDirection = SCNVector3(distance * cameraDirection.x, 0.0, distance * cameraDirection.z)
+        let moveTowards = SCNAction.move(by: adjustedTowardsDirection, duration: 0.5)
+        self.runAction(moveTowards)
+    }
+
+    func moveAwayFrom(camera: matrix_float4x4) {
+        let distance: Float = 0.2
+        let cameraDirection = SCNVector3(camera.columns.2.x, 0.0, camera.columns.2.z)
+        let adjustedAwayDirection = SCNVector3(-1 * distance * cameraDirection.x, 0.0, -1 * distance * cameraDirection.z)
+        let moveAway = SCNAction.move(by: adjustedAwayDirection, duration: 0.5)
+        self.runAction(moveAway)
     }
 }
 
