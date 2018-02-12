@@ -1,3 +1,22 @@
+WORKING MOVE LEFT
+
+    func moveLeft(fromCamera camera: matrix_float4x4) {
+        let mat = SCNMatrix4(camera) // 4x4 transform matrix describing camera in world space
+        let dir = SCNVector3(-1 * mat.m31, -1 * mat.m32, -1 * mat.m33) // orientation of camera in world space
+//        let pos = SCNVector3(mat.m41, mat.m42, mat.m43) // location of camera in world space
+        
+        print("camera direction: \(dir)")
+//        print("camera position: \(pos)")
+        let distance: Float = 0.1
+        let adjustedDirection = SCNVector3(distance * dir.z, 0.0, -1.0 * distance * dir.x)
+        
+        let moveLeftAction = SCNAction.move(by: adjustedDirection, duration: 0.5)
+        self.runAction(moveLeftAction)
+    }
+
+
+
+
     // MARK: Floor
     func setupFloor() {
         let floor = SCNFloor()

@@ -236,7 +236,9 @@ class ARSceneViewController: UIViewController {
     
     @objc func moveLeft(_ sender: UIButton) {
         guard let node = getSelectedNode() else { return }
-        node.moveLeft()
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        let cameraTransform = currentFrame.camera.transform
+        node.moveLeft(fromCamera: cameraTransform)
     }
     
     @objc func moveUp(_ sender: UIButton) {
