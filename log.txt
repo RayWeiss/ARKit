@@ -36,17 +36,18 @@ Week 5, Feb 13:
 		-Moved model to root VC
 		-Made ConfigurationViewController a property of ARSceneViewController
 	
-	Did Not Fix
-		Use touchesEnded method: still using gesture recognizers
-	
 	GravityPhysics
-		Object movement relative to user, not world origin
-		Object physics/collision
-		Plane recognition and placement of plane objects
-		Double tap on object to move to closest plane (gravity)
-		Slide object across plane so that it can "lead user", fixed distance from user
+		+Object movement relative to user, not world origin
+		+Object physics
+		+Object gravity
+
+Week 6, Feb20:
+	CoreLocation
+		Arrow at feet to point north/to a fixed location
 
 Future:
+	Plane recognition and placement of plane objects
+	Double tap on object to move to closest plane
 	SceneKit editor
 	CoreLocation
 	CoreML
