@@ -19,12 +19,15 @@ class ARSceneViewController: UIViewController {
     let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
                                               "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
     
+    var gravityIsOn = false
+    
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
         setupConfigurationViewController()
         setupARSceneView()
         addControlPanelView()
+        setGravity()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -204,7 +207,7 @@ class ARSceneViewController: UIViewController {
         
         objectNode.scale = SCNVector3(0.1,0.1,0.1)
         objectNode.position = posistion
-//        objectNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+        objectNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
@@ -261,6 +264,15 @@ class ARSceneViewController: UIViewController {
     @objc func deleteSelected(_ sender: UIButton) {
         guard let node = getSelectedNode() else { return }
         node.deleteNode()
+    }
+    
+    // MARK:Gravity
+    func setGravity() {
+        if self.gravityIsOn {
+            arSceneView.scene.physicsWorld.gravity = SCNVector3(0, -9.8, 0)
+        } else {
+            arSceneView.scene.physicsWorld.gravity = SCNVector3(0, 0, 0)
+        }
     }
     
     // MARK: Gestures

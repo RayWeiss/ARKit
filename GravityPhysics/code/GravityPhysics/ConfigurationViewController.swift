@@ -12,6 +12,8 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     
     @IBOutlet weak var objectPicker: UIPickerView!
     @IBOutlet weak var colorPicker: UIPickerView!
+    @IBOutlet weak var gravitySwitch: UISwitch!
+    
     var arSceneViewController: ARSceneViewController!
     
     let objects: [String] = ["box", "capsule", "cone", "cylinder",
@@ -25,6 +27,7 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
         super.viewDidLoad()
         addSwipeGesture()
         setupPickerViews()
+        setGravitySwitch()
     }
 
     // MARK: Picker View
@@ -75,6 +78,16 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
         } else if pickerView.accessibilityIdentifier == "colorPicker" {
             self.arSceneViewController.defaultObjectToPlaceColor = colors[row]
         }
+    }
+    
+    //MARK: Gravity Switch
+    func setGravitySwitch() {
+        self.gravitySwitch.setOn(self.arSceneViewController.gravityIsOn, animated: false)
+    }
+    
+    @IBAction func toggleGravity(_ sender: UISwitch) {
+        self.arSceneViewController.gravityIsOn = sender.isOn
+        self.arSceneViewController.setGravity()
     }
     
     // MARK: Swipe Gesture
