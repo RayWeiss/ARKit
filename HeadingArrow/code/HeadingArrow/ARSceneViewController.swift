@@ -7,10 +7,13 @@
 //
 
 import ARKit
+import CoreLocation
 
 class ARSceneViewController: UIViewController {
     
     var arSceneView = ARSCNView()
+    var arConfiguration = ARWorldTrackingConfiguration()
+    let locationManager = CLLocationManager()
     var configurationViewController: ConfigurationViewController!
     
     var defaultObjectToPlaceType: String = "sphere"
@@ -24,6 +27,8 @@ class ARSceneViewController: UIViewController {
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupLocationManager()
+        setupARConfiguration()
         setupConfigurationViewController()
         setupARSceneView()
         addControlPanelView()
@@ -32,9 +37,7 @@ class ARSceneViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        let configuration = ARWorldTrackingConfiguration()
-        configuration.planeDetection = .horizontal
-        arSceneView.session.run(configuration)
+        arSceneView.session.run(self.arConfiguration)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -48,6 +51,19 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Configuration Functions
+    func setupARConfiguration() {
+        self.arConfiguration.planeDetection = .horizontal
+        self.arConfiguration.worldAlignment = .gravityAndHeading
+    }
+    
+    func setupLocationManager() {
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+//        self.locationManager.startUpdatingLocation()
+        self.locationManager.startUpdatingHeading()
+        self.locationManager.requestWhenInUseAuthorization()
+    }
+    
     func setupARSceneView() {
         // add as subview to view controller's view
         self.view.addSubview(arSceneView)
@@ -442,3 +458,8 @@ extension ARSceneViewController: ARSCNViewDelegate {
     
 }
 
+extension ARSceneViewController: CLLocationManagerDelegate {
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        print(newHeading.trueHeading)
+    }
+}
