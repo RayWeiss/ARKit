@@ -23,6 +23,15 @@ class ARSceneViewController: UIViewController {
                                               "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
     
     var gravityIsOn = false
+    var followerDoesNotExist: Bool {
+        get {
+            if self.arSceneView.scene.rootNode.childNode(withName: "follower", recursively: false) == nil {
+                return true
+            } else {
+                return false
+            }
+        }
+    }
     
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
@@ -31,8 +40,10 @@ class ARSceneViewController: UIViewController {
         setupARConfiguration()
         setupConfigurationViewController()
         setupARSceneView()
+        setupARSession()
         addControlPanelView()
         setGravity()
+        addNorthmarker()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -78,6 +89,10 @@ class ARSceneViewController: UIViewController {
         
         // add gesture recognizers
         addGestureRecognizersToSceneView()
+    }
+    
+    func setupARSession() {
+        self.arSceneView.session.delegate = self
     }
     
     func configureConstraints() {
@@ -187,6 +202,43 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Object Interaction
+    func addNorthmarker() {
+        let northMarkerShape = SCNSphere(radius: 0.01)
+        let northMarkerNode = SCNNode()
+        northMarkerNode.geometry = northMarkerShape
+        northMarkerNode.geometry = northMarkerNode.geometry!.copy() as? SCNGeometry
+        northMarkerNode.geometry?.firstMaterial = northMarkerNode.geometry?.firstMaterial!.copy() as? SCNMaterial
+        northMarkerNode.geometry?.firstMaterial!.diffuse.contents = UIColor.green
+        northMarkerNode.name = "northMarker"
+        northMarkerNode.position = SCNVector3(0, 0, -1)
+        arSceneView.scene.rootNode.addChildNode(northMarkerNode)
+    }
+    
+    func calculatePositionInFrontOfARCamera() -> SCNVector3? {
+        let distance: Float = 1.75
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return nil }
+        let cameraTransform = currentFrame.camera.transform
+        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
+        let cameraDirection = SCNVector3(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
+        let deltaX = -1 * distance * cameraDirection.z
+        let deltaZ = -1 * distance * cameraDirection.x
+        return SCNVector3(cameraPosition.x + deltaZ, -1.5, cameraPosition.z + deltaX)
+    }
+    
+    func addFollower() {
+        let followerShape = SCNSphere(radius: 0.1)
+        let followerNode = SCNNode()
+        followerNode.geometry = followerShape
+        followerNode.geometry = followerNode.geometry!.copy() as? SCNGeometry
+        followerNode.geometry?.firstMaterial = followerNode.geometry?.firstMaterial!.copy() as? SCNMaterial
+        followerNode.geometry?.firstMaterial!.diffuse.contents = UIColor.red
+        followerNode.name = "follower"
+        
+        guard let positionInFrontOfCamera = self.calculatePositionInFrontOfARCamera() else { return }
+        followerNode.position = positionInFrontOfCamera
+        arSceneView.scene.rootNode.addChildNode(followerNode)
+    }
+    
     func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         guard let anyObject = objectsDict[self.defaultObjectToPlaceType] else {
             addObjectFromFile(fileName: self.defaultObjectToPlaceType, atPosition: posistion)
@@ -420,6 +472,18 @@ class ARSceneViewController: UIViewController {
 }
 
 // MARK: Delegate Methods Extension
+extension ARSceneViewController: ARSessionDelegate {
+    // handle frame updates
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        if self.followerDoesNotExist {
+            self.addFollower()
+        }
+        guard let followerNode = self.arSceneView.scene.rootNode.childNode(withName: "follower", recursively: false) else { return }
+        guard let positionInFrontOfCamera = self.calculatePositionInFrontOfARCamera() else { return }
+        followerNode.position = positionInFrontOfCamera
+    }
+}
+
 extension ARSceneViewController: ARSCNViewDelegate {
     // handle session failure
     func session(_ session: ARSession, didFailWithError error: Error) {
