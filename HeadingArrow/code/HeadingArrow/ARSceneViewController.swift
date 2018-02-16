@@ -36,14 +36,15 @@ class ARSceneViewController: UIViewController {
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupLocationManager()
+//        setupLocationManager()
         setupARConfiguration()
         setupConfigurationViewController()
         setupARSceneView()
         setupARSession()
         addControlPanelView()
         setGravity()
-        addNorthmarker()
+//        addNorthmarker()
+        addPointer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -64,7 +65,7 @@ class ARSceneViewController: UIViewController {
     // MARK: Configuration Functions
     func setupARConfiguration() {
         self.arConfiguration.planeDetection = .horizontal
-        self.arConfiguration.worldAlignment = .gravityAndHeading
+//        self.arConfiguration.worldAlignment = .gravityAndHeading
     }
     
     func setupLocationManager() {
@@ -279,6 +280,23 @@ class ARSceneViewController: UIViewController {
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
+    func addPointer() {
+        let name = "arrow.scn"
+        let position = SCNVector3(0.0, 0.0, -0.5)
+        
+        guard let objectScene = SCNScene(named: name) else { print("could not get object scene"); return }
+        let objectSceneChildNodes = objectScene.rootNode.childNodes
+        let objectNode = SCNNode()
+        for childNode in objectSceneChildNodes {
+            objectNode.addChildNode(childNode)
+        }
+        
+        objectNode.position = position
+        objectNode.rotation = SCNVector4(0.0, 1.0, 0.0, .pi / 2)
+        objectNode.scale = SCNVector3(0.25, 0.25, 0.25)
+        self.arSceneView.scene.rootNode.addChildNode(objectNode)
+    }
+    
     func addObjectFromFile(fileName name: String, atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         guard let objectScene = SCNScene(named: name) else { return }
         let objectSceneChildNodes = objectScene.rootNode.childNodes
@@ -288,7 +306,7 @@ class ARSceneViewController: UIViewController {
             childNodeAsSelectable.name = "selectableChild"
             objectNode.addChildNode(childNodeAsSelectable)
         }
-        
+
         objectNode.position = posistion
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
@@ -474,14 +492,14 @@ class ARSceneViewController: UIViewController {
 // MARK: Delegate Methods Extension
 extension ARSceneViewController: ARSessionDelegate {
     // handle frame updates
-    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        if self.followerDoesNotExist {
-            self.addFollower()
-        }
-        guard let followerNode = self.arSceneView.scene.rootNode.childNode(withName: "follower", recursively: false) else { return }
-        guard let positionInFrontOfCamera = self.calculatePositionInFrontOfARCamera() else { return }
-        followerNode.position = positionInFrontOfCamera
-    }
+//    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+//        if self.followerDoesNotExist {
+//            self.addFollower()
+//        }
+//        guard let followerNode = self.arSceneView.scene.rootNode.childNode(withName: "follower", recursively: false) else { return }
+//        guard let positionInFrontOfCamera = self.calculatePositionInFrontOfARCamera() else { return }
+//        followerNode.position = positionInFrontOfCamera
+//    }
 }
 
 extension ARSceneViewController: ARSCNViewDelegate {
