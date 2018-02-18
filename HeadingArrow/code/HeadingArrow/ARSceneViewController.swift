@@ -481,6 +481,15 @@ class ARSceneViewController: UIViewController {
         arrowNode.position = position
     }
     
+    func manageDirectionalArrow() {
+        if self.directionalArrowDoesNotExist {
+            self.addDirectionalArrowToARSceneInFrontOfARCamera()
+        } else {
+            guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
+            self.updateDirectionalArrow(withPosition: positionInFrontOfARCamera)
+        }
+    }
+    
     func addPointer() {
         let name = "arrow.scn"
         let position = SCNVector3(0.0, 0.0, -0.5)
@@ -529,14 +538,15 @@ class ARSceneViewController: UIViewController {
 // MARK: Delegate Methods Extension
 extension ARSceneViewController: ARSessionDelegate {
     // handle frame updates
-//    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
 //        if self.directionalArrowDoesNotExist {
-//            self.addDirectionalArrow()
+//            self.addDirectionalArrowToARSceneInFrontOfARCamera()
 //        }
 //        guard let followerNode = self.arSceneView.scene.rootNode.childNode(withName: "directionalArrow", recursively: false) else { return }
 //        guard let positionInFrontOfCamera = self.calculatePositionInFrontOfARCamera() else { return }
 //        followerNode.position = positionInFrontOfCamera
-//    }
+        self.manageDirectionalArrow()
+    }
 }
 
 extension ARSceneViewController: ARSCNViewDelegate {
