@@ -23,9 +23,10 @@ class ARSceneViewController: UIViewController {
                                               "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
     
     var gravityIsOn = false
-    var followerDoesNotExist: Bool {
+    
+    var directionalArrowDoesNotExist: Bool {
         get {
-            if self.arSceneView.scene.rootNode.childNode(withName: "follower", recursively: false) == nil {
+            if self.arSceneView.scene.rootNode.childNode(withName: "directionalArrow", recursively: false) == nil {
                 return true
             } else {
                 return false
@@ -44,7 +45,7 @@ class ARSceneViewController: UIViewController {
         addControlPanelView()
         setGravity()
 //        addNorthmarker()
-        addPointer()
+//        addPointer()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -203,43 +204,6 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Object Interaction
-    func addNorthmarker() {
-        let northMarkerShape = SCNSphere(radius: 0.01)
-        let northMarkerNode = SCNNode()
-        northMarkerNode.geometry = northMarkerShape
-        northMarkerNode.geometry = northMarkerNode.geometry!.copy() as? SCNGeometry
-        northMarkerNode.geometry?.firstMaterial = northMarkerNode.geometry?.firstMaterial!.copy() as? SCNMaterial
-        northMarkerNode.geometry?.firstMaterial!.diffuse.contents = UIColor.green
-        northMarkerNode.name = "northMarker"
-        northMarkerNode.position = SCNVector3(0, 0, -1)
-        arSceneView.scene.rootNode.addChildNode(northMarkerNode)
-    }
-    
-    func calculatePositionInFrontOfARCamera() -> SCNVector3? {
-        let distance: Float = 1.75
-        guard let currentFrame = self.arSceneView.session.currentFrame else { return nil }
-        let cameraTransform = currentFrame.camera.transform
-        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
-        let cameraDirection = SCNVector3(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
-        let deltaX = -1 * distance * cameraDirection.z
-        let deltaZ = -1 * distance * cameraDirection.x
-        return SCNVector3(cameraPosition.x + deltaZ, -1.5, cameraPosition.z + deltaX)
-    }
-    
-    func addFollower() {
-        let followerShape = SCNSphere(radius: 0.1)
-        let followerNode = SCNNode()
-        followerNode.geometry = followerShape
-        followerNode.geometry = followerNode.geometry!.copy() as? SCNGeometry
-        followerNode.geometry?.firstMaterial = followerNode.geometry?.firstMaterial!.copy() as? SCNMaterial
-        followerNode.geometry?.firstMaterial!.diffuse.contents = UIColor.red
-        followerNode.name = "follower"
-        
-        guard let positionInFrontOfCamera = self.calculatePositionInFrontOfARCamera() else { return }
-        followerNode.position = positionInFrontOfCamera
-        arSceneView.scene.rootNode.addChildNode(followerNode)
-    }
-    
     func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         guard let anyObject = objectsDict[self.defaultObjectToPlaceType] else {
             addObjectFromFile(fileName: self.defaultObjectToPlaceType, atPosition: posistion)
@@ -277,23 +241,6 @@ class ARSceneViewController: UIViewController {
         objectNode.scale = SCNVector3(0.1,0.1,0.1)
         objectNode.position = posistion
         objectNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-        self.arSceneView.scene.rootNode.addChildNode(objectNode)
-    }
-    
-    func addPointer() {
-        let name = "arrow.scn"
-        let position = SCNVector3(0.0, 0.0, -0.5)
-        
-        guard let objectScene = SCNScene(named: name) else { print("could not get object scene"); return }
-        let objectSceneChildNodes = objectScene.rootNode.childNodes
-        let objectNode = SCNNode()
-        for childNode in objectSceneChildNodes {
-            objectNode.addChildNode(childNode)
-        }
-        
-        objectNode.position = position
-        objectNode.rotation = SCNVector4(0.0, 1.0, 0.0, .pi / 2)
-        objectNode.scale = SCNVector3(0.25, 0.25, 0.25)
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
@@ -442,6 +389,7 @@ class ARSceneViewController: UIViewController {
     
     @objc func didPerformDoubleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
         print("tap tap")
+        self.addDirectionalArrowToARSceneInFrontOfARCamera()
     }
     
     // MARK: Pinch Gesture
@@ -487,16 +435,105 @@ class ARSceneViewController: UIViewController {
         }
     }
     
+    // MARK: Directional Arrow
+    func getArrowSceneNode() -> SCNNode? {
+        let name = "arrow.scn"
+        guard let arrowScene = SCNScene(named: name) else { print("could not get arrow scene"); return nil}
+        let arrowSceneChildNodes = arrowScene.rootNode.childNodes
+        let arrowNode = SCNNode()
+        for childNode in arrowSceneChildNodes {
+            arrowNode.addChildNode(childNode)
+        }
+        arrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, .pi / 2)
+        arrowNode.scale = SCNVector3(0.6, 0.6, 0.6)
+        arrowNode.name = "directionalArrow"
+        return arrowNode
+    }
+    
+    func calculatePositionInFrontOfARCamera() -> SCNVector3? {
+        let distance: Float = 1.75
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return nil }
+        let cameraTransform = currentFrame.camera.transform
+        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
+        let cameraDirection = SCNVector3(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
+        let deltaX = -1 * distance * cameraDirection.z
+        let deltaZ = -1 * distance * cameraDirection.x
+        return SCNVector3(cameraPosition.x + deltaZ, -1.5, cameraPosition.z + deltaX)
+    }
+    
+    func addDirectionalArrowToARSceneInFrontOfARCamera() {
+        guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
+        self.addDirectionalArrowToARScene(atPosition: positionInFrontOfARCamera)
+    }
+
+    func addDirectionalArrowToARScene(atPosition position: SCNVector3) {
+        guard let arrowNode = self.getArrowSceneNode() else { return }
+        arrowNode.position = position
+        self.arSceneView.scene.rootNode.addChildNode(arrowNode)
+    }
+
+    func getDirectionalArrowNodeInARScene() -> SCNNode? {
+        return self.arSceneView.scene.rootNode.childNode(withName: "directionalArrow", recursively: false)
+    }
+    
+    func updateDirectionalArrow(withPosition position: SCNVector3) {
+        guard let arrowNode = self.getDirectionalArrowNodeInARScene() else { return }
+        arrowNode.position = position
+    }
+    
+    func addPointer() {
+        let name = "arrow.scn"
+        let position = SCNVector3(0.0, 0.0, -0.5)
+        
+        guard let objectScene = SCNScene(named: name) else { print("could not get arrow scene"); return }
+        let objectSceneChildNodes = objectScene.rootNode.childNodes
+        let objectNode = SCNNode()
+        for childNode in objectSceneChildNodes {
+            objectNode.addChildNode(childNode)
+        }
+        
+        objectNode.position = position
+        objectNode.rotation = SCNVector4(0.0, 1.0, 0.0, .pi / 2)
+        objectNode.scale = SCNVector3(0.25, 0.25, 0.25)
+        self.arSceneView.scene.rootNode.addChildNode(objectNode)
+    }
+    
+    func addDirectionalArrow() {
+        let followerShape = SCNSphere(radius: 0.1)
+        let followerNode = SCNNode()
+        followerNode.geometry = followerShape
+        followerNode.geometry = followerNode.geometry!.copy() as? SCNGeometry
+        followerNode.geometry?.firstMaterial = followerNode.geometry?.firstMaterial!.copy() as? SCNMaterial
+        followerNode.geometry?.firstMaterial!.diffuse.contents = UIColor.red
+        followerNode.name = "follower"
+        
+        guard let positionInFrontOfCamera = self.calculatePositionInFrontOfARCamera() else { return }
+        followerNode.position = positionInFrontOfCamera
+        arSceneView.scene.rootNode.addChildNode(followerNode)
+    }
+    
+    func addNorthmarker() {
+        let northMarkerShape = SCNSphere(radius: 0.01)
+        let northMarkerNode = SCNNode()
+        northMarkerNode.geometry = northMarkerShape
+        northMarkerNode.geometry = northMarkerNode.geometry!.copy() as? SCNGeometry
+        northMarkerNode.geometry?.firstMaterial = northMarkerNode.geometry?.firstMaterial!.copy() as? SCNMaterial
+        northMarkerNode.geometry?.firstMaterial!.diffuse.contents = UIColor.green
+        northMarkerNode.name = "northMarker"
+        northMarkerNode.position = SCNVector3(0, 0, -1)
+        arSceneView.scene.rootNode.addChildNode(northMarkerNode)
+    }
+    
 }
 
 // MARK: Delegate Methods Extension
 extension ARSceneViewController: ARSessionDelegate {
     // handle frame updates
 //    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-//        if self.followerDoesNotExist {
-//            self.addFollower()
+//        if self.directionalArrowDoesNotExist {
+//            self.addDirectionalArrow()
 //        }
-//        guard let followerNode = self.arSceneView.scene.rootNode.childNode(withName: "follower", recursively: false) else { return }
+//        guard let followerNode = self.arSceneView.scene.rootNode.childNode(withName: "directionalArrow", recursively: false) else { return }
 //        guard let positionInFrontOfCamera = self.calculatePositionInFrontOfARCamera() else { return }
 //        followerNode.position = positionInFrontOfCamera
 //    }
