@@ -24,9 +24,9 @@ class ARSceneViewController: UIViewController {
     
     var gravityIsOn = false
     
-    var directionalArrowDoesNotExist: Bool {
+    var headingArrowDoesNotExist: Bool {
         get {
-            if self.arSceneView.scene.rootNode.childNode(withName: "directionalArrow", recursively: false) == nil {
+            if self.arSceneView.scene.rootNode.childNode(withName: "headingArrow", recursively: false) == nil {
                 return true
             } else {
                 return false
@@ -434,7 +434,7 @@ class ARSceneViewController: UIViewController {
         }
     }
     
-    // MARK: Directional Arrow
+    // MARK: Heading Arrow
     func getArrowSceneNode() -> SCNNode? {
         let name = "arrow.scn"
         guard let arrowScene = SCNScene(named: name) else { print("could not get arrow scene"); return nil}
@@ -445,7 +445,7 @@ class ARSceneViewController: UIViewController {
         }
         arrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, .pi / 2)
         arrowNode.scale = SCNVector3(0.6, 0.6, 0.6)
-        arrowNode.name = "directionalArrow"
+        arrowNode.name = "headingArrow"
         return arrowNode
     }
     
@@ -460,32 +460,32 @@ class ARSceneViewController: UIViewController {
         return SCNVector3(cameraPosition.x + deltaZ, -1.5, cameraPosition.z + deltaX)
     }
     
-    func addDirectionalArrowToARSceneInFrontOfARCamera() {
+    func addHeadingArrowToARSceneInFrontOfARCamera() {
         guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
-        self.addDirectionalArrowToARScene(atPosition: positionInFrontOfARCamera)
+        self.addHeadingArrowToARScene(atPosition: positionInFrontOfARCamera)
     }
 
-    func addDirectionalArrowToARScene(atPosition position: SCNVector3) {
+    func addHeadingArrowToARScene(atPosition position: SCNVector3) {
         guard let arrowNode = self.getArrowSceneNode() else { return }
         arrowNode.position = position
         self.arSceneView.scene.rootNode.addChildNode(arrowNode)
     }
 
-    func getDirectionalArrowNodeInARScene() -> SCNNode? {
-        return self.arSceneView.scene.rootNode.childNode(withName: "directionalArrow", recursively: false)
+    func getHeadingArrowNodeInARScene() -> SCNNode? {
+        return self.arSceneView.scene.rootNode.childNode(withName: "headingArrow", recursively: false)
     }
     
-    func updateDirectionalArrow(withPosition position: SCNVector3) {
-        guard let arrowNode = self.getDirectionalArrowNodeInARScene() else { return }
+    func updateHeadingArrow(withPosition position: SCNVector3) {
+        guard let arrowNode = self.getHeadingArrowNodeInARScene() else { return }
         arrowNode.position = position
     }
     
-    func manageDirectionalArrow() {
-        if self.directionalArrowDoesNotExist {
-            self.addDirectionalArrowToARSceneInFrontOfARCamera()
+    func manageHeadingArrow() {
+        if self.headingArrowDoesNotExist {
+            self.addHeadingArrowToARSceneInFrontOfARCamera()
         } else {
             guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
-            self.updateDirectionalArrow(withPosition: positionInFrontOfARCamera)
+            self.updateHeadingArrow(withPosition: positionInFrontOfARCamera)
         }
     }
     
@@ -507,7 +507,7 @@ class ARSceneViewController: UIViewController {
 extension ARSceneViewController: ARSessionDelegate {
     // handle frame updates
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        self.manageDirectionalArrow()
+        self.manageHeadingArrow()
     }
 }
 
