@@ -42,8 +42,11 @@ Week 5, Feb 13:
 		+Object gravity
 
 Week 6, Feb20:
-	CoreLocation
-		Arrow at feet to point north/to a fixed location
+	HeadingArrow
+		+Added arrow model to project
+		+Made arrow appear near users feet
+		+Made arrow "follow" user by maintaining a static distance and orientation from user
+		+Added core location manager and oriented world origin to true north heading
 
 Future:
 	Plane recognition and placement of plane objects
