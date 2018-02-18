@@ -1,0 +1,16 @@
+Adding models to scn files
+https://medium.com/bpxl-craft/importing-3d-models-for-arkit-aa1728697e2
+
+Node rotation
+https://developer.apple.com/documentation/scenekit/scnnode/1408034-rotation
+https://stackoverflow.com/questions/29979803/rotating-a-node-in-scenekit
+
+AR World Alignment
+https://developer.apple.com/documentation/arkit/arworldalignment?language=objc
+
+Core Location Work
+https://developer.apple.com/documentation/corelocation#2926825
+
+Core Location Manager
+https://www.raywenderlich.com/146436/augmented-reality-ios-tutorial-location-based-2
+
