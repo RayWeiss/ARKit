@@ -41,14 +41,22 @@ Week 5, Feb 13:
 		+Object physics
 		+Object gravity
 
-Week 6, Feb20:
+Week 6, Feb 20:
 	HeadingArrow
 		+Added arrow model to project
 		+Made arrow appear near users feet
 		+Made arrow "follow" user by maintaining a static distance and orientation from user
 		+Added core location manager and oriented world origin to true north heading
-
+Week 7, Feb 27
+	Make arrow point to placed node
+	Keep track of recently (3) placed nodes in a static table
+	Make arrow point to selected node from the table
+	
+ 
 Future:
+	Stored properties for arrow scaling
+	Remove constants from code and move to properties
+	
 	Plane recognition and placement of plane objects
 	Double tap on object to move to closest plane
 	SceneKit editor
