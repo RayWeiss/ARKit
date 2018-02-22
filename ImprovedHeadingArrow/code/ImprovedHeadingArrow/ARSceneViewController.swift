@@ -299,6 +299,76 @@ class ARSceneViewController: UIViewController {
         node.deleteNode()
     }
     
+    // MARK: Trackable Objects
+    func addTrackableObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
+        let objectNode = SCNNode()
+        objectNode.geometry = SCNBox()
+        
+        objectNode.geometry = objectNode.geometry!.copy() as? SCNGeometry   // copy to unshare geometry
+        objectNode.geometry?.firstMaterial = objectNode.geometry?.firstMaterial!.copy() as? SCNMaterial   // copy to unshare material
+        
+        objectNode.geometry?.firstMaterial!.diffuse.contents = UIColor.cyan
+        //        objectNode.geometry?.firstMaterial?.blendMode = .max
+        
+        objectNode.scale = SCNVector3(0.05,0.05,0.05)
+        objectNode.position = posistion
+        objectNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        
+        objectNode.name = "trackableObject"
+        
+        self.arSceneView.scene.rootNode.addChildNode(objectNode)
+    }
+    
+    func getTrackableNode() -> SCNNode? {
+        return self.arSceneView.scene.rootNode.childNode(withName: "trackableObject", recursively: false)
+    }
+    
+    func updateHeadingArrowDirection() {
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        guard let headingArrowNode = self.getHeadingArrowNodeInARScene() else { return }
+        guard let node = self.getTrackableNode() else { return }
+        let nodePosition = SCNVector3(node.simdTransform.columns.3.x, node.simdTransform.columns.3.y, node.simdTransform.columns.3.z)
+        let cameraPosition = SCNVector3(currentFrame.camera.transform.columns.3.x, currentFrame.camera.transform.columns.3.y, currentFrame.camera.transform.columns.3.z)
+        guard let pov = self.arSceneView.pointOfView else { return }
+        let nodePositionInPOV = pov.convertPosition(nodePosition, from: nil)
+        let deltaX = nodePosition.x - cameraPosition.x
+        let deltaZ = nodePosition.z - cameraPosition.z
+////        let theta = atan(deltaZ / deltaX) //* .pi / 180 //* 180 / .pi // * .pi / 4 * -1
+//        let t = sqrt(deltaZ / ((deltaZ * deltaZ) + (deltaX * deltaX)))
+//        let theta = asin(t)
+        
+        var theta = atan(deltaZ / deltaX) * (180 / .pi)
+        
+        if deltaX < 0.0 && deltaZ > 0.0 {
+            theta = 180 + theta
+        } else if deltaX < 0.0 && deltaZ < 0.0 {
+            theta = 180 + theta
+        } else if deltaX > 0.0 && deltaZ < 0.0 {
+            theta = 360 + theta
+        }
+        
+        let thetaRad = theta / (180 / .pi)
+        
+        headingArrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, thetaRad * -1)
+        
+        print("________________")
+//        print("dX: \(nodePositionInPOV.x)")
+//        print("dZ: \(nodePositionInPOV.z)")
+        print("dX: \(deltaX)")
+        print("dZ: \(deltaZ)")
+        print("Theta: \(theta)")
+
+//        print("node: \(nodePosition)")
+//        print("camera: \(cameraPosition)")
+//        print("camera: \(nodePositionInPOV)")
+//        print("dX: \(deltaX)")
+//        print("dZ: \(deltaZ)")
+//        print("t: \(t)")
+//        print("Theta: \(theta)")
+        print("________________")
+//        headingArrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, theta)
+    }
+    
     // MARK:Gravity
     func setGravity() {
         if self.gravityIsOn {
@@ -389,6 +459,18 @@ class ARSceneViewController: UIViewController {
     
     @objc func didPerformDoubleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
         print("tap tap")
+        let tapLocation = recognizer.location(in: self.arSceneView)
+        
+        let hitTestResults = self.arSceneView.hitTest(tapLocation)
+        
+        if hitTestResults.first?.node != nil {
+            let featurePointHitTestResult = self.arSceneView.hitTest(tapLocation, types: .featurePoint)
+            if let firstResult = featurePointHitTestResult.first {
+                let hitLocation = firstResult.worldTransform.columns.3
+                let position = SCNVector3(hitLocation.x, hitLocation.y, hitLocation.z)
+                addTrackableObject(atPosition: position)
+            }
+        }
     }
     
     // MARK: Pinch Gesture
@@ -508,6 +590,7 @@ extension ARSceneViewController: ARSessionDelegate {
     // handle frame updates
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.manageHeadingArrow()
+        self.updateHeadingArrowDirection()
     }
 }
 
