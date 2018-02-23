@@ -300,7 +300,7 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Trackable Objects
-    func addTrackableObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
+    func addTrackableNode(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         let objectNode = SCNNode()
         objectNode.geometry = SCNBox()
         
@@ -323,53 +323,95 @@ class ARSceneViewController: UIViewController {
         return self.arSceneView.scene.rootNode.childNode(withName: "trackableObject", recursively: false)
     }
     
-    func updateHeadingArrowDirection() {
-        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
-        guard let headingArrowNode = self.getHeadingArrowNodeInARScene() else { return }
-        guard let node = self.getTrackableNode() else { return }
-        let nodePosition = SCNVector3(node.simdTransform.columns.3.x, node.simdTransform.columns.3.y, node.simdTransform.columns.3.z)
-        let cameraPosition = SCNVector3(currentFrame.camera.transform.columns.3.x, currentFrame.camera.transform.columns.3.y, currentFrame.camera.transform.columns.3.z)
-        guard let pov = self.arSceneView.pointOfView else { return }
-        let nodePositionInPOV = pov.convertPosition(nodePosition, from: nil)
-        let deltaX = nodePosition.x - cameraPosition.x
-        let deltaZ = nodePosition.z - cameraPosition.z
-////        let theta = atan(deltaZ / deltaX) //* .pi / 180 //* 180 / .pi // * .pi / 4 * -1
-//        let t = sqrt(deltaZ / ((deltaZ * deltaZ) + (deltaX * deltaX)))
-//        let theta = asin(t)
-        
-        var theta = atan(deltaZ / deltaX) * (180 / .pi)
+    func calculateXZAngleBetweenPositions(_ a: SCNVector3, _ b: SCNVector3, angleMeasure measure: AngleMeasure) -> Float {
+        let deltaX = a.x - b.x
+        let deltaZ = a.z - b.z
+        var thetaDeg = atan(deltaZ / deltaX) * (180 / .pi)
         
         if deltaX < 0.0 && deltaZ > 0.0 {
-            theta = 180 + theta
+            thetaDeg = 180 + thetaDeg
         } else if deltaX < 0.0 && deltaZ < 0.0 {
-            theta = 180 + theta
+            thetaDeg = 180 + thetaDeg
         } else if deltaX > 0.0 && deltaZ < 0.0 {
-            theta = 360 + theta
+            thetaDeg = 360 + thetaDeg
         }
         
-        let thetaRad = theta / (180 / .pi)
-        
-        headingArrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, thetaRad * -1)
-        
-        print("________________")
-//        print("dX: \(nodePositionInPOV.x)")
-//        print("dZ: \(nodePositionInPOV.z)")
-        print("dX: \(deltaX)")
-        print("dZ: \(deltaZ)")
-        print("Theta: \(theta)")
-
-//        print("node: \(nodePosition)")
-//        print("camera: \(cameraPosition)")
-//        print("camera: \(nodePositionInPOV)")
-//        print("dX: \(deltaX)")
-//        print("dZ: \(deltaZ)")
-//        print("t: \(t)")
-//        print("Theta: \(theta)")
-        print("________________")
-//        headingArrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, theta)
+        if case .degrees = measure {
+            return thetaDeg
+        } else if case .radians = measure {
+            return thetaDeg / (180 / .pi)
+        } else {
+            return 0.0
+        }
     }
     
-    // MARK:Gravity
+    // MARK: Heading Arrow
+    func getArrowSceneNode() -> SCNNode? {
+        let name = "arrow.scn"
+        guard let arrowScene = SCNScene(named: name) else { print("could not get arrow scene"); return nil}
+        let arrowSceneChildNodes = arrowScene.rootNode.childNodes
+        let arrowNode = SCNNode()
+        for childNode in arrowSceneChildNodes {
+            arrowNode.addChildNode(childNode)
+        }
+        arrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, .pi / 2)
+        arrowNode.scale = SCNVector3(0.6, 0.6, 0.6)
+        arrowNode.name = "headingArrow"
+        return arrowNode
+    }
+    
+    func calculatePositionInFrontOfARCamera() -> SCNVector3? {
+        let distance: Float = 1.75
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return nil }
+        let cameraTransform = currentFrame.camera.transform
+        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
+        let cameraDirection = SCNVector3(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
+        let deltaX = -1 * distance * cameraDirection.z
+        let deltaZ = -1 * distance * cameraDirection.x
+        return SCNVector3(cameraPosition.x + deltaZ, -1.5, cameraPosition.z + deltaX)
+    }
+    
+    func addHeadingArrowToARScene(atPosition position: SCNVector3) {
+        guard let arrowNode = self.getArrowSceneNode() else { return }
+        arrowNode.position = position
+        self.arSceneView.scene.rootNode.addChildNode(arrowNode)
+    }
+    
+    func addHeadingArrowToARSceneInFrontOfARCamera() {
+        guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
+        self.addHeadingArrowToARScene(atPosition: positionInFrontOfARCamera)
+    }
+    
+    func getHeadingArrowNodeInARScene() -> SCNNode? {
+        return self.arSceneView.scene.rootNode.childNode(withName: "headingArrow", recursively: false)
+    }
+    
+    func updateHeadingArrow(withPosition position: SCNVector3) {
+        guard let arrowNode = self.getHeadingArrowNodeInARScene() else { return }
+        arrowNode.position = position
+    }
+    
+    func pointHeadingArrow(atNode node: SCNNode) {
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        guard let headingArrowNode = self.getHeadingArrowNodeInARScene() else { return }
+        let nodePosition = SCNVector3(node.simdTransform.columns.3.x, node.simdTransform.columns.3.y, node.simdTransform.columns.3.z)
+        let cameraPosition = SCNVector3(currentFrame.camera.transform.columns.3.x, currentFrame.camera.transform.columns.3.y, currentFrame.camera.transform.columns.3.z)
+        let theta = self.calculateXZAngleBetweenPositions(nodePosition, cameraPosition, angleMeasure: .radians)
+        headingArrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, theta * -1)
+    }
+    
+    func manageHeadingArrow() {
+        if self.headingArrowDoesNotExist {
+            self.addHeadingArrowToARSceneInFrontOfARCamera()
+        } else {
+            guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
+            self.updateHeadingArrow(withPosition: positionInFrontOfARCamera)
+            guard let node = self.getTrackableNode() else { return }
+            self.pointHeadingArrow(atNode: node)
+        }
+    }
+    
+    // MARK: Gravity
     func setGravity() {
         if self.gravityIsOn {
             arSceneView.scene.physicsWorld.gravity = SCNVector3(0, -9.8, 0)
@@ -468,7 +510,7 @@ class ARSceneViewController: UIViewController {
             if let firstResult = featurePointHitTestResult.first {
                 let hitLocation = firstResult.worldTransform.columns.3
                 let position = SCNVector3(hitLocation.x, hitLocation.y, hitLocation.z)
-                addTrackableObject(atPosition: position)
+                addTrackableNode(atPosition: position)
             }
         }
     }
@@ -516,61 +558,6 @@ class ARSceneViewController: UIViewController {
         }
     }
     
-    // MARK: Heading Arrow
-    func getArrowSceneNode() -> SCNNode? {
-        let name = "arrow.scn"
-        guard let arrowScene = SCNScene(named: name) else { print("could not get arrow scene"); return nil}
-        let arrowSceneChildNodes = arrowScene.rootNode.childNodes
-        let arrowNode = SCNNode()
-        for childNode in arrowSceneChildNodes {
-            arrowNode.addChildNode(childNode)
-        }
-        arrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, .pi / 2)
-        arrowNode.scale = SCNVector3(0.6, 0.6, 0.6)
-        arrowNode.name = "headingArrow"
-        return arrowNode
-    }
-    
-    func calculatePositionInFrontOfARCamera() -> SCNVector3? {
-        let distance: Float = 1.75
-        guard let currentFrame = self.arSceneView.session.currentFrame else { return nil }
-        let cameraTransform = currentFrame.camera.transform
-        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
-        let cameraDirection = SCNVector3(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
-        let deltaX = -1 * distance * cameraDirection.z
-        let deltaZ = -1 * distance * cameraDirection.x
-        return SCNVector3(cameraPosition.x + deltaZ, -1.5, cameraPosition.z + deltaX)
-    }
-    
-    func addHeadingArrowToARSceneInFrontOfARCamera() {
-        guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
-        self.addHeadingArrowToARScene(atPosition: positionInFrontOfARCamera)
-    }
-
-    func addHeadingArrowToARScene(atPosition position: SCNVector3) {
-        guard let arrowNode = self.getArrowSceneNode() else { return }
-        arrowNode.position = position
-        self.arSceneView.scene.rootNode.addChildNode(arrowNode)
-    }
-
-    func getHeadingArrowNodeInARScene() -> SCNNode? {
-        return self.arSceneView.scene.rootNode.childNode(withName: "headingArrow", recursively: false)
-    }
-    
-    func updateHeadingArrow(withPosition position: SCNVector3) {
-        guard let arrowNode = self.getHeadingArrowNodeInARScene() else { return }
-        arrowNode.position = position
-    }
-    
-    func manageHeadingArrow() {
-        if self.headingArrowDoesNotExist {
-            self.addHeadingArrowToARSceneInFrontOfARCamera()
-        } else {
-            guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
-            self.updateHeadingArrow(withPosition: positionInFrontOfARCamera)
-        }
-    }
-    
 //    func addNorthmarker() {
 //        let northMarkerShape = SCNSphere(radius: 0.01)
 //        let northMarkerNode = SCNNode()
@@ -590,7 +577,6 @@ extension ARSceneViewController: ARSessionDelegate {
     // handle frame updates
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.manageHeadingArrow()
-        self.updateHeadingArrowDirection()
     }
 }
 
