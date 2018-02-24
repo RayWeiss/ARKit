@@ -11,28 +11,65 @@ import CoreLocation
 
 class ARSceneViewController: UIViewController {
     
+    // MARK: ARSceneViewController Properties
     var arSceneView = ARSCNView()
     var arConfiguration = ARWorldTrackingConfiguration()
     let locationManager = CLLocationManager()
     var configurationViewController: ConfigurationViewController!
     
-    var defaultObjectToPlaceType: String = "sphere"
-    var defaultObjectToPlaceColor: UIColor = .white
+    // MARK: Storyboard Properties
+    let mainStoryboardName = "Main"
+    let configurationViewControllerStoryboardID = "configurationViewController"
     
-    let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
-                                              "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
-    
-    var gravityIsOn = false
-    
-    var headingArrowDoesNotExist: Bool {
+    // MARK: Control Panel Properties
+    let controlPanelViewID = "controlPanelView"
+    let controlPanelColor: UIColor = .gray
+    let controlPanelAlpha: CGFloat = 0.5
+    var arStatusBarHeight: CGFloat {
         get {
-            if self.arSceneView.scene.rootNode.childNode(withName: "headingArrow", recursively: false) == nil {
-                return true
+            if self.arSceneView.showsStatistics {
+                return 20.0
             } else {
-                return false
+                return 0.0
             }
         }
     }
+    let controlPanelHeight: CGFloat = 50.0
+    var controlPanelWidth: CGFloat {
+        get {
+            return self.view.bounds.width
+        }
+    }
+    let controlPanelButtonCount: CGFloat = 5.0
+    var controlPanelButtonWidth: CGFloat {
+        get {
+            return self.controlPanelWidth / self.controlPanelButtonCount
+        }
+    }
+    
+    // MARK: Object Properties
+    let selectableObjectChildName = "selectableChild"
+    let trackableObjectName = "trackableObject"
+    var defaultObjectToPlaceType: String = "sphere"
+    var defaultObjectToPlaceColor: UIColor = .white
+    let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
+                                              "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
+    
+    // MARK: Heading Arrow Properties
+    let headingArrowSceneFileName = "arrow.scn"
+    let headingArrowName = "headingArrow"
+    let headingArrowDistanceFromUser: Float = 1.75
+    let headingArrowPlacementHeight: Float = -1.5
+    var headingArrowDoesNotExist: Bool {
+        get {
+            return self.arSceneView.scene.rootNode.childNode(withName: self.headingArrowName, recursively: false) == nil
+        }
+    }
+    
+    // MARK: Gravity Properties
+    var gravityIsOn = false
+    let standardGravity = SCNVector3(0, -9.8, 0)
+    let noGravity = SCNVector3(0, 0, 0)
     
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
@@ -120,84 +157,70 @@ class ARSceneViewController: UIViewController {
     }
     
     func setupConfigurationViewController() {
-        let sotryboard = UIStoryboard(name: "Main", bundle: nil)
-        self.configurationViewController = sotryboard.instantiateViewController(withIdentifier: "configurationViewController") as! ConfigurationViewController
+        let sotryboard = UIStoryboard(name: self.mainStoryboardName, bundle: nil)
+        self.configurationViewController = sotryboard.instantiateViewController(withIdentifier: self.configurationViewControllerStoryboardID) as! ConfigurationViewController
         self.configurationViewController.arSceneViewController = self
     }
     
     func addControlPanelView() {
-        var arStatusBarHeight = CGFloat(0.0)
-        if arSceneView.showsStatistics {
-            arStatusBarHeight = CGFloat(20.0)
-        }
-        let controlPanelHeight = CGFloat(50.0)
-        let controlPanelWidth = self.view.bounds.width
-        let numberOfButtons = CGFloat(4.0)
-        let buttonWidth = controlPanelWidth / numberOfButtons
-        
         // Configure control panel
-        let controlPanelView = UIView(frame: CGRect(x: 0.0, y: self.view.bounds.height - (arStatusBarHeight + controlPanelHeight), width: controlPanelWidth, height: controlPanelHeight))
-        controlPanelView.backgroundColor = .gray
-        controlPanelView.alpha = 0.5
-        controlPanelView.accessibilityIdentifier = "controlPanelView"
+        let controlPanelView = UIView(frame: CGRect(x: 0.0, y: self.view.bounds.height - (self.arStatusBarHeight + self.controlPanelHeight),
+                                                    width: self.controlPanelWidth, height: self.controlPanelHeight))
+        controlPanelView.backgroundColor = self.controlPanelColor
+        controlPanelView.alpha = self.controlPanelAlpha
+        controlPanelView.accessibilityIdentifier = self.controlPanelViewID
         
         // Configure left button
-        let leftButton = UIButton(frame: CGRect(x: buttonWidth * 0.0, y: 0.0, width: buttonWidth, height: controlPanelHeight))
+        let leftButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 0.0, y: 0.0,
+                                                width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
         leftButton.setTitle(" V", for: .normal)
         leftButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
         leftButton.addTarget(self, action: #selector(moveLeft), for: .touchUpInside)
         controlPanelView.addSubview(leftButton)
         
         // Configure up button
-        let upButton = UIButton(frame: CGRect(x: buttonWidth * 1.0, y: 0.0, width: buttonWidth, height: controlPanelHeight))
+        let upButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 1.0, y: 0.0,
+                                              width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
         upButton.setTitle("V", for: .normal)
         upButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: CGFloat.pi)
         upButton.addTarget(self, action: #selector(moveUp), for: .touchUpInside)
         controlPanelView.addSubview(upButton)
         
         // Configure down button
-        let downButton = UIButton(frame: CGRect(x: buttonWidth * 2.0, y: 0.0, width: buttonWidth, height: controlPanelHeight))
+        let downButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 2.0, y: 0.0,
+                                                width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
         downButton.setTitle("V", for: .normal)
         downButton.addTarget(self, action: #selector(moveDown), for: .touchUpInside)
         controlPanelView.addSubview(downButton)
         
         // Configure right button
-        let rightButton = UIButton(frame: CGRect(x: buttonWidth * 3.0, y: 0.0, width: buttonWidth, height: controlPanelHeight))
+        let rightButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 3.0, y: 0.0,
+                                                 width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
         rightButton.setTitle(" V", for: .normal)
         rightButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
         rightButton.addTarget(self, action: #selector(moveRight), for: .touchUpInside)
         controlPanelView.addSubview(rightButton)
         
         // Configure delete button
-        let deleteButton = UIButton(frame: CGRect(x: buttonWidth * 4.0, y: 0.0, width: buttonWidth, height: controlPanelHeight))
+        let deleteButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 4.0, y: 0.0,
+                                                  width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
         deleteButton.setTitle("X", for: .normal)
         deleteButton.addTarget(self, action: #selector(deleteSelected), for: .touchUpInside)
         controlPanelView.addSubview(deleteButton)
         
+        // Add control panel to arSceneView
         self.arSceneView.addSubview(controlPanelView)
     }
     
     func layoutControlPanelView() {
         guard let firstSubview = self.arSceneView.subviews.first else {return }
-        
-        if firstSubview.accessibilityIdentifier == "controlPanelView" {
+        if firstSubview.accessibilityIdentifier == self.controlPanelViewID {
             let controlPanelView = firstSubview
-            
-            var arStatusBarHeight = CGFloat(0.0)
-            if arSceneView.showsStatistics {
-                arStatusBarHeight = CGFloat(20.0)
-            }
-            
-            let controlPanelHeight = CGFloat(50.0)
-            let controlPanelWidth = self.arSceneView.bounds.width
-            let numberOfButtons = CGFloat(controlPanelView.subviews.count)
-            let buttonWidth = controlPanelWidth / numberOfButtons
-            
-            controlPanelView.frame = CGRect(x: 0.0, y: self.arSceneView.bounds.height - (arStatusBarHeight + controlPanelHeight), width: controlPanelWidth, height: controlPanelHeight)
-            
+            controlPanelView.frame = CGRect(x: 0.0, y: self.arSceneView.bounds.height - (self.arStatusBarHeight + self.controlPanelHeight),
+                                            width: self.controlPanelWidth, height: self.controlPanelHeight)
             var buttonIndex = 0
             for button in controlPanelView.subviews {
-                button.frame = CGRect(x: buttonWidth * CGFloat(buttonIndex), y: 0.0, width: buttonWidth, height: controlPanelHeight)
+                button.frame = CGRect(x: self.controlPanelButtonWidth * CGFloat(buttonIndex), y: 0.0, width: self.controlPanelButtonWidth, height: self.controlPanelHeight)
                 buttonIndex += 1
             }
         }
@@ -250,7 +273,7 @@ class ARSceneViewController: UIViewController {
         let objectNode = SelectableNode()
         for childNode in objectSceneChildNodes {
             let childNodeAsSelectable = SelectableNode(geometry: childNode.geometry)
-            childNodeAsSelectable.name = "selectableChild"
+            childNodeAsSelectable.name = self.selectableObjectChildName
             objectNode.addChildNode(childNodeAsSelectable)
         }
 
@@ -314,13 +337,13 @@ class ARSceneViewController: UIViewController {
         objectNode.position = posistion
         objectNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
         
-        objectNode.name = "trackableObject"
+        objectNode.name = trackableObjectName
         
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
     func getTrackableNode() -> SCNNode? {
-        return self.arSceneView.scene.rootNode.childNode(withName: "trackableObject", recursively: false)
+        return self.arSceneView.scene.rootNode.childNode(withName: trackableObjectName, recursively: false)
     }
     
     func calculateXZAngleBetweenPositions(_ a: SCNVector3, _ b: SCNVector3, angleMeasure measure: AngleMeasure) -> Float {
@@ -347,8 +370,8 @@ class ARSceneViewController: UIViewController {
     
     // MARK: Heading Arrow
     func getArrowSceneNode() -> SCNNode? {
-        let name = "arrow.scn"
-        guard let arrowScene = SCNScene(named: name) else { print("could not get arrow scene"); return nil}
+        let name = self.headingArrowSceneFileName
+        guard let arrowScene = SCNScene(named: name) else { return nil}
         let arrowSceneChildNodes = arrowScene.rootNode.childNodes
         let arrowNode = SCNNode()
         for childNode in arrowSceneChildNodes {
@@ -356,19 +379,18 @@ class ARSceneViewController: UIViewController {
         }
         arrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, .pi / 2)
         arrowNode.scale = SCNVector3(0.6, 0.6, 0.6)
-        arrowNode.name = "headingArrow"
+        arrowNode.name = self.headingArrowName
         return arrowNode
     }
     
     func calculatePositionInFrontOfARCamera() -> SCNVector3? {
-        let distance: Float = 1.75
         guard let currentFrame = self.arSceneView.session.currentFrame else { return nil }
         let cameraTransform = currentFrame.camera.transform
         let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
         let cameraDirection = SCNVector3(cameraTransform.columns.2.x, cameraTransform.columns.2.y, cameraTransform.columns.2.z)
-        let deltaX = -1 * distance * cameraDirection.z
-        let deltaZ = -1 * distance * cameraDirection.x
-        return SCNVector3(cameraPosition.x + deltaZ, -1.5, cameraPosition.z + deltaX)
+        let deltaX = -1 * self.headingArrowDistanceFromUser * cameraDirection.z
+        let deltaZ = -1 * self.headingArrowDistanceFromUser * cameraDirection.x
+        return SCNVector3(cameraPosition.x + deltaZ, self.headingArrowPlacementHeight, cameraPosition.z + deltaX)
     }
     
     func addHeadingArrowToARScene(atPosition position: SCNVector3) {
@@ -383,7 +405,7 @@ class ARSceneViewController: UIViewController {
     }
     
     func getHeadingArrowNodeInARScene() -> SCNNode? {
-        return self.arSceneView.scene.rootNode.childNode(withName: "headingArrow", recursively: false)
+        return self.arSceneView.scene.rootNode.childNode(withName: self.headingArrowName, recursively: false)
     }
     
     func updateHeadingArrow(withPosition position: SCNVector3) {
@@ -414,9 +436,9 @@ class ARSceneViewController: UIViewController {
     // MARK: Gravity
     func setGravity() {
         if self.gravityIsOn {
-            arSceneView.scene.physicsWorld.gravity = SCNVector3(0, -9.8, 0)
+            arSceneView.scene.physicsWorld.gravity = self.standardGravity
         } else {
-            arSceneView.scene.physicsWorld.gravity = SCNVector3(0, 0, 0)
+            arSceneView.scene.physicsWorld.gravity = self.noGravity
         }
     }
     
@@ -467,7 +489,7 @@ class ARSceneViewController: UIViewController {
         
         if let node = hitTestResults.first?.node {
             guard var selectableNode = node as? SelectableNode else { return }
-            if selectableNode.name == "selectableChild" {
+            if selectableNode.name == selectableObjectChildName {
                 if let parent = selectableNode.parent {
                     if parent is SelectableNode {
                         let parentAsSelectable = parent as! SelectableNode

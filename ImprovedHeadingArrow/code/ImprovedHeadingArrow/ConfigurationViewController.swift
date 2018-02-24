@@ -23,6 +23,9 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
                              .gray, .green, .lightGray, .magenta, .orange,
                              .purple, .red, .white, .yellow]
     
+    let objectPickerID = "objectPicker"
+    let colorPickerID = "colorPicker"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         addSwipeGesture()
@@ -55,27 +58,27 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        if pickerView.accessibilityIdentifier == "objectPicker" {
+        if pickerView.accessibilityIdentifier == self.objectPickerID {
             return objects.count
-        } else if pickerView.accessibilityIdentifier == "colorPicker" {
+        } else if pickerView.accessibilityIdentifier == self.colorPickerID {
             return colors.count
         }
         return 0
     }
     
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        if pickerView.accessibilityIdentifier == "objectPicker" {
+        if pickerView.accessibilityIdentifier == self.objectPickerID {
             return objects[row]
-        } else if pickerView.accessibilityIdentifier == "colorPicker" {
+        } else if pickerView.accessibilityIdentifier == self.colorPickerID {
             return colors[row].name
         }
         return nil
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        if pickerView.accessibilityIdentifier == "objectPicker" {
+        if pickerView.accessibilityIdentifier == self.objectPickerID {
             self.arSceneViewController.defaultObjectToPlaceType = objects[row]
-        } else if pickerView.accessibilityIdentifier == "colorPicker" {
+        } else if pickerView.accessibilityIdentifier == self.colorPickerID {
             self.arSceneViewController.defaultObjectToPlaceColor = colors[row]
         }
     }
