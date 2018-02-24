@@ -1,0 +1,8 @@
+If case
+https://stackoverflow.com/questions/42182692/can-i-test-whether-an-enum-value-is-a-particular-case-without-using-a-switch-sta
+
+Radians / Degrees
+https://www.rapidtables.com/convert/number/radians-to-degrees.html
+
+Basic Trig needed for heading arrow pointing
+http://www.purplemath.com/modules/basirati.htm
