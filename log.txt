@@ -57,7 +57,9 @@ Week 7, Feb 27:
 		+Made arrow point to placed "trackable" node
 
 
-
+Week 8, Mar 3:
+	Keep track of recently (3) placed nodes in a static table
+	Make arrow point to selected node from the table
 
 --------------------------------------------------------------------
 Future:
@@ -67,7 +69,9 @@ X	Remove constants from code and move to properties
 	SceneKit editor
 	CoreLocation
 	CoreML
-
-Week 8, Mar 3:
-	Keep track of recently (3) placed nodes in a static table
-	Make arrow point to selected node from the table
+	Struct for angles, able to return radians or degrees
+	Is ARSceneViewController the appropriate place for the calculateXZAngle function?
+	If not where should it go?
+		extend SCNVector3
+		extend SCNNode (can't use ARCamera)
+		possible helpers class
