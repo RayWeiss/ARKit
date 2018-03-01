@@ -9,7 +9,7 @@
 import UIKit
 
 class TransitionAnimator {
-    static fileprivate let animationDuration: CFTimeInterval = 0.5
+    static fileprivate let animationDuration: CFTimeInterval = 0.30
     static fileprivate let timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
     
     static func pop(offNavigationController nc: UINavigationController, withTransition transition: CATransition) {
@@ -28,7 +28,7 @@ class TransitionAnimator {
             transition.duration = self.animationDuration
             transition.timingFunction = self.timingFunction
             transition.type = kCATransitionPush
-            transition.subtype = kCATransitionFromTop
+            transition.subtype = kCATransitionFromBottom
             return transition
         }
     }
@@ -39,7 +39,7 @@ class TransitionAnimator {
             transition.duration = self.animationDuration
             transition.timingFunction = self.timingFunction
             transition.type = kCATransitionPush
-            transition.subtype = kCATransitionFromBottom
+            transition.subtype = kCATransitionFromTop
             return transition
         }
     }

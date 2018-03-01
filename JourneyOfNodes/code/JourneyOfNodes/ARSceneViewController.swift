@@ -494,7 +494,7 @@ class ARSceneViewController: UIViewController {
     
     func navigateToWaypointViewController() {
         guard let navigationController = navigationController else { return }
-        TransitionAnimator.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromTop)
+        TransitionAnimator.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromBottom)
     }
     
     // MARK: Tap Gestures
