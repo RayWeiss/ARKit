@@ -16,10 +16,12 @@ class ARSceneViewController: UIViewController {
     var arConfiguration = ARWorldTrackingConfiguration()
     let locationManager = CLLocationManager()
     var configurationViewController: ConfigurationViewController!
+    var waypointViewController: WaypointViewController!
     
     // MARK: Storyboard Properties
     let mainStoryboardName = "Main"
     let configurationViewControllerStoryboardID = "configurationViewController"
+    let waypointViewControllerStoryboardID = "waypointViewController"
     
     // MARK: Control Panel Properties
     let controlPanelViewID = "controlPanelView"
@@ -76,7 +78,7 @@ class ARSceneViewController: UIViewController {
         super.viewDidLoad()
 //        setupLocationManager()
         setupARConfiguration()
-        setupConfigurationViewController()
+        self.setupAuxiliaryViewControllers()
         setupARSceneView()
         setupARSession()
         addControlPanelView()
@@ -156,12 +158,25 @@ class ARSceneViewController: UIViewController {
                                     ARSCNDebugOptions.showWorldOrigin]
     }
     
+    // MARK: Auxiliary View Controllers Configuration
+    func setupAuxiliaryViewControllers() {
+        self.setupConfigurationViewController()
+        self.setupwaypointViewController()
+    }
+    
     func setupConfigurationViewController() {
         let sotryboard = UIStoryboard(name: self.mainStoryboardName, bundle: nil)
         self.configurationViewController = sotryboard.instantiateViewController(withIdentifier: self.configurationViewControllerStoryboardID) as! ConfigurationViewController
         self.configurationViewController.arSceneViewController = self
     }
     
+    func setupwaypointViewController() {
+        let sotryboard = UIStoryboard(name: self.mainStoryboardName, bundle: nil)
+        self.waypointViewController = sotryboard.instantiateViewController(withIdentifier: self.waypointViewControllerStoryboardID) as! WaypointViewController
+        self.waypointViewController.arSceneViewController = self
+    }
+    
+    // MARK: Control Panel View Configuration
     func addControlPanelView() {
         // Configure control panel
         let controlPanelView = UIView(frame: CGRect(x: 0.0, y: self.view.bounds.height - (self.arStatusBarHeight + self.controlPanelHeight),
@@ -445,6 +460,7 @@ class ARSceneViewController: UIViewController {
     // MARK: Gestures
     func addGestureRecognizersToSceneView() {
         addLeftSwipeGestureRecognizer()
+        addUpSwipeGestureRecognizer()
         addTapGestureRecognizers()
         addPinchGestureRecognizer()
     }
@@ -463,6 +479,22 @@ class ARSceneViewController: UIViewController {
     func navigateToConfigurationViewController() {
         guard let navigationController = navigationController else { return }
         navigationController.pushViewController(self.configurationViewController, animated: true)
+    }
+    
+    // MARK: Up Swipe Gesture
+    func addUpSwipeGestureRecognizer() {
+        let upSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformUpSwipe(withGestureRecognizer:)))
+        upSwipeGestureRecognizer.direction = .up
+        self.arSceneView.addGestureRecognizer(upSwipeGestureRecognizer)
+    }
+    
+    @objc func didPerformUpSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
+        self.navigateToWaypointViewController()
+    }
+    
+    func navigateToWaypointViewController() {
+        guard let navigationController = navigationController else { return }
+        navigationController.pushViewController(self.waypointViewController, animated: true)
     }
     
     // MARK: Tap Gestures
