@@ -13,6 +13,7 @@
 		714DB0AD20278D5900C702DD /* paperPlane.scn in Resources */ = {isa = PBXBuildFile; fileRef = 714DB0AB20278D5900C702DD /* paperPlane.scn */; };
 		714DB0AE20278D5900C702DD /* car.dae in Resources */ = {isa = PBXBuildFile; fileRef = 714DB0AC20278D5900C702DD /* car.dae */; };
 		715BEBD420483DCF007AC79B /* WaypointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715BEBD320483DCF007AC79B /* WaypointViewController.swift */; };
+		715BEBD820484C87007AC79B /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715BEBD720484C87007AC79B /* TransitionAnimator.swift */; };
 		715E027A203FA83E0037A5E2 /* AngleEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */; };
 		7192274F2037346100A4762D /* arrow.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7192274E2037346100A4762D /* arrow.scn */; };
 		71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F1201B696A005EC277 /* AppDelegate.swift */; };
@@ -30,6 +31,7 @@
 		714DB0AB20278D5900C702DD /* paperPlane.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = paperPlane.scn; sourceTree = "<group>"; };
 		714DB0AC20278D5900C702DD /* car.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = car.dae; sourceTree = "<group>"; };
 		715BEBD320483DCF007AC79B /* WaypointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointViewController.swift; sourceTree = "<group>"; };
+		715BEBD720484C87007AC79B /* TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
 		715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleEnumeration.swift; sourceTree = "<group>"; };
 		7192274E2037346100A4762D /* arrow.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = arrow.scn; sourceTree = "<group>"; };
 		71FE57EE201B696A005EC277 /* JourneyOfNodes.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = JourneyOfNodes.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -87,6 +89,7 @@
 				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
 				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
 				715BEBD320483DCF007AC79B /* WaypointViewController.swift */,
+				715BEBD720484C87007AC79B /* TransitionAnimator.swift */,
 				71FFB2E12027B9B600747450 /* SelectableNode.swift */,
 				711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */,
 				714DB0A12027580000C702DD /* UIColorExtension.swift */,
@@ -180,6 +183,7 @@
 			files = (
 				715E027A203FA83E0037A5E2 /* AngleEnumeration.swift in Sources */,
 				715BEBD420483DCF007AC79B /* WaypointViewController.swift in Sources */,
+				715BEBD820484C87007AC79B /* TransitionAnimator.swift in Sources */,
 				71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */,
 				714DB0A020266F2100C702DD /* ConfigurationViewController.swift in Sources */,
 				714DB0A22027580000C702DD /* UIColorExtension.swift in Sources */,

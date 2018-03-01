@@ -478,7 +478,7 @@ class ARSceneViewController: UIViewController {
     
     func navigateToConfigurationViewController() {
         guard let navigationController = navigationController else { return }
-        navigationController.pushViewController(self.configurationViewController, animated: true)
+        TransitionAnimator.push(viewController: self.configurationViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromRight)
     }
     
     // MARK: Up Swipe Gesture
@@ -494,7 +494,7 @@ class ARSceneViewController: UIViewController {
     
     func navigateToWaypointViewController() {
         guard let navigationController = navigationController else { return }
-        navigationController.pushViewController(self.waypointViewController, animated: true)
+        TransitionAnimator.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromTop)
     }
     
     // MARK: Tap Gestures
@@ -554,7 +554,6 @@ class ARSceneViewController: UIViewController {
     }
     
     @objc func didPerformDoubleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
-        print("tap tap")
         let tapLocation = recognizer.location(in: self.arSceneView)
         
         let hitTestResults = self.arSceneView.hitTest(tapLocation)

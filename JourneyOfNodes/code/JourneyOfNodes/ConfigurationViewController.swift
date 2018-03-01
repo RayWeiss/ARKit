@@ -102,7 +102,7 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     
     @objc func didSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
         guard let navigationController = navigationController else { return }
-        navigationController.popViewController(animated: true)
+        TransitionAnimator.pop(offNavigationController: navigationController, withTransition: TransitionAnimator.fromLeft)
     }
 }
 
