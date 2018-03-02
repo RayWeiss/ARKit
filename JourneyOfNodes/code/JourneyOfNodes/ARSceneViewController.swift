@@ -51,11 +51,19 @@ class ARSceneViewController: UIViewController {
     
     // MARK: Object Properties
     let selectableObjectChildName = "selectableChild"
-    let trackableObjectName = "trackableObject"
     var defaultObjectToPlaceType: String = "sphere"
     var defaultObjectToPlaceColor: UIColor = .white
     let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
                                               "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
+    
+    // MARK: Waypoint Properties
+    var waypointCount = 0
+    let baseWaypointID = "waypoint"
+    let waypointGeometry = SCNBox()
+    let waypointColor = UIColor.cyan
+    let waypointScale = 0.05
+    var waypoints:[String] = []
+    var waypointBeingTrackedID = ""
     
     // MARK: Heading Arrow Properties
     let headingArrowSceneFileName = "arrow.scn"
@@ -242,9 +250,9 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Object Interaction
-    func addObject(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
+    func addObject(atPosition position: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         guard let anyObject = objectsDict[self.defaultObjectToPlaceType] else {
-            addObjectFromFile(fileName: self.defaultObjectToPlaceType, atPosition: posistion)
+            addObjectFromFile(fileName: self.defaultObjectToPlaceType, atPosition: position)
             return
         }
         
@@ -277,12 +285,12 @@ class ARSceneViewController: UIViewController {
         objectNode.geometry?.firstMaterial!.diffuse.contents = self.defaultObjectToPlaceColor
         
         objectNode.scale = SCNVector3(0.1,0.1,0.1)
-        objectNode.position = posistion
+        objectNode.position = position
         objectNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
-    func addObjectFromFile(fileName name: String, atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
+    func addObjectFromFile(fileName name: String, atPosition position: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
         guard let objectScene = SCNScene(named: name) else { return }
         let objectSceneChildNodes = objectScene.rootNode.childNodes
         let objectNode = SelectableNode()
@@ -292,7 +300,7 @@ class ARSceneViewController: UIViewController {
             objectNode.addChildNode(childNodeAsSelectable)
         }
 
-        objectNode.position = posistion
+        objectNode.position = position
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
     }
     
@@ -337,28 +345,29 @@ class ARSceneViewController: UIViewController {
         node.deleteNode()
     }
     
-    // MARK: Trackable Objects
-    func addTrackableNode(atPosition posistion: SCNVector3 = SCNVector3(0.0, 0.0, 0.0)) {
-        let objectNode = SCNNode()
-        objectNode.geometry = SCNBox()
-        
-        objectNode.geometry = objectNode.geometry!.copy() as? SCNGeometry   // copy to unshare geometry
-        objectNode.geometry?.firstMaterial = objectNode.geometry?.firstMaterial!.copy() as? SCNMaterial   // copy to unshare material
-        
-        objectNode.geometry?.firstMaterial!.diffuse.contents = UIColor.cyan
-        //        objectNode.geometry?.firstMaterial?.blendMode = .max
-        
-        objectNode.scale = SCNVector3(0.05,0.05,0.05)
-        objectNode.position = posistion
-        objectNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        
-        objectNode.name = trackableObjectName
-        
-        self.arSceneView.scene.rootNode.addChildNode(objectNode)
+    // MARK: Waypoint Objects
+    func getNextWaypointID() -> String {
+        let id = self.baseWaypointID + String(self.waypointCount)
+        self.waypointCount += 1
+        return id
     }
     
-    func getTrackableNode() -> SCNNode? {
-        return self.arSceneView.scene.rootNode.childNode(withName: trackableObjectName, recursively: false)
+    func addWaypoint(atPosition position: SCNVector3) {
+        let waypointNode = SCNNode()
+        waypointNode.geometry = self.waypointGeometry
+        waypointNode.geometry = waypointNode.geometry!.copy() as? SCNGeometry
+        waypointNode.geometry?.firstMaterial = waypointNode.geometry?.firstMaterial!.copy() as? SCNMaterial
+        waypointNode.geometry?.firstMaterial!.diffuse.contents = self.waypointColor
+        waypointNode.scale = SCNVector3(self.waypointScale, self.waypointScale, self.waypointScale)
+        waypointNode.position = position
+        waypointNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        waypointNode.name = self.getNextWaypointID()
+        self.waypoints.append(waypointNode.name!)
+        self.arSceneView.scene.rootNode.addChildNode(waypointNode)
+    }
+    
+    func getWaypointBeingTracked() -> SCNNode? {
+        return self.arSceneView.scene.rootNode.childNode(withName: self.waypointBeingTrackedID, recursively: false)
     }
     
     func calculateXZAngleBetweenPositions(_ a: SCNVector3, _ b: SCNVector3, angleMeasure measure: AngleMeasure) -> Float {
@@ -443,8 +452,8 @@ class ARSceneViewController: UIViewController {
         } else {
             guard let positionInFrontOfARCamera = self.calculatePositionInFrontOfARCamera() else { return }
             self.updateHeadingArrow(withPosition: positionInFrontOfARCamera)
-            guard let node = self.getTrackableNode() else { return }
-            self.pointHeadingArrow(atNode: node)
+            guard let waypoint = self.getWaypointBeingTracked() else { return }
+            self.pointHeadingArrow(atNode: waypoint)
         }
     }
     
@@ -478,6 +487,7 @@ class ARSceneViewController: UIViewController {
     
     func navigateToConfigurationViewController() {
         guard let navigationController = navigationController else { return }
+        self.configurationViewController.arSceneViewController = self
         TransitionAnimator.push(viewController: self.configurationViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromRight)
     }
     
@@ -494,6 +504,7 @@ class ARSceneViewController: UIViewController {
     
     func navigateToWaypointViewController() {
         guard let navigationController = navigationController else { return }
+        self.waypointViewController.arSceneViewController = self
         TransitionAnimator.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromBottom)
     }
     
@@ -555,15 +566,15 @@ class ARSceneViewController: UIViewController {
     
     @objc func didPerformDoubleTap(withGestureRecognizer recognizer: UITapGestureRecognizer) {
         let tapLocation = recognizer.location(in: self.arSceneView)
-        
+
         let hitTestResults = self.arSceneView.hitTest(tapLocation)
-        
+
         if hitTestResults.first?.node != nil {
             let featurePointHitTestResult = self.arSceneView.hitTest(tapLocation, types: .featurePoint)
             if let firstResult = featurePointHitTestResult.first {
                 let hitLocation = firstResult.worldTransform.columns.3
                 let position = SCNVector3(hitLocation.x, hitLocation.y, hitLocation.z)
-                addTrackableNode(atPosition: position)
+                self.addWaypoint(atPosition: position)
             }
         }
     }
