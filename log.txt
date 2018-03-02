@@ -57,9 +57,11 @@ Week 7, Feb 27:
 		+Made arrow point to placed "trackable" node
 
 
-Week 8, Mar 3:
-	Keep track of recently (3) placed nodes in a static table
-	Make arrow point to selected node from the table
+Week 8, Mar 6:
+	JourneyOfNodes:
+		+Made ARSceneViewController keep track of placed waypoints
+		+Made arrow point to waypoint selected from picker
+		+Added transition animator to handle swipe gesture transitions
 
 --------------------------------------------------------------------
 Future:
@@ -75,3 +77,8 @@ X	Remove constants from code and move to properties
 		extend SCNVector3
 		extend SCNNode (can't use ARCamera)
 		possible helpers class
+
+Week 9, Mar 13:
+	Add ability to remove waypoints
+	...
+	
