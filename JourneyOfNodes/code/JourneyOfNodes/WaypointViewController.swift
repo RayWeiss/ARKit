@@ -24,11 +24,8 @@ class WaypointViewController: UITableViewController {
         self.tableView.dataSource = self
         self.addSwipeGesture()
         
-        // Uncomment the following line to preserve selection between presentations
-//         self.clearsSelectionOnViewWillAppear = false
-        
-        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//         self.navigationItem.rightBarButtonItem = self.editButtonItem
+//        Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+//        self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -53,10 +50,8 @@ class WaypointViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         if self.noWaypoints {
             cell.textLabel?.text = self.noWaypointsTitle
-//            cell.detailTextLabel?.text = self.noWaypointsTitle
         } else {
             cell.textLabel?.text = self.arSceneViewController.waypoints[indexPath.row]
-//            cell.detailTextLabel?.text = self.arSceneViewController.waypoints[indexPath.row]
         }
         return cell
     }
