@@ -469,7 +469,7 @@ class ARSceneViewController: UIViewController {
     // MARK: Gestures
     func addGestureRecognizersToSceneView() {
         addLeftSwipeGestureRecognizer()
-        addUpSwipeGestureRecognizer()
+        addRightSwipeGestureRecognizer()
         addTapGestureRecognizers()
         addPinchGestureRecognizer()
     }
@@ -491,21 +491,21 @@ class ARSceneViewController: UIViewController {
         TransitionAnimator.push(viewController: self.configurationViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromRight)
     }
     
-    // MARK: Up Swipe Gesture
-    func addUpSwipeGestureRecognizer() {
-        let upSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformUpSwipe(withGestureRecognizer:)))
-        upSwipeGestureRecognizer.direction = .up
-        self.arSceneView.addGestureRecognizer(upSwipeGestureRecognizer)
+    // MARK: Right Swipe Gesture
+    func addRightSwipeGestureRecognizer() {
+        let rightSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformRightSwipe(withGestureRecognizer:)))
+        rightSwipeGestureRecognizer.direction = .right
+        self.arSceneView.addGestureRecognizer(rightSwipeGestureRecognizer)
     }
     
-    @objc func didPerformUpSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
+    @objc func didPerformRightSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
         self.navigateToWaypointViewController()
     }
     
     func navigateToWaypointViewController() {
         guard let navigationController = navigationController else { return }
         self.waypointViewController.arSceneViewController = self
-        TransitionAnimator.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromBottom)
+        TransitionAnimator.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromLeft)
     }
     
     // MARK: Tap Gestures

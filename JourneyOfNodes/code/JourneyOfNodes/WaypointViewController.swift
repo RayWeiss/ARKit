@@ -8,10 +8,9 @@
 
 import UIKit
 
-class WaypointViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class WaypointViewController: UITableViewController {
 
     var arSceneViewController: ARSceneViewController!
-    @IBOutlet weak var waypointPicker: UIPickerView!
     let noWaypointsTitle = "No waypoints placed"
     var noWaypoints: Bool {
         get{
@@ -21,32 +20,28 @@ class WaypointViewController: UIViewController, UIPickerViewDataSource, UIPicker
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        addSwipeGesture()
-        setupWaypointPicker()
+        self.tableView.delegate = self
+        self.tableView.dataSource = self
+        self.addSwipeGesture()
+        
+        // Uncomment the following line to preserve selection between presentations
+//         self.clearsSelectionOnViewWillAppear = false
+        
+        // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+//         self.navigationItem.rightBarButtonItem = self.editButtonItem
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.updateWaypointPicker()
+        self.updateWaypointTableView()
     }
     
-    // MARK: Waypoint Picker
-    func setupWaypointPicker() {
-        let selectedWaypoint = self.arSceneViewController.waypointBeingTrackedID
-        guard let selectedWaypointIndex = self.arSceneViewController.waypoints.index(of: selectedWaypoint) else { return }
-        self.waypointPicker.selectRow(selectedWaypointIndex, inComponent: 0, animated: false)
-        self.updateWaypointPicker()
-    }
-    
-    func updateWaypointPicker() {
-        self.waypointPicker.reloadComponent(0)
-    }
-    
-    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+    // MARK: Table view data source
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
     
-    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if self.noWaypoints {
             return 1
         } else {
@@ -54,28 +49,76 @@ class WaypointViewController: UIViewController, UIPickerViewDataSource, UIPicker
         }
     }
     
-    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         if self.noWaypoints {
-            return self.noWaypointsTitle
+            cell.textLabel?.text = self.noWaypointsTitle
+//            cell.detailTextLabel?.text = self.noWaypointsTitle
         } else {
-            return self.arSceneViewController.waypoints[row]
+            cell.textLabel?.text = self.arSceneViewController.waypoints[indexPath.row]
+//            cell.detailTextLabel?.text = self.arSceneViewController.waypoints[indexPath.row]
         }
+        return cell
     }
     
-    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-        guard row < self.arSceneViewController.waypoints.count else { return }
-        self.arSceneViewController.waypointBeingTrackedID = self.arSceneViewController.waypoints[row]
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard indexPath.row < self.arSceneViewController.waypoints.count else { return }
+        self.arSceneViewController.waypointBeingTrackedID = self.arSceneViewController.waypoints[indexPath.row]
     }
+    
+    // MARK: Waypoint Table View
+    func updateWaypointTableView() {
+        self.tableView.reloadData()
+        let selectedWaypoint = self.arSceneViewController.waypointBeingTrackedID
+        guard let selectedWaypointIndex = self.arSceneViewController.waypoints.index(of: selectedWaypoint) else { return }
+        let ip = IndexPath(row: selectedWaypointIndex, section: 0)
+        self.tableView.selectRow(at: ip, animated: false, scrollPosition: .middle)
+    }
+    
+    /*
+     // Override to support conditional editing of the table view.
+     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the specified item to be editable.
+     return true
+     }
+     */
+    
+    /*
+     // Override to support editing the table view.
+     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+     if editingStyle == .delete {
+     // Delete the row from the data source
+     tableView.deleteRows(at: [indexPath], with: .fade)
+     } else if editingStyle == .insert {
+     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+     }
+     }
+     */
+    
+    /*
+     // Override to support rearranging the table view.
+     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+     
+     }
+     */
+    
+    /*
+     // Override to support conditional rearranging of the table view.
+     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+     // Return false if you do not want the item to be re-orderable.
+     return true
+     }
+     */
     
     // MARK: Swipe Gesture
     func addSwipeGesture() {
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(WaypointViewController.didSwipe(withGestureRecognizer:)))
-        swipeGestureRecognizer.direction = .down
+        swipeGestureRecognizer.direction = .left
         self.view.addGestureRecognizer(swipeGestureRecognizer)
     }
     
     @objc func didSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
         guard let navigationController = navigationController else { return }
-        TransitionAnimator.pop(offNavigationController: navigationController, withTransition: TransitionAnimator.fromTop)
+        TransitionAnimator.pop(offNavigationController: navigationController, withTransition: TransitionAnimator.fromRight)
     }
 }
