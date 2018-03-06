@@ -63,8 +63,17 @@ Week 8, Mar 6:
 		+Made arrow point to waypoint selected from picker
 		+Added transition animator to handle swipe gesture transitions
 
+Week 9, Mar 13:
+	Integration with CoreLocation
+	Save state of waypoints
+
 --------------------------------------------------------------------
 Future:
+	Recognize when a user is at a waypoint and switch to the next
+	Add ability to remove waypoints
+	Add ability to rename waypoints
+
+
 X	Remove constants from code and move to properties
 	Plane recognition and placement of plane objects
 	Double tap on object to move to closest plane
@@ -78,7 +87,5 @@ X	Remove constants from code and move to properties
 		extend SCNNode (can't use ARCamera)
 		possible helpers class
 
-Week 9, Mar 13:
-	Add ability to remove waypoints
-	...
+
 	
