@@ -110,18 +110,10 @@ class ARSceneViewController: UIViewController {
         layoutControlPanelView()
     }
     
-    // MARK: Configuration Functions
+    // MARK: AR Configurations
     func setupARConfiguration() {
         self.arConfiguration.planeDetection = .horizontal
 //        self.arConfiguration.worldAlignment = .gravityAndHeading
-    }
-    
-    func setupLocationManager() {
-        self.locationManager.delegate = self
-        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-//        self.locationManager.startUpdatingLocation()
-        self.locationManager.startUpdatingHeading()
-        self.locationManager.requestWhenInUseAuthorization()
     }
     
     func setupARSceneView() {
@@ -130,8 +122,8 @@ class ARSceneViewController: UIViewController {
         
         // handle scene configurations
         configureConstraints()
-        configureLighting()
-        configureDebugOptions()
+        configureARLighting()
+        configureARDebugOptions()
         
         // set delegate to self
         arSceneView.delegate = self
@@ -153,17 +145,26 @@ class ARSceneViewController: UIViewController {
         arSceneView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
     }
     
-    func configureLighting() {
+    func configureARLighting() {
         // true by default
         arSceneView.autoenablesDefaultLighting = true
         arSceneView.automaticallyUpdatesLighting = true
     }
     
-    func configureDebugOptions() {
+    func configureARDebugOptions() {
         // debug options on by default
         arSceneView.showsStatistics = true
         arSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
                                     ARSCNDebugOptions.showWorldOrigin]
+    }
+    
+    // MARK: Location Configuration
+    func setupLocationManager() {
+        self.locationManager.delegate = self
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        //        self.locationManager.startUpdatingLocation()
+        self.locationManager.startUpdatingHeading()
+        self.locationManager.requestWhenInUseAuthorization()
     }
     
     // MARK: Auxiliary View Controllers Configuration
