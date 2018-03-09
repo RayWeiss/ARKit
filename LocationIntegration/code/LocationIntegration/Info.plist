@@ -26,6 +26,8 @@
 	<string>For augmented reality</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>For direction services</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>For location services</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

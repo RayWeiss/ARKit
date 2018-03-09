@@ -16,12 +16,14 @@ class ARSceneViewController: UIViewController {
     var arConfiguration = ARWorldTrackingConfiguration()
     let locationManager = CLLocationManager()
     var configurationViewController: ConfigurationViewController!
+    var persistenceViewController: PersistenceViewController!
     var waypointViewController: WaypointViewController!
     
     // MARK: Storyboard Properties
     let mainStoryboardName = "Main"
     let configurationViewControllerStoryboardID = "configurationViewController"
     let waypointViewControllerStoryboardID = "waypointViewController"
+    let persistenceViewControllerStoryboardID = "persistenceViewController"
     
     // MARK: Control Panel Properties
     let controlPanelViewID = "controlPanelView"
@@ -84,7 +86,7 @@ class ARSceneViewController: UIViewController {
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-//        setupLocationManager()
+        setupLocationManager()
         setupARConfiguration()
         self.setupAuxiliaryViewControllers()
         setupARSceneView()
@@ -158,19 +160,20 @@ class ARSceneViewController: UIViewController {
                                     ARSCNDebugOptions.showWorldOrigin]
     }
     
-    // MARK: Location Configuration
+    // MARK: Location Manager Configuration
     func setupLocationManager() {
         self.locationManager.delegate = self
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        //        self.locationManager.startUpdatingLocation()
-        self.locationManager.startUpdatingHeading()
         self.locationManager.requestWhenInUseAuthorization()
+        self.locationManager.startUpdatingLocation()
+//        self.locationManager.startUpdatingHeading()
     }
     
     // MARK: Auxiliary View Controllers Configuration
     func setupAuxiliaryViewControllers() {
         self.setupConfigurationViewController()
         self.setupwaypointViewController()
+        self.setupPersistenceViewController()
     }
     
     func setupConfigurationViewController() {
@@ -183,6 +186,12 @@ class ARSceneViewController: UIViewController {
         let sotryboard = UIStoryboard(name: self.mainStoryboardName, bundle: nil)
         self.waypointViewController = sotryboard.instantiateViewController(withIdentifier: self.waypointViewControllerStoryboardID) as! WaypointViewController
         self.waypointViewController.arSceneViewController = self
+    }
+    
+    func setupPersistenceViewController() {
+        let sotryboard = UIStoryboard(name: self.mainStoryboardName, bundle: nil)
+        self.persistenceViewController = sotryboard.instantiateViewController(withIdentifier: self.persistenceViewControllerStoryboardID) as! PersistenceViewController
+        self.persistenceViewController.arSceneViewController = self
     }
     
     // MARK: Control Panel View Configuration
@@ -471,6 +480,7 @@ class ARSceneViewController: UIViewController {
     func addGestureRecognizersToSceneView() {
         addLeftSwipeGestureRecognizer()
         addRightSwipeGestureRecognizer()
+        addUpSwipeGestureRecognizer()
         addTapGestureRecognizers()
         addPinchGestureRecognizer()
     }
@@ -507,6 +517,23 @@ class ARSceneViewController: UIViewController {
         guard let navigationController = navigationController else { return }
         self.waypointViewController.arSceneViewController = self
         TransitionAnimator.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromLeft)
+    }
+    
+    // MARK: Up Swipe Gesture
+    func addUpSwipeGestureRecognizer() {
+        let upSwipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(ARSceneViewController.didPerformUpSwipe(withGestureRecognizer:)))
+        upSwipeGestureRecognizer.direction = .up
+        self.arSceneView.addGestureRecognizer(upSwipeGestureRecognizer)
+    }
+    
+    @objc func didPerformUpSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
+        self.navigateToPersistenceViewController()
+    }
+    
+    func navigateToPersistenceViewController() {
+        guard let navigationController = navigationController else { return }
+        self.persistenceViewController.arSceneViewController = self
+        TransitionAnimator.push(viewController: self.persistenceViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromBottom)
     }
     
     // MARK: Tap Gestures
@@ -637,7 +664,7 @@ class ARSceneViewController: UIViewController {
     
 }
 
-// MARK: Delegate Methods Extension
+// MARK: AR Session Delegate Extension
 extension ARSceneViewController: ARSessionDelegate {
     // handle frame updates
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
@@ -645,6 +672,7 @@ extension ARSceneViewController: ARSessionDelegate {
     }
 }
 
+// MARK: AR Scene View Delegate Extension
 extension ARSceneViewController: ARSCNViewDelegate {
     // handle session failure
     func session(_ session: ARSession, didFailWithError error: Error) {
@@ -683,8 +711,20 @@ extension ARSceneViewController: ARSCNViewDelegate {
     
 }
 
+// MARK: Location Manager Delegate Extention
 extension ARSceneViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         print(newHeading.trueHeading)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let lastLocation = locations.last else { return }
+        if lastLocation.horizontalAccuracy >= 10.0 {
+            print("waiting on more accurate location")
+        } else {
+            print("Current Accuracy: \(lastLocation.horizontalAccuracy)")
+            print("Current Location: \(lastLocation.coordinate)")
+        }
+        
     }
 }

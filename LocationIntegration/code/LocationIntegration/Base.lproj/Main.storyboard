@@ -13,7 +13,7 @@
         <!--Scene View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ARSceneViewController" customModule="JourneyOfNodes" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ARSceneViewController" customModule="LocationIntegration" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -27,10 +27,25 @@
             </objects>
             <point key="canvasLocation" x="140" y="134"/>
         </scene>
+        <!--Persistence View Controller-->
+        <scene sceneID="HOd-9p-xzD">
+            <objects>
+                <viewController storyboardIdentifier="persistenceViewController" id="0pf-t8-od8" customClass="PersistenceViewController" customModule="LocationIntegration" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Vid-9y-ews">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="9KD-v1-8aW"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bC7-DU-gBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140" y="860"/>
+        </scene>
         <!--Waypoint View Controller-->
         <scene sceneID="nkp-m4-KjV">
             <objects>
-                <tableViewController storyboardIdentifier="waypointViewController" id="ifc-5j-GGf" customClass="WaypointViewController" customModule="JourneyOfNodes" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="waypointViewController" id="ifc-5j-GGf" customClass="WaypointViewController" customModule="LocationIntegration" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="STw-SU-cLr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -53,12 +68,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HHF-fC-Mcu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="140" y="833"/>
+            <point key="canvasLocation" x="-650" y="134"/>
         </scene>
         <!--Configuration View Controller-->
         <scene sceneID="96W-Q4-Gy5">
             <objects>
-                <viewController storyboardIdentifier="configurationViewController" id="ODl-Ld-Tk4" customClass="ConfigurationViewController" customModule="JourneyOfNodes" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="configurationViewController" id="ODl-Ld-Tk4" customClass="ConfigurationViewController" customModule="LocationIntegration" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oPS-WZ-h7g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -142,7 +157,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="18Z-ke-12r" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-630" y="134"/>
+            <point key="canvasLocation" x="140" y="-618"/>
         </scene>
     </scenes>
 </document>
