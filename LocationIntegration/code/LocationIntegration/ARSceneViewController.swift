@@ -9,9 +9,7 @@
 import ARKit
 import CoreLocation
 
-class ARSceneViewController: UIViewController {
-    @IBOutlet weak var alertView: UIVisualEffectView!
-    
+class ARSceneViewController: UIViewController {    
     // MARK: AR Properties
     var arSceneView = ARSCNView()
     var arConfiguration = ARWorldTrackingConfiguration()
@@ -681,7 +679,7 @@ extension ARSceneViewController: ARSCNViewDelegate {
 // MARK: Location Manager Delegate Extention
 extension ARSceneViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        if newHeading.headingAccuracy >= 20.0 && newHeading.headingAccuracy > 0.0 {
+        if newHeading.headingAccuracy >= 25.0 && newHeading.headingAccuracy > 0.0 {
             print("waiting on more accurate heading. current: \(newHeading.headingAccuracy)")
         } else {
             print("True Heading: \(newHeading.trueHeading)")
