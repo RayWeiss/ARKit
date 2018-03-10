@@ -10,20 +10,25 @@ import ARKit
 import CoreLocation
 
 class ARSceneViewController: UIViewController {
+    @IBOutlet weak var alertView: UIVisualEffectView!
     
-    // MARK: ARSceneViewController Properties
+    // MARK: AR Properties
     var arSceneView = ARSCNView()
     var arConfiguration = ARWorldTrackingConfiguration()
-    let locationManager = CLLocationManager()
+    
+    // MARK: Auxiliary View Controllers Properties
     var configurationViewController: ConfigurationViewController!
     var persistenceViewController: PersistenceViewController!
     var waypointViewController: WaypointViewController!
-    
+
     // MARK: Storyboard Properties
     let mainStoryboardName = "Main"
     let configurationViewControllerStoryboardID = "configurationViewController"
     let waypointViewControllerStoryboardID = "waypointViewController"
     let persistenceViewControllerStoryboardID = "persistenceViewController"
+    
+    // MARK: Location Manager Properties
+    let locationManager = CLLocationManager()
     
     // MARK: Control Panel Properties
     let controlPanelViewID = "controlPanelView"
@@ -58,6 +63,11 @@ class ARSceneViewController: UIViewController {
     let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
                                               "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
     
+    // MARK: Gravity Properties
+    var gravityIsOn = false
+    let standardGravity = SCNVector3(0, -9.8, 0)
+    let noGravity = SCNVector3(0, 0, 0)
+    
     // MARK: Waypoint Properties
     var waypointCount = 0
     let baseWaypointID = "waypoint"
@@ -78,28 +88,18 @@ class ARSceneViewController: UIViewController {
         }
     }
     
-    // MARK: Gravity Properties
-    var gravityIsOn = false
-    let standardGravity = SCNVector3(0, -9.8, 0)
-    let noGravity = SCNVector3(0, 0, 0)
-    
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupLocationManager()
-        setupARConfiguration()
+        self.setupLocationManager()
         self.setupAuxiliaryViewControllers()
-        setupARSceneView()
-        setupARSession()
-        addControlPanelView()
-        setGravity()
-//        addNorthmarker()
-//        addPointer()
+        self.setupAllARConfigurations()
+        self.addControlPanelView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        arSceneView.session.run(self.arConfiguration)
+        self.runARSession()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -109,10 +109,21 @@ class ARSceneViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        layoutControlPanelView()
+        self.layoutControlPanelView()
     }
     
     // MARK: AR Configurations
+    func runARSession() {
+        self.arSceneView.session.run(self.arConfiguration)
+    }
+    
+    func setupAllARConfigurations() {
+        self.setupARConfiguration()
+        self.setupARSceneView()
+        self.setupARSession()
+        self.setGravity()
+    }
+    
     func setupARConfiguration() {
         self.arConfiguration.planeDetection = .horizontal
         self.arConfiguration.worldAlignment = .gravityAndHeading
@@ -123,15 +134,15 @@ class ARSceneViewController: UIViewController {
         self.view.addSubview(arSceneView)
         
         // handle scene configurations
-        configureConstraints()
-        configureARLighting()
-        configureARDebugOptions()
+        self.configureConstraints()
+        self.configureARLighting()
+        self.configureARDebugOptions()
         
         // set delegate to self
-        arSceneView.delegate = self
+        self.arSceneView.delegate = self
         
         // add gesture recognizers
-        addGestureRecognizersToSceneView()
+        self.addGestureRecognizersToARSceneView()
     }
     
     func setupARSession() {
@@ -140,23 +151,23 @@ class ARSceneViewController: UIViewController {
     
     func configureConstraints() {
         // make AR scene fullscreen
-        arSceneView.translatesAutoresizingMaskIntoConstraints = false
-        arSceneView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        arSceneView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        arSceneView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        arSceneView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
+        self.arSceneView.translatesAutoresizingMaskIntoConstraints = false
+        self.arSceneView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
+        self.arSceneView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
+        self.arSceneView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
+        self.arSceneView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
     }
     
     func configureARLighting() {
         // true by default
-        arSceneView.autoenablesDefaultLighting = true
-        arSceneView.automaticallyUpdatesLighting = true
+        self.arSceneView.autoenablesDefaultLighting = true
+        self.arSceneView.automaticallyUpdatesLighting = true
     }
     
     func configureARDebugOptions() {
         // debug options on by default
-        arSceneView.showsStatistics = true
-        arSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
+        self.arSceneView.showsStatistics = true
+        self.arSceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints,
                                     ARSCNDebugOptions.showWorldOrigin]
     }
     
@@ -455,7 +466,7 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Gestures
-    func addGestureRecognizersToSceneView() {
+    func addGestureRecognizersToARSceneView() {
         addLeftSwipeGestureRecognizer()
         addRightSwipeGestureRecognizer()
         addUpSwipeGestureRecognizer()
@@ -627,18 +638,6 @@ class ARSceneViewController: UIViewController {
             handleShake()
         }
     }
-    
-//    func addNorthmarker() {
-//        let northMarkerShape = SCNSphere(radius: 0.01)
-//        let northMarkerNode = SCNNode()
-//        northMarkerNode.geometry = northMarkerShape
-//        northMarkerNode.geometry = northMarkerNode.geometry!.copy() as? SCNGeometry
-//        northMarkerNode.geometry?.firstMaterial = northMarkerNode.geometry?.firstMaterial!.copy() as? SCNMaterial
-//        northMarkerNode.geometry?.firstMaterial!.diffuse.contents = UIColor.green
-//        northMarkerNode.name = "northMarker"
-//        northMarkerNode.position = SCNVector3(0, 0, -1)
-//        arSceneView.scene.rootNode.addChildNode(northMarkerNode)
-//    }
     
 }
 
