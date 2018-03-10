@@ -13,7 +13,7 @@ class ARSceneViewController: UIViewController {
     // MARK: AR Properties
     var arSceneView = ARSCNView()
     var arConfiguration = ARWorldTrackingConfiguration()
-    var arSceneStarted: Bool = false
+    var arSessionStarted: Bool = false
     
     // MARK: Auxiliary View Controllers Properties
     var configurationViewController: ConfigurationViewController!
@@ -30,6 +30,7 @@ class ARSceneViewController: UIViewController {
     let locationManager = CLLocationManager()
     let horizontalLocationAccuracyThreshold: Double = 10.0
     let headingAccuracyThreshold: Double = 20.0
+    var realWorldConversionMap: (CLLocationCoordinate2D, SCNVector3)?
     @IBOutlet weak var headingAccuracyLabel: UILabel!
     @IBOutlet weak var headingAlertView: UIView!
     @IBOutlet weak var headingAccuracyThresholdLabel: UILabel!
@@ -102,7 +103,6 @@ class ARSceneViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-//        self.runARSession()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -120,6 +120,7 @@ class ARSceneViewController: UIViewController {
     func runARSession() {
         self.view.addSubview(arSceneView)
         self.arSceneView.session.run(self.arConfiguration)
+        self.arSessionStarted = true
     }
     
     func setupAllARConfigurations() {
@@ -271,7 +272,6 @@ class ARSceneViewController: UIViewController {
         self.headingAlertView.isHidden = true
         self.runARSession()
         self.locationManager.stopUpdatingHeading()
-        print("pressed continue anyways")
     }
     
     // MARK: Object Interaction
@@ -710,12 +710,19 @@ extension ARSceneViewController: CLLocationManagerDelegate {
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard arSessionStarted else { return }
         guard let lastLocation = locations.last else { return }
-        if lastLocation.horizontalAccuracy > self.horizontalLocationAccuracyThreshold && lastLocation.horizontalAccuracy > 0.0 {
-            print("waiting on more accurate location. current \(lastLocation.horizontalAccuracy)")
-        } else {
-            print("Current Accuracy: \(lastLocation.horizontalAccuracy)")
-            print("Current Location: \(lastLocation.coordinate)")
-        }
+        guard lastLocation.horizontalAccuracy < self.horizontalLocationAccuracyThreshold && lastLocation.horizontalAccuracy > 0.0 else { return }
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        let cameraPosition = SCNVector3(currentFrame.camera.transform.columns.3.x, currentFrame.camera.transform.columns.3.y, currentFrame.camera.transform.columns.3.z)
+        self.realWorldConversionMap = (lastLocation.coordinate, cameraPosition)
+        self.locationManager.stopUpdatingLocation()
+//        print("RWMAP: \(self.realWorldConversionMap)")
+//        if lastLocation.horizontalAccuracy > self.horizontalLocationAccuracyThreshold && lastLocation.horizontalAccuracy > 0.0 {
+//            print("waiting on more accurate location. current \(lastLocation.horizontalAccuracy)")
+//        } else {
+//            print("Current Accuracy: \(lastLocation.horizontalAccuracy)")
+//            print("Current Location: \(lastLocation.coordinate)")
+//        }
     }
 }
