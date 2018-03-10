@@ -25,12 +25,18 @@ class PersistenceViewController: UIViewController {
     @IBAction func saveButtonTapped(_ sender: UIButton) {
         print("save tapped")
         guard let nodeToSave = self.arSceneViewController.getWaypointBeingTracked() else { return }
-        self.save(node: nodeToSave)
+        guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else { return }
+        
+        let rwNode = RealWorldNode(node: nodeToSave, lat: realWorldConversionMap.0.latitude, lon: realWorldConversionMap.0.longitude)
+        
+//        self.save(node: nodeToSave)
+        self.save(node: rwNode)
     }
     
     @IBAction func loadButtonTapped(_ sender: UIButton) {
         print("load tapped")
-        self.load()
+//        self.load()
+        self.loadRWNode()
     }
     
     // MARK: Save
@@ -54,6 +60,12 @@ class PersistenceViewController: UIViewController {
         if !success { print(">>> Archive failed.") }
     }
     
+    func save(node: RealWorldNode) {
+        let archiveFile = self.getArchiveURL().path!
+        let success = NSKeyedArchiver.archiveRootObject(node, toFile: archiveFile)
+        if !success { print(">>> Archive failed.") }
+    }
+    
     // MARK: Load
     func load() {
         let archiveFile = self.getArchiveURL().path!
@@ -68,6 +80,23 @@ class PersistenceViewController: UIViewController {
         let unArchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: archiveFile)
         let unArchivedNode = unArchivedData as? SCNNode
         guard let loadedNode = unArchivedNode else { print(">>> Unarchive failed."); return }
+        self.arSceneViewController.arSceneView.scene.rootNode.addChildNode(loadedNode)
+    }
+    
+    func loadRWNode() {
+        let archiveFile = self.getArchiveURL().path!
+        // The file will not exist the first time the app is run
+        if !FileManager().fileExists(atPath: archiveFile) {
+            print(">>> Does not exist: \(archiveFile)")
+            return
+        }
+        //Debugging
+        print(">>> archiveURL: \(archiveFile)")
+        // Get the archived data
+        let unArchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: archiveFile)
+        let unArchivedNode = unArchivedData as? RealWorldNode
+        guard let loadedNode = unArchivedNode else { print(">>> Unarchive failed."); return }
+        loadedNode.name = "rwnodeILoaded"
         self.arSceneViewController.arSceneView.scene.rootNode.addChildNode(loadedNode)
     }
     
