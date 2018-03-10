@@ -94,7 +94,6 @@ class ARSceneViewController: UIViewController {
         self.setupLocationManager()
         self.setupAuxiliaryViewControllers()
         self.setupAllARConfigurations()
-        self.addControlPanelView()
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -109,6 +108,7 @@ class ARSceneViewController: UIViewController {
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+        self.arSceneView.frame = self.view.bounds
         self.layoutControlPanelView()
     }
     
@@ -122,6 +122,8 @@ class ARSceneViewController: UIViewController {
         self.setupARSceneView()
         self.setupARSession()
         self.setGravity()
+        self.addControlPanelView()
+        self.view.addSubview(arSceneView)
     }
     
     func setupARConfiguration() {
@@ -130,11 +132,8 @@ class ARSceneViewController: UIViewController {
     }
     
     func setupARSceneView() {
-        // add as subview to view controller's view
-        self.view.addSubview(arSceneView)
-        
         // handle scene configurations
-        self.configureConstraints()
+        self.arSceneView.frame = self.view.bounds
         self.configureARLighting()
         self.configureARDebugOptions()
         
@@ -147,15 +146,6 @@ class ARSceneViewController: UIViewController {
     
     func setupARSession() {
         self.arSceneView.session.delegate = self
-    }
-    
-    func configureConstraints() {
-        // make AR scene fullscreen
-        self.arSceneView.translatesAutoresizingMaskIntoConstraints = false
-        self.arSceneView.topAnchor.constraint(equalTo: self.view.topAnchor).isActive = true
-        self.arSceneView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor).isActive = true
-        self.arSceneView.rightAnchor.constraint(equalTo: self.view.rightAnchor).isActive = true
-        self.arSceneView.leftAnchor.constraint(equalTo: self.view.leftAnchor).isActive = true
     }
     
     func configureARLighting() {
