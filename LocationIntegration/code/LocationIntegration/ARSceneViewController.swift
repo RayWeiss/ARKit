@@ -115,7 +115,7 @@ class ARSceneViewController: UIViewController {
     // MARK: AR Configurations
     func setupARConfiguration() {
         self.arConfiguration.planeDetection = .horizontal
-//        self.arConfiguration.worldAlignment = .gravityAndHeading
+        self.arConfiguration.worldAlignment = .gravityAndHeading
     }
     
     func setupARSceneView() {
@@ -166,7 +166,7 @@ class ARSceneViewController: UIViewController {
         self.locationManager.desiredAccuracy = kCLLocationAccuracyBest
         self.locationManager.requestWhenInUseAuthorization()
         self.locationManager.startUpdatingLocation()
-//        self.locationManager.startUpdatingHeading()
+        self.locationManager.startUpdatingHeading()
     }
     
     // MARK: Auxiliary View Controllers Configuration
@@ -380,28 +380,6 @@ class ARSceneViewController: UIViewController {
         return self.arSceneView.scene.rootNode.childNode(withName: self.waypointBeingTrackedID, recursively: false)
     }
     
-    func calculateXZAngleBetweenPositions(_ a: SCNVector3, _ b: SCNVector3, angleMeasure measure: AngleMeasure) -> Float {
-        let deltaX = a.x - b.x
-        let deltaZ = a.z - b.z
-        var thetaDeg = atan(deltaZ / deltaX) * (180 / .pi)
-        
-        if deltaX < 0.0 && deltaZ > 0.0 {
-            thetaDeg = 180 + thetaDeg
-        } else if deltaX < 0.0 && deltaZ < 0.0 {
-            thetaDeg = 180 + thetaDeg
-        } else if deltaX > 0.0 && deltaZ < 0.0 {
-            thetaDeg = 360 + thetaDeg
-        }
-        
-        if case .degrees = measure {
-            return thetaDeg
-        } else if case .radians = measure {
-            return thetaDeg / (180 / .pi)
-        } else {
-            return 0.0
-        }
-    }
-    
     // MARK: Heading Arrow
     func getArrowSceneNode() -> SCNNode? {
         let name = self.headingArrowSceneFileName
@@ -452,7 +430,7 @@ class ARSceneViewController: UIViewController {
         guard let headingArrowNode = self.getHeadingArrowNodeInARScene() else { return }
         let nodePosition = SCNVector3(node.simdTransform.columns.3.x, node.simdTransform.columns.3.y, node.simdTransform.columns.3.z)
         let cameraPosition = SCNVector3(currentFrame.camera.transform.columns.3.x, currentFrame.camera.transform.columns.3.y, currentFrame.camera.transform.columns.3.z)
-        let theta = self.calculateXZAngleBetweenPositions(nodePosition, cameraPosition, angleMeasure: .radians)
+        let theta = MathHelper.calculateXZAngleBetweenPositions(nodePosition, cameraPosition, angleMeasure: .radians)
         headingArrowNode.rotation = SCNVector4(0.0, 1.0, 0.0, theta * -1)
     }
     
@@ -714,17 +692,21 @@ extension ARSceneViewController: ARSCNViewDelegate {
 // MARK: Location Manager Delegate Extention
 extension ARSceneViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        print(newHeading.trueHeading)
+        if newHeading.headingAccuracy >= 20.0 && newHeading.headingAccuracy > 0.0 {
+            print("waiting on more accurate heading. current: \(newHeading.headingAccuracy)")
+        } else {
+            print("True Heading: \(newHeading.trueHeading)")
+            print("Heading Accuracy: \(newHeading.headingAccuracy)")
+        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let lastLocation = locations.last else { return }
-        if lastLocation.horizontalAccuracy >= 10.0 {
-            print("waiting on more accurate location")
+        if lastLocation.horizontalAccuracy >= 10.0 && lastLocation.horizontalAccuracy > 0.0 {
+            print("waiting on more accurate location. current \(lastLocation.horizontalAccuracy)")
         } else {
             print("Current Accuracy: \(lastLocation.horizontalAccuracy)")
             print("Current Location: \(lastLocation.coordinate)")
         }
-        
     }
 }

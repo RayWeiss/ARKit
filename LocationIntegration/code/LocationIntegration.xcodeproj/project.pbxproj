@@ -17,6 +17,8 @@
 		715E027A203FA83E0037A5E2 /* AngleEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */; };
 		7192274F2037346100A4762D /* arrow.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7192274E2037346100A4762D /* arrow.scn */; };
 		71BC5279205332C3000E141F /* PersistenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC5278205332C3000E141F /* PersistenceViewController.swift */; };
+		71BC527B2054431B000E141F /* RealWorldNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC527A2054431B000E141F /* RealWorldNode.swift */; };
+		71BC527D205459DE000E141F /* MathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC527C205459DE000E141F /* MathHelper.swift */; };
 		71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F1201B696A005EC277 /* AppDelegate.swift */; };
 		71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F3201B696A005EC277 /* ARSceneViewController.swift */; };
 		71FE57F7201B696A005EC277 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71FE57F5201B696A005EC277 /* Main.storyboard */; };
@@ -36,6 +38,8 @@
 		715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleEnumeration.swift; sourceTree = "<group>"; };
 		7192274E2037346100A4762D /* arrow.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = arrow.scn; sourceTree = "<group>"; };
 		71BC5278205332C3000E141F /* PersistenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceViewController.swift; sourceTree = "<group>"; };
+		71BC527A2054431B000E141F /* RealWorldNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWorldNode.swift; sourceTree = "<group>"; };
+		71BC527C205459DE000E141F /* MathHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathHelper.swift; sourceTree = "<group>"; };
 		71FE57EE201B696A005EC277 /* LocationIntegration.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LocationIntegration.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71FE57F1201B696A005EC277 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		71FE57F3201B696A005EC277 /* ARSceneViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ARSceneViewController.swift; sourceTree = "<group>"; };
@@ -89,6 +93,8 @@
 				714DB0AA20278D2400C702DD /* 3D_objects */,
 				71FE57F1201B696A005EC277 /* AppDelegate.swift */,
 				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
+				71BC527C205459DE000E141F /* MathHelper.swift */,
+				71BC527A2054431B000E141F /* RealWorldNode.swift */,
 				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
 				71BC5278205332C3000E141F /* PersistenceViewController.swift */,
 				715BEBD320483DCF007AC79B /* WaypointViewController.swift */,
@@ -193,6 +199,8 @@
 				714DB0A22027580000C702DD /* UIColorExtension.swift in Sources */,
 				71FFB2E22027B9B600747450 /* SelectableNode.swift in Sources */,
 				711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */,
+				71BC527D205459DE000E141F /* MathHelper.swift in Sources */,
+				71BC527B2054431B000E141F /* RealWorldNode.swift in Sources */,
 				71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
