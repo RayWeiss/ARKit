@@ -9,10 +9,11 @@
 import ARKit
 import CoreLocation
 
-class ARSceneViewController: UIViewController {    
+class ARSceneViewController: UIViewController {
     // MARK: AR Properties
     var arSceneView = ARSCNView()
     var arConfiguration = ARWorldTrackingConfiguration()
+    var arSceneStarted: Bool = false
     
     // MARK: Auxiliary View Controllers Properties
     var configurationViewController: ConfigurationViewController!
@@ -27,6 +28,11 @@ class ARSceneViewController: UIViewController {
     
     // MARK: Location Manager Properties
     let locationManager = CLLocationManager()
+    let horizontalLocationAccuracyThreshold: Double = 10.0
+    let headingAccuracyThreshold: Double = 20.0
+    @IBOutlet weak var headingAccuracyLabel: UILabel!
+    @IBOutlet weak var headingAlertView: UIView!
+    @IBOutlet weak var headingAccuracyThresholdLabel: UILabel!
     
     // MARK: Control Panel Properties
     let controlPanelViewID = "controlPanelView"
@@ -96,7 +102,7 @@ class ARSceneViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        self.runARSession()
+//        self.runARSession()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -173,6 +179,7 @@ class ARSceneViewController: UIViewController {
         self.setupConfigurationViewController()
         self.setupwaypointViewController()
         self.setupPersistenceViewController()
+        self.headingAccuracyThresholdLabel.text = " < \(self.headingAccuracyThreshold)"
     }
     
     func setupConfigurationViewController() {
@@ -256,6 +263,14 @@ class ARSceneViewController: UIViewController {
                 buttonIndex += 1
             }
         }
+    }
+    
+    // MARK: Location Fucntions
+    
+    @IBAction func continueAnywaysPressed(_ sender: UIButton) {
+        self.headingAlertView.isHidden = true
+        self.runARSession()
+        print("pressed continue anyways")
     }
     
     // MARK: Object Interaction
@@ -679,17 +694,23 @@ extension ARSceneViewController: ARSCNViewDelegate {
 // MARK: Location Manager Delegate Extention
 extension ARSceneViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        if newHeading.headingAccuracy >= 25.0 && newHeading.headingAccuracy > 0.0 {
-            print("waiting on more accurate heading. current: \(newHeading.headingAccuracy)")
-        } else {
-            print("True Heading: \(newHeading.trueHeading)")
-            print("Heading Accuracy: \(newHeading.headingAccuracy)")
+        self.headingAccuracyLabel.text = String(newHeading.headingAccuracy)
+        if newHeading.headingAccuracy < self.headingAccuracyThreshold && newHeading.headingAccuracy > 0.0 {
+            self.headingAlertView.isHidden = true
+            self.runARSession()
+            self.locationManager.stopUpdatingHeading()
         }
+//        if newHeading.headingAccuracy > self.headingAccuracyThreshold && newHeading.headingAccuracy > 0.0 {
+//            print("waiting on more accurate heading. current: \(newHeading.headingAccuracy)")
+//        } else {
+//            print("True Heading: \(newHeading.trueHeading)")
+//            print("Heading Accuracy: \(newHeading.headingAccuracy)")
+//        }
     }
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let lastLocation = locations.last else { return }
-        if lastLocation.horizontalAccuracy >= 10.0 && lastLocation.horizontalAccuracy > 0.0 {
+        if lastLocation.horizontalAccuracy > self.horizontalLocationAccuracyThreshold && lastLocation.horizontalAccuracy > 0.0 {
             print("waiting on more accurate location. current \(lastLocation.horizontalAccuracy)")
         } else {
             print("Current Accuracy: \(lastLocation.horizontalAccuracy)")
