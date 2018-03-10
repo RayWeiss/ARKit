@@ -270,6 +270,7 @@ class ARSceneViewController: UIViewController {
     @IBAction func continueAnywaysPressed(_ sender: UIButton) {
         self.headingAlertView.isHidden = true
         self.runARSession()
+        self.locationManager.stopUpdatingHeading()
         print("pressed continue anyways")
     }
     
