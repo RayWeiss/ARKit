@@ -114,6 +114,7 @@ class ARSceneViewController: UIViewController {
     
     // MARK: AR Configurations
     func runARSession() {
+        self.view.addSubview(arSceneView)
         self.arSceneView.session.run(self.arConfiguration)
     }
     
@@ -123,7 +124,6 @@ class ARSceneViewController: UIViewController {
         self.setupARSession()
         self.setGravity()
         self.addControlPanelView()
-        self.view.addSubview(arSceneView)
     }
     
     func setupARConfiguration() {
