@@ -10,11 +10,13 @@ import SceneKit
 
 class MathHelper {
     static func metersPerDegreeLatitude(atDegreesLatitude latitude: Double) -> Double {
-        return 111132.92 - 559.82 * cos(2 * latitude) + 1.175 * cos(4 * latitude) - 0.0023 * cos(6 * latitude)
+        let rads = latitude * .pi / 180
+        return 111132.92 - 559.82 * cos(2 * rads) + 1.175 * cos(4 * rads) - 0.0023 * cos(6 * rads)
     }
     
     static func metersPerDegreeLongitude(atDegreesLatitude latitude: Double) -> Double {
-        return 111412.84 * cos(latitude) - 93.5 * cos(3 * latitude) + 0.118 * cos(5 * latitude)
+        let rads = latitude * .pi / 180
+        return 111412.84 * cos(rads) - 93.5 * cos(3 * rads) + 0.118 * cos(5 * rads)
     }
     
     static func calculateXZAngleBetweenPositions(_ a: SCNVector3, _ b: SCNVector3, angleMeasure measure: AngleMeasure) -> Float {

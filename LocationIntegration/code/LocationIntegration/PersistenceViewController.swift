@@ -28,9 +28,9 @@ class PersistenceViewController: UIViewController {
         guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else { return }
         
         let rwNode = RealWorldNode(node: nodeToSave, lat: realWorldConversionMap.0.latitude, lon: realWorldConversionMap.0.longitude)
-        
+        rwNode.setRealWorldPosition(fromPair: realWorldConversionMap)
 //        self.save(node: nodeToSave)
-        self.save(node: rwNode)
+        self.save(rwNode: rwNode)
     }
     
     @IBAction func loadButtonTapped(_ sender: UIButton) {
@@ -60,9 +60,9 @@ class PersistenceViewController: UIViewController {
         if !success { print(">>> Archive failed.") }
     }
     
-    func save(node: RealWorldNode) {
+    func save(rwNode: RealWorldNode) {
         let archiveFile = self.getArchiveURL().path!
-        let success = NSKeyedArchiver.archiveRootObject(node, toFile: archiveFile)
+        let success = NSKeyedArchiver.archiveRootObject(rwNode, toFile: archiveFile)
         if !success { print(">>> Archive failed.") }
     }
     
@@ -97,6 +97,8 @@ class PersistenceViewController: UIViewController {
         let unArchivedNode = unArchivedData as? RealWorldNode
         guard let loadedNode = unArchivedNode else { print(">>> Unarchive failed."); return }
         loadedNode.name = "rwnodeILoaded"
+        guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else { return }
+        loadedNode.setARPosition(fromPair: realWorldConversionMap)
         self.arSceneViewController.arSceneView.scene.rootNode.addChildNode(loadedNode)
     }
     

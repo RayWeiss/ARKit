@@ -78,7 +78,7 @@ class ARSceneViewController: UIViewController {
     let baseWaypointID = "waypoint"
     let waypointGeometry = SCNBox()
     let waypointColor = UIColor.cyan
-    let waypointScale = 0.05
+    let waypointScale = 1.0 //0.05
     var waypoints:[String] = []
     var waypointBeingTrackedID = ""
     
