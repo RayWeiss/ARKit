@@ -71,11 +71,18 @@ Week 9, Mar 13:
 		+Made ReadWorldNode encodable to save state
 		+Added map to store AR World Origin's coordinates in the real world
 
+Week 10, Mar 20:
+	Clean up and refactor persistence code
+	Add user alert for Save and Load functions
+	Add user info for location accuracy
+
 --------------------------------------------------------------------
 Future:
 	Recognize when a user is at a waypoint and switch to the next
 	Add ability to remove waypoints
 	Add ability to rename waypoints
+	MapKit for distanceFrom and atDegreesLatitude
+	Circle with 2D view of waypoints
 
 
 X	Remove constants from code and move to properties
