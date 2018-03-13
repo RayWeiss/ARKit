@@ -64,8 +64,12 @@ Week 8, Mar 6:
 		+Added transition animator to handle swipe gesture transitions
 
 Week 9, Mar 13:
-	Integration with CoreLocation
-	Save state of waypoints
+	LocationIntegration
+		+Set up location manager to wait for accurate heading before loading AR scene
+		+Set up location manager to update location until a threshold is reached
+		+Added RealWorldNode to store coordinates of nodes location in the real world
+		+Made ReadWorldNode encodable to save state
+		+Added map to store AR World Origin's coordinates in the real world
 
 --------------------------------------------------------------------
 Future:
