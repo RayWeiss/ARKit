@@ -1,5 +1,5 @@
 //
-//  TransitionAnimator.swift
+//  TransitionHelper.swift
 //  JourneyOfNodes
 //
 //  Created by Raymond Weiss on 3/1/18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransitionAnimator {
+class TransitionHelper {
     static fileprivate let animationDuration: CFTimeInterval = 0.30
     static fileprivate let timingFunction = CAMediaTimingFunction(name: kCAMediaTimingFunctionEaseInEaseOut)
     

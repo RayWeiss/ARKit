@@ -492,7 +492,7 @@ class ARSceneViewController: UIViewController {
     func navigateToConfigurationViewController() {
         guard let navigationController = navigationController else { return }
         self.configurationViewController.arSceneViewController = self
-        TransitionAnimator.push(viewController: self.configurationViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromRight)
+        TransitionHelper.push(viewController: self.configurationViewController, onNavigationController: navigationController, withTransition: TransitionHelper.fromRight)
     }
     
     // MARK: Right Swipe Gesture
@@ -509,7 +509,7 @@ class ARSceneViewController: UIViewController {
     func navigateToWaypointViewController() {
         guard let navigationController = navigationController else { return }
         self.waypointViewController.arSceneViewController = self
-        TransitionAnimator.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromLeft)
+        TransitionHelper.push(viewController: self.waypointViewController, onNavigationController: navigationController, withTransition: TransitionHelper.fromLeft)
     }
     
     // MARK: Up Swipe Gesture
@@ -526,7 +526,7 @@ class ARSceneViewController: UIViewController {
     func navigateToPersistenceViewController() {
         guard let navigationController = navigationController else { return }
         self.persistenceViewController.arSceneViewController = self
-        TransitionAnimator.push(viewController: self.persistenceViewController, onNavigationController: navigationController, withTransition: TransitionAnimator.fromBottom)
+        TransitionHelper.push(viewController: self.persistenceViewController, onNavigationController: navigationController, withTransition: TransitionHelper.fromBottom)
     }
     
     // MARK: Tap Gestures

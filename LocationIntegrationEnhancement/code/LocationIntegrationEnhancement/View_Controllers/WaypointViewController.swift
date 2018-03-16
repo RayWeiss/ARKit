@@ -114,6 +114,6 @@ class WaypointViewController: UITableViewController {
     
     @objc func didSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
         guard let navigationController = navigationController else { return }
-        TransitionAnimator.pop(offNavigationController: navigationController, withTransition: TransitionAnimator.fromRight)
+        TransitionHelper.pop(offNavigationController: navigationController, withTransition: TransitionHelper.fromRight)
     }
 }

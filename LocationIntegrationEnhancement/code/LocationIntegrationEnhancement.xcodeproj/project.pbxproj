@@ -15,7 +15,7 @@
 		714DB0AD20278D5900C702DD /* paperPlane.scn in Resources */ = {isa = PBXBuildFile; fileRef = 714DB0AB20278D5900C702DD /* paperPlane.scn */; };
 		714DB0AE20278D5900C702DD /* car.dae in Resources */ = {isa = PBXBuildFile; fileRef = 714DB0AC20278D5900C702DD /* car.dae */; };
 		715BEBD420483DCF007AC79B /* WaypointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715BEBD320483DCF007AC79B /* WaypointViewController.swift */; };
-		715BEBD820484C87007AC79B /* TransitionAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715BEBD720484C87007AC79B /* TransitionAnimator.swift */; };
+		715BEBD820484C87007AC79B /* TransitionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715BEBD720484C87007AC79B /* TransitionHelper.swift */; };
 		715E027A203FA83E0037A5E2 /* AngleEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */; };
 		7192274F2037346100A4762D /* arrow.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7192274E2037346100A4762D /* arrow.scn */; };
 		71BC5279205332C3000E141F /* PersistenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC5278205332C3000E141F /* PersistenceViewController.swift */; };
@@ -38,7 +38,7 @@
 		714DB0AB20278D5900C702DD /* paperPlane.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = paperPlane.scn; sourceTree = "<group>"; };
 		714DB0AC20278D5900C702DD /* car.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = car.dae; sourceTree = "<group>"; };
 		715BEBD320483DCF007AC79B /* WaypointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointViewController.swift; sourceTree = "<group>"; };
-		715BEBD720484C87007AC79B /* TransitionAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionAnimator.swift; sourceTree = "<group>"; };
+		715BEBD720484C87007AC79B /* TransitionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionHelper.swift; sourceTree = "<group>"; };
 		715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleEnumeration.swift; sourceTree = "<group>"; };
 		7192274E2037346100A4762D /* arrow.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = arrow.scn; sourceTree = "<group>"; };
 		71BC5278205332C3000E141F /* PersistenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceViewController.swift; sourceTree = "<group>"; };
@@ -90,7 +90,7 @@
 			children = (
 				7137A5B0205C0EFC0067E2A2 /* AlertHelper.swift */,
 				71BC527C205459DE000E141F /* MathHelper.swift */,
-				715BEBD720484C87007AC79B /* TransitionAnimator.swift */,
+				715BEBD720484C87007AC79B /* TransitionHelper.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -231,7 +231,7 @@
 				71BC5279205332C3000E141F /* PersistenceViewController.swift in Sources */,
 				715E027A203FA83E0037A5E2 /* AngleEnumeration.swift in Sources */,
 				715BEBD420483DCF007AC79B /* WaypointViewController.swift in Sources */,
-				715BEBD820484C87007AC79B /* TransitionAnimator.swift in Sources */,
+				715BEBD820484C87007AC79B /* TransitionHelper.swift in Sources */,
 				7137A5B1205C0EFC0067E2A2 /* AlertHelper.swift in Sources */,
 				71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */,
 				7137A5AF205BE7C70067E2A2 /* DateExtension.swift in Sources */,

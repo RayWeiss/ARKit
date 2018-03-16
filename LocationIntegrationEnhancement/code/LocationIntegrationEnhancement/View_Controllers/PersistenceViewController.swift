@@ -102,6 +102,6 @@ class PersistenceViewController: UIViewController {
     
     @objc func didSwipe(withGestureRecognizer recognizer: UISwipeGestureRecognizer) {
         guard let navigationController = navigationController else { return }
-        TransitionAnimator.pop(offNavigationController: navigationController, withTransition: TransitionAnimator.fromTop)
+        TransitionHelper.pop(offNavigationController: navigationController, withTransition: TransitionHelper.fromTop)
     }
 }
