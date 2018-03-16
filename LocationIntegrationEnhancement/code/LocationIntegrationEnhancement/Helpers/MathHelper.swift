@@ -42,3 +42,8 @@ class MathHelper {
     }
     
 }
+
+enum AngleMeasure {
+    case radians
+    case degrees
+}

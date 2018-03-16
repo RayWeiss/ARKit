@@ -16,7 +16,6 @@
 		714DB0AE20278D5900C702DD /* car.dae in Resources */ = {isa = PBXBuildFile; fileRef = 714DB0AC20278D5900C702DD /* car.dae */; };
 		715BEBD420483DCF007AC79B /* WaypointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715BEBD320483DCF007AC79B /* WaypointViewController.swift */; };
 		715BEBD820484C87007AC79B /* TransitionHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715BEBD720484C87007AC79B /* TransitionHelper.swift */; };
-		715E027A203FA83E0037A5E2 /* AngleEnumeration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */; };
 		7192274F2037346100A4762D /* arrow.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7192274E2037346100A4762D /* arrow.scn */; };
 		71BC5279205332C3000E141F /* PersistenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC5278205332C3000E141F /* PersistenceViewController.swift */; };
 		71BC527B2054431B000E141F /* RealWorldNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC527A2054431B000E141F /* RealWorldNode.swift */; };
@@ -39,7 +38,6 @@
 		714DB0AC20278D5900C702DD /* car.dae */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml.dae; path = car.dae; sourceTree = "<group>"; };
 		715BEBD320483DCF007AC79B /* WaypointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointViewController.swift; sourceTree = "<group>"; };
 		715BEBD720484C87007AC79B /* TransitionHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransitionHelper.swift; sourceTree = "<group>"; };
-		715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AngleEnumeration.swift; sourceTree = "<group>"; };
 		7192274E2037346100A4762D /* arrow.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = arrow.scn; sourceTree = "<group>"; };
 		71BC5278205332C3000E141F /* PersistenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceViewController.swift; sourceTree = "<group>"; };
 		71BC527A2054431B000E141F /* RealWorldNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWorldNode.swift; sourceTree = "<group>"; };
@@ -140,7 +138,6 @@
 				7137A5B4205C29790067E2A2 /* Helpers */,
 				7137A5B5205C298B0067E2A2 /* Extensions */,
 				71FE57F1201B696A005EC277 /* AppDelegate.swift */,
-				715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */,
 				71FE57F5201B696A005EC277 /* Main.storyboard */,
 				71FE57F8201B696A005EC277 /* Assets.xcassets */,
 				71FE57FA201B696A005EC277 /* LaunchScreen.storyboard */,
@@ -229,7 +226,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				71BC5279205332C3000E141F /* PersistenceViewController.swift in Sources */,
-				715E027A203FA83E0037A5E2 /* AngleEnumeration.swift in Sources */,
 				715BEBD420483DCF007AC79B /* WaypointViewController.swift in Sources */,
 				715BEBD820484C87007AC79B /* TransitionHelper.swift in Sources */,
 				7137A5B1205C0EFC0067E2A2 /* AlertHelper.swift in Sources */,
