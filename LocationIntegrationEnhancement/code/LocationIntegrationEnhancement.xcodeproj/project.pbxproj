@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */; };
 		7137A5AF205BE7C70067E2A2 /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137A5AE205BE7C70067E2A2 /* DateExtension.swift */; };
+		7137A5B1205C0EFC0067E2A2 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7137A5B0205C0EFC0067E2A2 /* AlertHelper.swift */; };
 		714DB0A020266F2100C702DD /* ConfigurationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DB09F20266F2100C702DD /* ConfigurationViewController.swift */; };
 		714DB0A22027580000C702DD /* UIColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 714DB0A12027580000C702DD /* UIColorExtension.swift */; };
 		714DB0AD20278D5900C702DD /* paperPlane.scn in Resources */ = {isa = PBXBuildFile; fileRef = 714DB0AB20278D5900C702DD /* paperPlane.scn */; };
@@ -31,6 +32,7 @@
 /* Begin PBXFileReference section */
 		711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCNNodeExtension.swift; sourceTree = "<group>"; };
 		7137A5AE205BE7C70067E2A2 /* DateExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
+		7137A5B0205C0EFC0067E2A2 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		714DB09F20266F2100C702DD /* ConfigurationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfigurationViewController.swift; sourceTree = "<group>"; };
 		714DB0A12027580000C702DD /* UIColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtension.swift; sourceTree = "<group>"; };
 		714DB0AB20278D5900C702DD /* paperPlane.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = paperPlane.scn; sourceTree = "<group>"; };
@@ -95,16 +97,17 @@
 				714DB0AA20278D2400C702DD /* 3D_objects */,
 				71FE57F1201B696A005EC277 /* AppDelegate.swift */,
 				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
-				71BC527C205459DE000E141F /* MathHelper.swift */,
-				71BC527A2054431B000E141F /* RealWorldNode.swift */,
 				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
-				71BC5278205332C3000E141F /* PersistenceViewController.swift */,
-				7137A5AE205BE7C70067E2A2 /* DateExtension.swift */,
 				715BEBD320483DCF007AC79B /* WaypointViewController.swift */,
-				715BEBD720484C87007AC79B /* TransitionAnimator.swift */,
+				71BC5278205332C3000E141F /* PersistenceViewController.swift */,
 				71FFB2E12027B9B600747450 /* SelectableNode.swift */,
+				71BC527A2054431B000E141F /* RealWorldNode.swift */,
+				7137A5B0205C0EFC0067E2A2 /* AlertHelper.swift */,
+				71BC527C205459DE000E141F /* MathHelper.swift */,
+				715BEBD720484C87007AC79B /* TransitionAnimator.swift */,
 				711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */,
 				714DB0A12027580000C702DD /* UIColorExtension.swift */,
+				7137A5AE205BE7C70067E2A2 /* DateExtension.swift */,
 				715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */,
 				71FE57F5201B696A005EC277 /* Main.storyboard */,
 				71FE57F8201B696A005EC277 /* Assets.xcassets */,
@@ -197,6 +200,7 @@
 				715E027A203FA83E0037A5E2 /* AngleEnumeration.swift in Sources */,
 				715BEBD420483DCF007AC79B /* WaypointViewController.swift in Sources */,
 				715BEBD820484C87007AC79B /* TransitionAnimator.swift in Sources */,
+				7137A5B1205C0EFC0067E2A2 /* AlertHelper.swift in Sources */,
 				71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */,
 				7137A5AF205BE7C70067E2A2 /* DateExtension.swift in Sources */,
 				714DB0A020266F2100C702DD /* ConfigurationViewController.swift in Sources */,
