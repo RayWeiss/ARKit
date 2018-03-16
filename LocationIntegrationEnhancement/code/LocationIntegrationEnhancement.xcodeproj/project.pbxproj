@@ -65,6 +65,46 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		7137A5B2205C293A0067E2A2 /* View_Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
+				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
+				715BEBD320483DCF007AC79B /* WaypointViewController.swift */,
+				71BC5278205332C3000E141F /* PersistenceViewController.swift */,
+			);
+			path = View_Controllers;
+			sourceTree = "<group>";
+		};
+		7137A5B3205C296C0067E2A2 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				71FFB2E12027B9B600747450 /* SelectableNode.swift */,
+				71BC527A2054431B000E141F /* RealWorldNode.swift */,
+			);
+			path = Nodes;
+			sourceTree = "<group>";
+		};
+		7137A5B4205C29790067E2A2 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7137A5B0205C0EFC0067E2A2 /* AlertHelper.swift */,
+				71BC527C205459DE000E141F /* MathHelper.swift */,
+				715BEBD720484C87007AC79B /* TransitionAnimator.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		7137A5B5205C298B0067E2A2 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7137A5AE205BE7C70067E2A2 /* DateExtension.swift */,
+				714DB0A12027580000C702DD /* UIColorExtension.swift */,
+				711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		714DB0AA20278D2400C702DD /* 3D_objects */ = {
 			isa = PBXGroup;
 			children = (
@@ -95,19 +135,11 @@
 			isa = PBXGroup;
 			children = (
 				714DB0AA20278D2400C702DD /* 3D_objects */,
+				7137A5B2205C293A0067E2A2 /* View_Controllers */,
+				7137A5B3205C296C0067E2A2 /* Nodes */,
+				7137A5B4205C29790067E2A2 /* Helpers */,
+				7137A5B5205C298B0067E2A2 /* Extensions */,
 				71FE57F1201B696A005EC277 /* AppDelegate.swift */,
-				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
-				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
-				715BEBD320483DCF007AC79B /* WaypointViewController.swift */,
-				71BC5278205332C3000E141F /* PersistenceViewController.swift */,
-				71FFB2E12027B9B600747450 /* SelectableNode.swift */,
-				71BC527A2054431B000E141F /* RealWorldNode.swift */,
-				7137A5B0205C0EFC0067E2A2 /* AlertHelper.swift */,
-				71BC527C205459DE000E141F /* MathHelper.swift */,
-				715BEBD720484C87007AC79B /* TransitionAnimator.swift */,
-				711127DC2025FC9200DC1E4E /* SCNNodeExtension.swift */,
-				714DB0A12027580000C702DD /* UIColorExtension.swift */,
-				7137A5AE205BE7C70067E2A2 /* DateExtension.swift */,
 				715E0279203FA83E0037A5E2 /* AngleEnumeration.swift */,
 				71FE57F5201B696A005EC277 /* Main.storyboard */,
 				71FE57F8201B696A005EC277 /* Assets.xcassets */,
