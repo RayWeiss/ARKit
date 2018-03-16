@@ -77,9 +77,13 @@ class PersistenceViewController: UIViewController {
             AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't load data at a RealWorldNode.", onViewController: self)
             return
         }
-        unarchivedRWNode.name = "rwnodeILoaded"
+//        unarchivedRWNode.name = "rwnodeILoaded"
         unarchivedRWNode.setARPosition(fromPair: realWorldConversionMap)
         self.arSceneViewController.arSceneView.scene.rootNode.addChildNode(unarchivedRWNode)
+        if let nodeName = unarchivedRWNode.name {
+            self.arSceneViewController.waypoints.append(nodeName)
+            self.arSceneViewController.waypointBeingTrackedID = nodeName
+        }
         AlertHelper.alert(withTitle: "Success", andMessage: "Loaded node.", onViewController: self)
     }
     

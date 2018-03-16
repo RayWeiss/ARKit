@@ -372,7 +372,7 @@ class ARSceneViewController: UIViewController {
     
     // MARK: Waypoint Objects
     func getNextWaypointID() -> String {
-        let id = self.baseWaypointID + String(self.waypointCount)
+        let id = self.baseWaypointID + String(self.waypointCount) + "_" + Date().getCurrentDatetimeString()
         self.waypointCount += 1
         return id
     }

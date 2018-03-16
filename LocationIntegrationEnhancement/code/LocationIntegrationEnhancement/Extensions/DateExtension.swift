@@ -11,7 +11,7 @@ import Foundation
 extension Date {
     func getCurrentDatetimeString() -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "MM/dd/yyyy_HH:ss:mm"
+        formatter.dateFormat = "HH:mm:ss_MM/dd/yyyy"
         return formatter.string(from: self)
     }
 }

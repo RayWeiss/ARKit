@@ -51,7 +51,7 @@ class WaypointViewController: UITableViewController {
         if self.noWaypoints {
             cell.textLabel?.text = self.noWaypointsTitle
         } else {
-            cell.textLabel?.text = self.arSceneViewController.waypoints[indexPath.row]
+            cell.textLabel?.text = self.arSceneViewController.waypoints[indexPath.row].replacingOccurrences(of: "_", with: "\t")
         }
         return cell
     }

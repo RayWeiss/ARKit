@@ -24,6 +24,7 @@ class RealWorldNode: SCNNode {
         self.geometry = node.geometry
         self.scale = node.scale
         self.position = node.position
+        self.name = node.name
     }
     
     public init(node: SCNNode) {
@@ -31,6 +32,7 @@ class RealWorldNode: SCNNode {
         self.geometry = node.geometry
         self.scale = node.scale
         self.position = node.position
+        self.name = node.name
     }
     
     override func encode(with aCoder: NSCoder) {
