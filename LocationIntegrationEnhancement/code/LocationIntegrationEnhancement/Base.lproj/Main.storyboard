@@ -13,7 +13,7 @@
         <!--Scene View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ARSceneViewController" customModule="LocationIntegration" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ARSceneViewController" customModule="LocationIntegrationEnhancement" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -100,7 +100,7 @@
         <!--Persistence View Controller-->
         <scene sceneID="HOd-9p-xzD">
             <objects>
-                <viewController storyboardIdentifier="persistenceViewController" id="0pf-t8-od8" customClass="PersistenceViewController" customModule="LocationIntegration" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="persistenceViewController" id="0pf-t8-od8" customClass="PersistenceViewController" customModule="LocationIntegrationEnhancement" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Vid-9y-ews">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -121,10 +121,42 @@
                                     <action selector="saveButtonTapped:" destination="0pf-t8-od8" eventType="touchUpInside" id="dV0-4I-jIX"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Current Location Accuracy:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VSP-Hd-3m2">
+                                <rect key="frame" x="16" y="108" width="209" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Location Accuracy Threshold:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="INt-8m-o76">
+                                <rect key="frame" x="16" y="174" width="228" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qk9-Mm-V4s">
+                                <rect key="frame" x="317" y="108" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xS0-hL-kJB">
+                                <rect key="frame" x="259" y="174" width="100" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="9KD-v1-8aW"/>
                     </view>
+                    <connections>
+                        <outlet property="locationAccuracyLabel" destination="qk9-Mm-V4s" id="Smi-1E-uvc"/>
+                        <outlet property="locationAccuracyThresholdLabel" destination="xS0-hL-kJB" id="fHC-iq-SIc"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="bC7-DU-gBc" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -133,7 +165,7 @@
         <!--Waypoint View Controller-->
         <scene sceneID="nkp-m4-KjV">
             <objects>
-                <tableViewController storyboardIdentifier="waypointViewController" id="ifc-5j-GGf" customClass="WaypointViewController" customModule="LocationIntegration" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="waypointViewController" id="ifc-5j-GGf" customClass="WaypointViewController" customModule="LocationIntegrationEnhancement" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="STw-SU-cLr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -161,7 +193,7 @@
         <!--Configuration View Controller-->
         <scene sceneID="96W-Q4-Gy5">
             <objects>
-                <viewController storyboardIdentifier="configurationViewController" id="ODl-Ld-Tk4" customClass="ConfigurationViewController" customModule="LocationIntegration" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="configurationViewController" id="ODl-Ld-Tk4" customClass="ConfigurationViewController" customModule="LocationIntegrationEnhancement" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oPS-WZ-h7g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

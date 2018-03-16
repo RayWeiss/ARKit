@@ -72,9 +72,12 @@ Week 9, Mar 13:
 		+Added map to store AR World Origin's coordinates in the real world
 
 Week 10, Mar 20:
-	Clean up and refactor persistence code
-	Add user alert for Save and Load functions
-	Add user info for location accuracy
+	LocationIntegrationEnhancement
+		+Cleaned up and refactored persistence code
+		+Added user alerts for Save and Load functions
+		+Added datetime information to node name
+		+Removed incorrect setting of RWNode location to realWorldConversionMap coordinates
+		+Added user info for location accuracy
 
 --------------------------------------------------------------------
 Future:

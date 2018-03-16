@@ -13,6 +13,9 @@ class PersistenceViewController: UIViewController {
     var arSceneViewController: ARSceneViewController!
     let persistedFilename: String = "archive.data"
     
+    @IBOutlet weak var locationAccuracyLabel: UILabel!
+    @IBOutlet weak var locationAccuracyThresholdLabel: UILabel!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.addSwipeGesture()
@@ -20,6 +23,23 @@ class PersistenceViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        self.setupLabels()
+    }
+    
+    // MARK: Labels
+    func setupLabels() {
+        self.locationAccuracyThresholdLabel.text = "< \(self.arSceneViewController.horizontalLocationAccuracyThreshold)"
+        guard let accuracy = self.arSceneViewController.bestHorizontalLocationAccuracy else { return }
+        self.locationAccuracyLabel.text = String(accuracy)
+    }
+    
+    func updateLocationAccuracyLabel() {
+        guard self.isViewLoaded else { return }
+        guard let accuracy = self.arSceneViewController.bestHorizontalLocationAccuracy else {
+            self.locationAccuracyLabel.text = "N/A"
+            return
+        }
+        self.locationAccuracyLabel.text = String(accuracy)
     }
     
     // MARK: Buttons

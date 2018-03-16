@@ -30,6 +30,7 @@ class ARSceneViewController: UIViewController {
     let locationManager = CLLocationManager()
     let horizontalLocationAccuracyThreshold: Double = 10.0
     let headingAccuracyThreshold: Double = 20.0
+    var bestHorizontalLocationAccuracy: CLLocationAccuracy?
     var realWorldConversionMap: (CLLocationCoordinate2D, SCNVector3)?
     @IBOutlet weak var headingAccuracyLabel: UILabel!
     @IBOutlet weak var headingAlertView: UIView!
@@ -712,6 +713,8 @@ extension ARSceneViewController: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard arSessionStarted else { return }
         guard let lastLocation = locations.last else { return }
+        self.bestHorizontalLocationAccuracy = lastLocation.horizontalAccuracy
+        self.persistenceViewController.updateLocationAccuracyLabel()
         guard lastLocation.horizontalAccuracy < self.horizontalLocationAccuracyThreshold && lastLocation.horizontalAccuracy > 0.0 else { return }
         guard let currentFrame = self.arSceneView.session.currentFrame else { return }
         let cameraPosition = SCNVector3(currentFrame.camera.transform.columns.3.x, currentFrame.camera.transform.columns.3.y, currentFrame.camera.transform.columns.3.z)
