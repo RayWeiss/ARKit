@@ -46,7 +46,6 @@ class RealWorldNode: SCNNode {
     }
     
     func setRealWorldPosition(fromPair pair: (CLLocationCoordinate2D, SCNVector3)) {
-        print("set real world position")
         let metersPerDegreeLatitude = MathHelper.metersPerDegreeLatitude(atDegreesLatitude: pair.0.latitude)
         let metersPerDegreeLongitude = MathHelper.metersPerDegreeLongitude(atDegreesLatitude: pair.0.latitude)
         
@@ -59,7 +58,6 @@ class RealWorldNode: SCNNode {
     }
     
     func setARPosition(fromPair pair: (CLLocationCoordinate2D, SCNVector3)) {
-        print("set AR position")
         guard let lat = self.latitude else { print("rwNode lat not set"); return }
         guard let lon = self.longitude else { print("rwNode lon not set"); return }
         let metersPerDegreeLatitude = MathHelper.metersPerDegreeLatitude(atDegreesLatitude: pair.0.latitude)

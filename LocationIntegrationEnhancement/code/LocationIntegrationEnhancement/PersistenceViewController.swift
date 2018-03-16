@@ -22,40 +22,27 @@ class PersistenceViewController: UIViewController {
         super.viewDidAppear(animated)
     }
     
-    // MARK: Save / Load Buttons
+    // MARK: Buttons
     @IBAction func saveButtonTapped(_ sender: UIButton) {
-        print("save tapped")
         guard let nodeToSave = self.arSceneViewController.getWaypointBeingTracked() else {
             AlertHelper.alert(withTitle: "Error", andMessage: "No waypoint selected to save.", onViewController: self)
             return
-        }
-        guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't map AR locations to Real World locations.", onViewController: self)
-            return
-        }
-        
-        let rwNode = RealWorldNode(node: nodeToSave, lat: realWorldConversionMap.0.latitude, lon: realWorldConversionMap.0.longitude)
-        rwNode.setRealWorldPosition(fromPair: realWorldConversionMap)
+        }        
+        let rwNode = RealWorldNode(node: nodeToSave)
         self.save(rwNode: rwNode)
     }
     
     @IBAction func loadButtonTapped(_ sender: UIButton) {
-        print("load tapped")
         self.loadRWNode()
-    }
-    
-    // MARK: Sandbox interaction functions
-    func getPath(ofFile filename: String) -> String? {
-        guard let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).last else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't get documents directory to save data to.", onViewController: self)
-            return nil
-        }
-        let url = documentsDirectory.appendingPathComponent(filename) as NSURL
-        return url.path
     }
     
     // MARK: Save
     func save(rwNode: RealWorldNode) {
+        guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else {
+            AlertHelper.alert(withTitle: "Error", andMessage: "Can't save nodes until location is more accurate", onViewController: self)
+            return
+        }
+        rwNode.setRealWorldPosition(fromPair: realWorldConversionMap)
         guard let filepath = self.getPath(ofFile: self.persistedFilename) else {
             AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't get filepath.", onViewController: self)
             return
@@ -96,6 +83,16 @@ class PersistenceViewController: UIViewController {
         AlertHelper.alert(withTitle: "Success", andMessage: "Loaded node.", onViewController: self)
     }
     
+    // MARK: Sandbox interaction functions
+    func getPath(ofFile filename: String) -> String? {
+        guard let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).last else {
+            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't get documents directory to save data to.", onViewController: self)
+            return nil
+        }
+        let url = documentsDirectory.appendingPathComponent(filename) as NSURL
+        return url.path
+    }
+    
     // MARK: Swipe Gesture
     func addSwipeGesture() {
         let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(PersistenceViewController.didSwipe(withGestureRecognizer:)))
@@ -108,41 +105,3 @@ class PersistenceViewController: UIViewController {
         TransitionAnimator.pop(offNavigationController: navigationController, withTransition: TransitionAnimator.fromTop)
     }
 }
-
-
-// MARK: Old Save / Load SCNNodes
-//func getArchiveURL () -> NSURL {
-//    // Get the default file manager
-//    let fileManager = FileManager()// NSFileManager.defaultManager()
-//    // Get an array of URLs
-//    let urls = fileManager.urls(for: .documentDirectory,
-//                                in: .userDomainMask)
-//    // Get the document directory
-//    let documentDirectory = urls.last
-//    let fileWithPath = documentDirectory?.appendingPathComponent("archive.data")
-//    // Debug output
-//    print(">>>Document Directory: \(documentDirectory!)")
-//    return fileWithPath! as NSURL
-//}
-//
-//func save(node: SCNNode) {
-//    let archiveFile = self.getArchiveURL().path!
-//    let success = NSKeyedArchiver.archiveRootObject(node, toFile: archiveFile)
-//    if !success { print(">>> Archive failed.") }
-//}
-//func load() {
-//    let archiveFile = self.getArchiveURL().path!
-//    // The file will not exist the first time the app is run
-//    if !FileManager().fileExists(atPath: archiveFile) {
-//        print(">>> Does not exist: \(archiveFile)")
-//        return
-//    }
-//    //Debugging
-//    print(">>> archiveURL: \(archiveFile)")
-//    // Get the archived data
-//    let unArchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: archiveFile)
-//    let unArchivedNode = unArchivedData as? SCNNode
-//    guard let loadedNode = unArchivedNode else { print(">>> Unarchive failed."); return }
-//    self.arSceneViewController.arSceneView.scene.rootNode.addChildNode(loadedNode)
-//}
-
