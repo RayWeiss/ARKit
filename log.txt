@@ -79,6 +79,16 @@ Week 10, Mar 20:
 		+Removed incorrect setting of RWNode location to realWorldConversionMap coordinates
 		+Added user info for location accuracy
 
+Week 11, Mar 27:
+	Spring Recess - No Meeting
+
+Week 12, April 3:
+	Add ability to remove waypoints from scene
+	Add ability to rename waypoints
+	Add ability to save / load ALL waypoints in scene
+		Code-able container for Waypoints
+	
+
 --------------------------------------------------------------------
 Future:
 	Recognize when a user is at a waypoint and switch to the next
