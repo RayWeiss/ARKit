@@ -78,11 +78,13 @@ Week 10, Mar 20:
 		+Added datetime information to node name
 		+Removed incorrect setting of RWNode location to realWorldConversionMap coordinates
 		+Added user info for location accuracy
+		+Arrow points to loaded node
 
-Week 11, Mar 27:
+Week XX, Mar 27:
 	Spring Recess - No Meeting
 
-Week 12, April 3:
+Week 11, April 3:
+	Move out literal values from persistence view controller
 	Add ability to remove waypoints from scene
 	Add ability to rename waypoints
 	Add ability to save / load ALL waypoints in scene
