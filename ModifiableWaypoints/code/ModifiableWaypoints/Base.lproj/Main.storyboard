@@ -175,7 +175,11 @@
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                             <items>
                                 <navigationItem title="Waypoints" id="Gut-Te-wmj">
-                                    <barButtonItem key="rightBarButtonItem" title="Edit" id="Rjj-be-fHv"/>
+                                    <barButtonItem key="rightBarButtonItem" title="Edit" id="Rjj-be-fHv">
+                                        <connections>
+                                            <action selector="toggleTableEditing:" destination="ifc-5j-GGf" id="HaN-1X-UMM"/>
+                                        </connections>
+                                    </barButtonItem>
                                 </navigationItem>
                             </items>
                         </navigationBar>
@@ -194,6 +198,9 @@
                             <outlet property="delegate" destination="ifc-5j-GGf" id="moZ-Jt-Asm"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="rightBarButton" destination="Rjj-be-fHv" id="a26-eo-va5"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HHF-fC-Mcu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

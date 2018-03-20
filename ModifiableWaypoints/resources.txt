@@ -1,0 +1,2 @@
+Edit button
+https://stackoverflow.com/questions/34157800/set-table-view-into-editing-mode

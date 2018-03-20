@@ -9,7 +9,6 @@
 import UIKit
 
 class WaypointViewController: UITableViewController {
-
     var arSceneViewController: ARSceneViewController!
     let noWaypointsTitle = "No waypoints placed"
     var noWaypoints: Bool {
@@ -18,29 +17,26 @@ class WaypointViewController: UITableViewController {
         }
     }
     
+    @IBOutlet weak var rightBarButton: UIBarButtonItem!
+    let startEditingButtonTitle = "Edit"
+    let endEditingButtonTitle = "Done"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
         self.tableView.dataSource = self
         self.addSwipeGesture()
-//        self.navigationController?.setNavigationBarHidden(false, animated: true)
-
-//        self.tableView.isEditing = true
-        
-//        Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-//        self.navigationItem.rightBarButtonItem = self.editButtonItem
-//        let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(toggleEditing)) // create a bat button
-//        self.navigationItem.rightBarButtonItem = editButton
-    }
-    
-    @objc private func toggleEditing() {
-        self.tableView.setEditing(!self.tableView.isEditing, animated: true) // Set opposite value of current editing status
-        navigationItem.rightBarButtonItem?.title = self.tableView.isEditing ? "Done" : "Edit" // Set title depending on the editing status
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.updateWaypointTableView()
+        self.rightBarButton.isEnabled = !self.noWaypoints
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.setEditing(false, animated: false)
+        self.rightBarButton.title = self.startEditingButtonTitle
     }
     
     // MARK: Table view data source
@@ -80,23 +76,30 @@ class WaypointViewController: UITableViewController {
         self.tableView.selectRow(at: ip, animated: false, scrollPosition: .middle)
     }
     
-    // Override to support conditional editing of the table view.
+    // MARK: Waypoint Table View Deleting
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
+        return !self.noWaypoints
     }
     
-    /*
-     // Override to support editing the table view.
-     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-     if editingStyle == .delete {
-     // Delete the row from the data source
-     tableView.deleteRows(at: [indexPath], with: .fade)
-     } else if editingStyle == .insert {
-     // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-     }
-     }
-     */
+    @IBAction func toggleTableEditing(_ sender: UIBarButtonItem) {
+        if self.isEditing {
+            self.setEditing(false, animated: true)
+            self.rightBarButton.title = self.startEditingButtonTitle
+        } else {
+            self.setEditing(true, animated: true)
+            self.rightBarButton.title = self.endEditingButtonTitle
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        guard editingStyle == .delete else { return }
+        self.arSceneViewController.waypoints.remove(at: indexPath.row)
+        guard self.noWaypoints else { self.tableView.deleteRows(at: [indexPath], with: .fade); return }
+        self.rightBarButton.isEnabled = false
+        self.rightBarButton.title = self.startEditingButtonTitle
+        self.updateWaypointTableView()
+    }
+
     
     /*
      // Override to support rearranging the table view.
