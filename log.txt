@@ -89,8 +89,12 @@ Week 11, April 3:
 		+Added ability to save / load ALL waypoints in scene
 		+Created code-able WaypointContainer
 
-	Add ability to rename waypoints
-	Move out literal values from persistence view controller
+	TODO
+		Make arrow point back north if you delete waypoint currently being tracked
+		Add ability to rearrange waypoints
+		Add ability to rename waypoints
+		Map for placed waypoints
+		Move out literal values from persistence view controller
 	
 
 --------------------------------------------------------------------
