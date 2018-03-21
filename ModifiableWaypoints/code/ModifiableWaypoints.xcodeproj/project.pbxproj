@@ -20,7 +20,6 @@
 		71672C322061D9190014DEFC /* WaypointContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71672C312061D9190014DEFC /* WaypointContainer.swift */; };
 		7192274F2037346100A4762D /* arrow.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7192274E2037346100A4762D /* arrow.scn */; };
 		71BC5279205332C3000E141F /* PersistenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC5278205332C3000E141F /* PersistenceViewController.swift */; };
-		71BC527B2054431B000E141F /* RealWorldNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC527A2054431B000E141F /* RealWorldNode.swift */; };
 		71BC527D205459DE000E141F /* MathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC527C205459DE000E141F /* MathHelper.swift */; };
 		71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F1201B696A005EC277 /* AppDelegate.swift */; };
 		71FE57F4201B696A005EC277 /* ARSceneViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F3201B696A005EC277 /* ARSceneViewController.swift */; };
@@ -44,7 +43,6 @@
 		71672C312061D9190014DEFC /* WaypointContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointContainer.swift; sourceTree = "<group>"; };
 		7192274E2037346100A4762D /* arrow.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = arrow.scn; sourceTree = "<group>"; };
 		71BC5278205332C3000E141F /* PersistenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceViewController.swift; sourceTree = "<group>"; };
-		71BC527A2054431B000E141F /* RealWorldNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealWorldNode.swift; sourceTree = "<group>"; };
 		71BC527C205459DE000E141F /* MathHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathHelper.swift; sourceTree = "<group>"; };
 		71FE57EE201B696A005EC277 /* ModifiableWaypoints.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ModifiableWaypoints.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71FE57F1201B696A005EC277 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -82,7 +80,6 @@
 			isa = PBXGroup;
 			children = (
 				71FFB2E12027B9B600747450 /* SelectableNode.swift */,
-				71BC527A2054431B000E141F /* RealWorldNode.swift */,
 			);
 			path = Nodes;
 			sourceTree = "<group>";
@@ -252,7 +249,6 @@
 				71672C302061D8F70014DEFC /* Waypoint.swift in Sources */,
 				71672C322061D9190014DEFC /* WaypointContainer.swift in Sources */,
 				71BC527D205459DE000E141F /* MathHelper.swift in Sources */,
-				71BC527B2054431B000E141F /* RealWorldNode.swift in Sources */,
 				71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
