@@ -13,7 +13,7 @@ class WaypointViewController: UITableViewController {
     let noWaypointsTitle = "No waypoints placed"
     var noWaypoints: Bool {
         get{
-            return self.arSceneViewController.waypoints.count == 0
+            return self.arSceneViewController.waypointContainer.count == 0
         }
     }
     
@@ -48,7 +48,7 @@ class WaypointViewController: UITableViewController {
         if self.noWaypoints {
             return 1
         } else {
-            return self.arSceneViewController.waypoints.count
+            return self.arSceneViewController.waypointContainer.count
         }
     }
     
@@ -57,21 +57,21 @@ class WaypointViewController: UITableViewController {
         if self.noWaypoints {
             cell.textLabel?.text = self.noWaypointsTitle
         } else {
-            cell.textLabel?.text = self.arSceneViewController.waypoints[indexPath.row].replacingOccurrences(of: "_", with: "\t")
+            cell.textLabel?.text = "Waypoint \(indexPath.row) \(self.arSceneViewController.waypointContainer.waypoints[indexPath.row].name?.replacingOccurrences(of: "_", with: "\t") ?? "yeah")"
         }
         return cell
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard indexPath.row < self.arSceneViewController.waypoints.count else { return }
-        self.arSceneViewController.waypointBeingTrackedID = self.arSceneViewController.waypoints[indexPath.row]
+        guard indexPath.row < self.arSceneViewController.waypointContainer.count else { return }
+        self.arSceneViewController.waypointBeingTrackedID = self.arSceneViewController.waypointContainer.waypoints[indexPath.row].name ?? ""
     }
     
     // MARK: Waypoint Table View
     func updateWaypointTableView() {
         self.tableView.reloadData()
         let selectedWaypoint = self.arSceneViewController.waypointBeingTrackedID
-        guard let selectedWaypointIndex = self.arSceneViewController.waypoints.index(of: selectedWaypoint) else { return }
+        guard let selectedWaypointIndex = self.arSceneViewController.waypointContainer.index(of: selectedWaypoint) else { return }
         let ip = IndexPath(row: selectedWaypointIndex, section: 0)
         self.tableView.selectRow(at: ip, animated: false, scrollPosition: .middle)
     }
@@ -93,7 +93,7 @@ class WaypointViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
-        self.arSceneViewController.waypoints.remove(at: indexPath.row)
+        self.arSceneViewController.waypointContainer.removeWaypoint(atIndex: indexPath.row)
         guard self.noWaypoints else { self.tableView.deleteRows(at: [indexPath], with: .fade); return }
         self.rightBarButton.isEnabled = false
         self.rightBarButton.title = self.startEditingButtonTitle

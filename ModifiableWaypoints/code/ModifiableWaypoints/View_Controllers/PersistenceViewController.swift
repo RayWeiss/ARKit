@@ -44,38 +44,33 @@ class PersistenceViewController: UIViewController {
     
     // MARK: Buttons
     @IBAction func saveButtonTapped(_ sender: UIButton) {
-        guard let nodeToSave = self.arSceneViewController.getWaypointBeingTracked() else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "No waypoint selected to save.", onViewController: self)
-            return
-        }        
-        let rwNode = RealWorldNode(node: nodeToSave)
-        self.save(rwNode: rwNode)
+        self.save(waypointContainer: self.arSceneViewController.waypointContainer)
     }
     
     @IBAction func loadButtonTapped(_ sender: UIButton) {
-        self.loadRWNode()
+        self.loadWaypointsContainer()
     }
     
     // MARK: Save
-    func save(rwNode: RealWorldNode) {
+    func save(waypointContainer: WaypointContainer) {
         guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else {
             AlertHelper.alert(withTitle: "Error", andMessage: "Can't save nodes until location is more accurate", onViewController: self)
             return
         }
-        rwNode.setRealWorldPosition(fromPair: realWorldConversionMap)
+        waypointContainer.setGeographicCoordinates(fromPair: realWorldConversionMap)
         guard let filepath = self.getPath(ofFile: self.persistedFilename) else {
             AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't get filepath.", onViewController: self)
             return
         }
-        guard NSKeyedArchiver.archiveRootObject(rwNode, toFile: filepath) else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't save node.", onViewController: self)
+        guard NSKeyedArchiver.archiveRootObject(waypointContainer, toFile: filepath) else {
+            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't save waypoints.", onViewController: self)
             return
         }
-        AlertHelper.alert(withTitle: "Success", andMessage: "Saved node.", onViewController: self)
+        AlertHelper.alert(withTitle: "Success", andMessage: "Saved waypoints.", onViewController: self)
     }
     
     // MARK: Load
-    func loadRWNode() {
+    func loadWaypointsContainer() {
         guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else {
             AlertHelper.alert(withTitle: "Error", andMessage: "Can't load nodes until location is more accurate", onViewController: self)
             return
@@ -93,18 +88,15 @@ class PersistenceViewController: UIViewController {
             return
         }
         
-        guard let unarchivedRWNode = unarchivedData as? RealWorldNode else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't load data at a RealWorldNode.", onViewController: self)
+        guard let unarchivedWaypointContainer = unarchivedData as? WaypointContainer else {
+            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't load data as a WaypointContainer.", onViewController: self)
             return
         }
-//        unarchivedRWNode.name = "rwnodeILoaded"
-        unarchivedRWNode.setARPosition(fromPair: realWorldConversionMap)
-        self.arSceneViewController.arSceneView.scene.rootNode.addChildNode(unarchivedRWNode)
-        if let nodeName = unarchivedRWNode.name {
-            self.arSceneViewController.waypoints.append(nodeName)
-            self.arSceneViewController.waypointBeingTrackedID = nodeName
-        }
-        AlertHelper.alert(withTitle: "Success", andMessage: "Loaded node.", onViewController: self)
+        unarchivedWaypointContainer.setARPosition(fromPair: realWorldConversionMap)
+        unarchivedWaypointContainer.addWaypoints(toNode: self.arSceneViewController.arSceneView.scene.rootNode)
+        self.arSceneViewController.waypointContainer = unarchivedWaypointContainer
+        self.arSceneViewController.waypointBeingTrackedID = unarchivedWaypointContainer.waypoints.first?.name ?? ""
+        AlertHelper.alert(withTitle: "Success", andMessage: "Loaded waypoints.", onViewController: self)
     }
     
     // MARK: Sandbox interaction functions

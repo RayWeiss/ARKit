@@ -75,12 +75,10 @@ class ARSceneViewController: UIViewController {
     let noGravity = SCNVector3(0, 0, 0)
     
     // MARK: Waypoint Properties
-    var waypointCount = 0
-    let baseWaypointID = "waypoint"
+    var waypointContainer = WaypointContainer()
     let waypointGeometry = SCNBox()
     let waypointColor = UIColor.cyan
     let waypointScale = 1.0 //0.05
-    var waypoints:[String] = []
     var waypointBeingTrackedID = ""
     
     // MARK: Heading Arrow Properties
@@ -372,24 +370,17 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Waypoint Objects
-    func getNextWaypointID() -> String {
-        let id = self.baseWaypointID + String(self.waypointCount) + "_" + Date().getCurrentDatetimeString()
-        self.waypointCount += 1
-        return id
-    }
-    
     func addWaypoint(atPosition position: SCNVector3) {
-        let waypointNode = SCNNode()
-        waypointNode.geometry = self.waypointGeometry
-        waypointNode.geometry = waypointNode.geometry!.copy() as? SCNGeometry
-        waypointNode.geometry?.firstMaterial = waypointNode.geometry?.firstMaterial!.copy() as? SCNMaterial
-        waypointNode.geometry?.firstMaterial!.diffuse.contents = self.waypointColor
-        waypointNode.scale = SCNVector3(self.waypointScale, self.waypointScale, self.waypointScale)
-        waypointNode.position = position
-        waypointNode.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
-        waypointNode.name = self.getNextWaypointID()
-        self.waypoints.append(waypointNode.name!)
-        self.arSceneView.scene.rootNode.addChildNode(waypointNode)
+        let wp = Waypoint()
+        wp.geometry = self.waypointGeometry
+        wp.geometry = wp.geometry!.copy() as? SCNGeometry
+        wp.geometry?.firstMaterial = wp.geometry?.firstMaterial!.copy() as? SCNMaterial
+        wp.geometry?.firstMaterial!.diffuse.contents = self.waypointColor
+        wp.scale = SCNVector3(self.waypointScale, self.waypointScale, self.waypointScale)
+        wp.position = position
+        wp.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+        self.waypointContainer.add(waypoint: wp)
+        self.arSceneView.scene.rootNode.addChildNode(wp)
     }
     
     func getWaypointBeingTracked() -> SCNNode? {
