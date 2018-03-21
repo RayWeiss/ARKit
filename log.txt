@@ -84,11 +84,13 @@ Week XX, Mar 27:
 	Spring Recess - No Meeting
 
 Week 11, April 3:
-	Move out literal values from persistence view controller
-	Add ability to remove waypoints from scene
+	ModifiableWaypoints
+		+Added ability to remove waypoints from scene
+		+Added ability to save / load ALL waypoints in scene
+		+Created code-able WaypointContainer
+
 	Add ability to rename waypoints
-	Add ability to save / load ALL waypoints in scene
-		Code-able container for Waypoints
+	Move out literal values from persistence view controller
 	
 
 --------------------------------------------------------------------
