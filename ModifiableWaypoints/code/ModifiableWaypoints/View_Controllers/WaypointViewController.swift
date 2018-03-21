@@ -93,6 +93,11 @@ class WaypointViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         guard editingStyle == .delete else { return }
+        if let name = self.arSceneViewController.waypointContainer.waypoints[indexPath.row].name {
+            if let node = self.arSceneViewController.arSceneView.scene.rootNode.childNode(withName: name, recursively: false) {
+                node.removeFromParentNode()
+            }
+        }
         self.arSceneViewController.waypointContainer.removeWaypoint(atIndex: indexPath.row)
         guard self.noWaypoints else { self.tableView.deleteRows(at: [indexPath], with: .fade); return }
         self.rightBarButton.isEnabled = false
