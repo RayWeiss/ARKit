@@ -88,22 +88,18 @@ Week 11, April 3:
 		+Added ability to remove waypoints from scene
 		+Added ability to save / load ALL waypoints in scene
 		+Created code-able WaypointContainer
-
-	TODO
-		Make arrow point back north if you delete waypoint currently being tracked
-		Add ability to rearrange waypoints
-		Add ability to rename waypoints
-		Map for placed waypoints
-		Move out literal values from persistence view controller
 	
 
 --------------------------------------------------------------------
 Future:
-	Recognize when a user is at a waypoint and switch to the next
-	Add ability to remove waypoints
+	Make arrow point back north if you delete waypoint currently being tracked
+	Add ability to rearrange waypoints
 	Add ability to rename waypoints
+	Circle with 2D view of waypoints / Map for placed waypoints
+	Recognize when a user is at a waypoint and switch to the next
+
+	Move out literal values from persistence view controller
 	MapKit for distanceFrom and atDegreesLatitude
-	Circle with 2D view of waypoints
 
 
 X	Remove constants from code and move to properties
