@@ -89,6 +89,53 @@ Week 11, April 3:
 		+Added ability to save / load ALL waypoints in scene
 		+Created code-able WaypointContainer
 	
+Week 12, April 10:
+	Edit names of waypoints
+	Use UUIDs to identify and access placed waypoints
+	Begin work on selecting waypoints and editing properties of them
+
+********************************************************************
+Final Expectations
+
+Last meeting?
+
+Final Feature Decisions / Expectations
+	+ Edit names (on details page or from tableview?)
+	+ Ability to rearrange waypoints
+
+	+ Is the collection ordered or unordered? Is this a path or a collection of related objects without a set order? Does it matter? 
+		- If it is ... recognize when a user is at a waypoint and switch to the next
+
+	+ Auto-save / load (how to handle location / heading accuracy?)
+	+ Unique waypoint id's for accessing and saving (related to auto-save/load)	*** -> let uuid = UUID().uuidString OR CFUUIDCreate(_:)
+	+ Click waypoints for "details page"
+		- Detail page will display name and notes about the waypoint
+		- Waypoint attributes will be editable from details page
+			> Notes
+			> Geometry
+			> Color
+			> Scale
+
+	+ Display distance of selected waypoint from users current position
+	+ On screen "radar" map of close waypoints
+	+ Separate view for map of user location and all waypoints
+
+
+
+NOTES
++++++++++++++++++
+let uuid = UUID().uuidString
+FUUIDCreate(_:)
+
+
+Var timer: Timer?
+{
+	willSet {
+		newValue
+	}
+}
+
+
 
 --------------------------------------------------------------------
 Future:

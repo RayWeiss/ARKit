@@ -13,6 +13,20 @@ class PersistenceViewController: UIViewController {
     var arSceneViewController: ARSceneViewController!
     let persistedFilename: String = "archive.data"
     
+    let errorTitle: String = "Error"
+    let successTitle: String = "Success"
+    
+    let locationAccuracySaveErrorMessage: String = "Can't save nodes until location is more accurate"
+    let locationAccuracyLoadErrorMessage: String = "Can't load nodes until location is more accurate"
+    
+    let savedWaypointsMessage: String = "Saved waypoints."
+    let loadedWaypointsMessage: String = "Loaded waypoints."
+    
+    let savedWaypointsErrorMessage: String = "Couldn't save waypoints."
+    
+    let filePathErrorMessage: String = "Couldn't get filepath."
+    let documentsDirectoryErrorMessage: String = "Couldn't get documents directory to save data to."
+    
     @IBOutlet weak var locationAccuracyLabel: UILabel!
     @IBOutlet weak var locationAccuracyThresholdLabel: UILabel!
     
@@ -54,55 +68,55 @@ class PersistenceViewController: UIViewController {
     // MARK: Save
     func save(waypointContainer: WaypointContainer) {
         guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Can't save nodes until location is more accurate", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.locationAccuracySaveErrorMessage, onViewController: self)
             return
         }
         waypointContainer.setGeographicCoordinates(fromPair: realWorldConversionMap)
         guard let filepath = self.getPath(ofFile: self.persistedFilename) else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't get filepath.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.filePathErrorMessage, onViewController: self)
             return
         }
         guard NSKeyedArchiver.archiveRootObject(waypointContainer, toFile: filepath) else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't save waypoints.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.savedWaypointsErrorMessage, onViewController: self)
             return
         }
-        AlertHelper.alert(withTitle: "Success", andMessage: "Saved waypoints.", onViewController: self)
+        AlertHelper.alert(withTitle: self.successTitle, andMessage: self.savedWaypointsMessage, onViewController: self)
     }
     
     // MARK: Load
     func loadWaypointsContainer() {
         guard let realWorldConversionMap = self.arSceneViewController.realWorldConversionMap else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Can't load nodes until location is more accurate", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.locationAccuracyLoadErrorMessage, onViewController: self)
             return
         }
         guard let filepath = self.getPath(ofFile: self.persistedFilename) else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't get filepath.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.filePathErrorMessage, onViewController: self)
             return
         }
         guard FileManager().fileExists(atPath: filepath) else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Save file doesn't exist.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: "Save file doesn't exist.", onViewController: self)
             return
         }
         guard let unarchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: filepath) else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't load data from device.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: "Couldn't load data from device.", onViewController: self)
             return
         }
         
         guard let unarchivedWaypointContainer = unarchivedData as? WaypointContainer else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't load data as a WaypointContainer.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: "Couldn't load data as a WaypointContainer.", onViewController: self)
             return
         }
         unarchivedWaypointContainer.setARPosition(fromPair: realWorldConversionMap)
         unarchivedWaypointContainer.addWaypoints(toNode: self.arSceneViewController.arSceneView.scene.rootNode)
         self.arSceneViewController.waypointContainer = unarchivedWaypointContainer
         self.arSceneViewController.waypointBeingTrackedID = unarchivedWaypointContainer.waypoints.first?.name ?? ""
-        AlertHelper.alert(withTitle: "Success", andMessage: "Loaded waypoints.", onViewController: self)
+        AlertHelper.alert(withTitle: self.successTitle, andMessage: self.loadedWaypointsMessage, onViewController: self)
     }
     
     // MARK: Sandbox interaction functions
     func getPath(ofFile filename: String) -> String? {
         guard let documentsDirectory = FileManager().urls(for: .documentDirectory, in: .userDomainMask).last else {
-            AlertHelper.alert(withTitle: "Error", andMessage: "Couldn't get documents directory to save data to.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.documentsDirectoryErrorMessage, onViewController: self)
             return nil
         }
         let url = documentsDirectory.appendingPathComponent(filename) as NSURL
