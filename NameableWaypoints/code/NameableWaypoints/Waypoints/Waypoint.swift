@@ -12,9 +12,11 @@ import CoreLocation
 class Waypoint: SCNNode {
     var latitude: Double?
     var longitude: Double?
+    var userName: String?
     
     override public init() {
         super.init()
+        self.name = UUID().uuidString
     }
     
     public init(node: SCNNode, lat: Double, lon: Double) {
@@ -39,12 +41,14 @@ class Waypoint: SCNNode {
         super.encode(with: aCoder)
         aCoder.encode(self.latitude, forKey: "latitude")
         aCoder.encode(self.longitude, forKey: "longitude")
+        aCoder.encode(self.userName, forKey: "userName")
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.latitude = aDecoder.decodeObject(forKey: "latitude") as? Double
         self.longitude = aDecoder.decodeObject(forKey: "longitude") as? Double
+        self.userName = aDecoder.decodeObject(forKey: "userName") as? String
     }
     
     func setGeographicCoordinates(fromPair pair: (CLLocationCoordinate2D, SCNVector3)) {

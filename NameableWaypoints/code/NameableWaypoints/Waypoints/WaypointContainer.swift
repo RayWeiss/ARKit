@@ -31,7 +31,6 @@ class WaypointContainer: NSObject, NSCoding {
     }
     
     func add(waypoint: Waypoint) {
-        waypoint.name = self.getNextWaypointID()
         self.waypoints.append(waypoint)
     }
     
@@ -60,10 +59,6 @@ class WaypointContainer: NSObject, NSCoding {
             }
         }
         return nil
-    }
-    
-    func getNextWaypointID() -> String {
-        return Date().getCurrentDatetimeString()
     }
     
     func setGeographicCoordinates(fromPair pair: (CLLocationCoordinate2D, SCNVector3)) {
