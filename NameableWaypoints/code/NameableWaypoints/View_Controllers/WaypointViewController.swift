@@ -10,7 +10,8 @@ import UIKit
 
 class WaypointViewController: UITableViewController {
     var arSceneViewController: ARSceneViewController!
-    let noWaypointsTitle = "No waypoints placed"
+    let defaultWaypointNamePrefix: String = "Waypoint"
+    let noWaypointsTitle: String = "No waypoints placed"
     var noWaypoints: Bool {
         get{
             return self.arSceneViewController.waypointContainer.count == 0
@@ -24,6 +25,7 @@ class WaypointViewController: UITableViewController {
     let deleteRowActionTitle: String = "Delete"
     let editRowActionTitle: String = "Edit"
     let renameRowActionTitle: String = "Rename"
+    let cancelActionTitle: String = "Cancel"
     
     let deleteRowActionColor: UIColor = .red
     let editRowActionColor: UIColor = .purple
@@ -65,7 +67,7 @@ class WaypointViewController: UITableViewController {
         if self.noWaypoints {
             cell.textLabel?.text = self.noWaypointsTitle
         } else {
-            cell.textLabel?.text = self.arSceneViewController.waypointContainer.waypoints[indexPath.row].userName ?? "Waypoint \(indexPath.row)"
+            cell.textLabel?.text = self.arSceneViewController.waypointContainer.waypoints[indexPath.row].userName ?? "\(self.defaultWaypointNamePrefix) \(indexPath.row)"
         }
         return cell
     }
@@ -131,7 +133,19 @@ class WaypointViewController: UITableViewController {
     
     // MARK: Rename Row Action
     func performRename(forRowAt indexPath: IndexPath) {
-        print("rename \(indexPath)")
+        let currentName = self.arSceneViewController.waypointContainer.waypoints[indexPath.row].userName ?? "\(self.defaultWaypointNamePrefix) \(indexPath.row)"
+        let renameAlertBox = UIAlertController(title: "\(self.renameRowActionTitle) \(currentName)", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        renameAlertBox.addTextField()
+        renameAlertBox.addAction(UIAlertAction(title: self.renameRowActionTitle, style: UIAlertActionStyle.default, handler: { (action) in
+            guard let textField = renameAlertBox.textFields?.first else { return }
+            guard let newName = textField.text else { return }
+            guard !newName.isEmpty else { return }
+            self.arSceneViewController.waypointContainer.waypoints[indexPath.row].userName = newName
+            self.updateWaypointTableView()
+        }))
+        renameAlertBox.addAction(UIAlertAction(title: self.cancelActionTitle, style: UIAlertActionStyle.default, handler: nil))
+        
+        self.present(renameAlertBox, animated: true, completion: nil)
     }
     
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

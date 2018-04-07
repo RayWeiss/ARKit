@@ -1,2 +1,5 @@
 Custom row actions
 https://stackoverflow.com/questions/19164188/custom-edit-view-in-uitableviewcell-while-swipe-left-objective-c-or-swift
+
+Alert for cell rename
+https://stackoverflow.com/questions/6319417/whats-a-simple-way-to-get-a-text-input-popup-dialog-box-on-an-iphone
