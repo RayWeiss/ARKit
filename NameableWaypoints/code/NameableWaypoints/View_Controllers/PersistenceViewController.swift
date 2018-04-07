@@ -22,10 +22,13 @@ class PersistenceViewController: UIViewController {
     let savedWaypointsMessage: String = "Saved waypoints."
     let loadedWaypointsMessage: String = "Loaded waypoints."
     
-    let savedWaypointsErrorMessage: String = "Couldn't save waypoints."
-    
     let filePathErrorMessage: String = "Couldn't get filepath."
     let documentsDirectoryErrorMessage: String = "Couldn't get documents directory to save data to."
+    let noSaveFileErrorMessage: String = "Save file doesn't exist."
+    let couldNotLoadErrorMessage: String = "Couldn't load data from device."
+    let savedWaypointsErrorMessage: String = "Couldn't save waypoints."
+    let couldNotLoadDataAsWaypointsErrorMessage: String = "Couldn't load data as a WaypointContainer."
+
     
     @IBOutlet weak var locationAccuracyLabel: UILabel!
     @IBOutlet weak var locationAccuracyThresholdLabel: UILabel!
@@ -94,16 +97,16 @@ class PersistenceViewController: UIViewController {
             return
         }
         guard FileManager().fileExists(atPath: filepath) else {
-            AlertHelper.alert(withTitle: self.errorTitle, andMessage: "Save file doesn't exist.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.noSaveFileErrorMessage, onViewController: self)
             return
         }
         guard let unarchivedData = NSKeyedUnarchiver.unarchiveObject(withFile: filepath) else {
-            AlertHelper.alert(withTitle: self.errorTitle, andMessage: "Couldn't load data from device.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.couldNotLoadErrorMessage, onViewController: self)
             return
         }
         
         guard let unarchivedWaypointContainer = unarchivedData as? WaypointContainer else {
-            AlertHelper.alert(withTitle: self.errorTitle, andMessage: "Couldn't load data as a WaypointContainer.", onViewController: self)
+            AlertHelper.alert(withTitle: self.errorTitle, andMessage: self.couldNotLoadDataAsWaypointsErrorMessage, onViewController: self)
             return
         }
         unarchivedWaypointContainer.setARPosition(fromPair: realWorldConversionMap)
