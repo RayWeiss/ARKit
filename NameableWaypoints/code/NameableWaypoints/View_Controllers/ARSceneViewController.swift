@@ -372,10 +372,35 @@ class ARSceneViewController: UIViewController {
     // MARK: Waypoint Objects
     func addWaypoint(atPosition position: SCNVector3) {
         let wp = Waypoint()
-        wp.geometry = self.waypointGeometry
+        
+        if let anyObject = objectsDict[self.defaultObjectToPlaceType] {
+            switch anyObject {
+            case is SCNBox:
+                wp.geometry = anyObject as! SCNBox
+            case is SCNCapsule:
+                wp.geometry = anyObject as! SCNCapsule
+            case is SCNCone:
+                wp.geometry = anyObject as! SCNCone
+            case is SCNCylinder:
+                wp.geometry = anyObject as! SCNCylinder
+            case is SCNSphere:
+                wp.geometry = anyObject as! SCNSphere
+            case is SCNTorus:
+                wp.geometry = anyObject as! SCNTorus
+            case is SCNTube:
+                wp.geometry = anyObject as! SCNTube
+            case is SCNPyramid:
+                wp.geometry = anyObject as! SCNPyramid
+            default:
+                return
+            }
+        } else {
+            wp.geometry = self.waypointGeometry
+        }
+        
         wp.geometry = wp.geometry!.copy() as? SCNGeometry
         wp.geometry?.firstMaterial = wp.geometry?.firstMaterial!.copy() as? SCNMaterial
-        wp.geometry?.firstMaterial!.diffuse.contents = self.waypointColor
+        wp.geometry?.firstMaterial!.diffuse.contents = self.defaultObjectToPlaceColor
         wp.scale = SCNVector3(self.waypointScale, self.waypointScale, self.waypointScale)
         wp.position = position
         wp.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
