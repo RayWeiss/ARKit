@@ -108,7 +108,20 @@ class WaypointViewController: UITableViewController {
     
     // MARK: Delete Row Action
     func performDelete(forRowAt indexPath: IndexPath) {
-        print("delete \(indexPath)")
+        if let name = self.arSceneViewController.waypointContainer.waypoints[indexPath.row].name {
+            if let node = self.arSceneViewController.arSceneView.scene.rootNode.childNode(withName: name, recursively: false) {
+                node.removeFromParentNode()
+            }
+        }
+        self.arSceneViewController.waypointContainer.removeWaypoint(atIndex: indexPath.row)
+        guard self.noWaypoints else {
+            self.tableView.deleteRows(at: [indexPath], with: .fade)
+            self.updateWaypointTableView()
+            return
+        }
+        self.rightBarButton.isEnabled = false
+        self.rightBarButton.title = self.startEditingButtonTitle
+        self.updateWaypointTableView()
     }
 
     // MARK: Edit Row Action
@@ -133,20 +146,6 @@ class WaypointViewController: UITableViewController {
             self.setEditing(true, animated: true)
             self.rightBarButton.title = self.endEditingButtonTitle
         }
-    }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        guard editingStyle == .delete else { return }
-        if let name = self.arSceneViewController.waypointContainer.waypoints[indexPath.row].name {
-            if let node = self.arSceneViewController.arSceneView.scene.rootNode.childNode(withName: name, recursively: false) {
-                node.removeFromParentNode()
-            }
-        }
-        self.arSceneViewController.waypointContainer.removeWaypoint(atIndex: indexPath.row)
-        guard self.noWaypoints else { self.tableView.deleteRows(at: [indexPath], with: .fade); return }
-        self.rightBarButton.isEnabled = false
-        self.rightBarButton.title = self.startEditingButtonTitle
-        self.updateWaypointTableView()
     }
 
     
