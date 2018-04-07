@@ -21,6 +21,14 @@ class WaypointViewController: UITableViewController {
     let startEditingButtonTitle = "Edit"
     let endEditingButtonTitle = "Done"
     
+    let deleteRowActionTitle: String = "Delete"
+    let editRowActionTitle: String = "Edit"
+    let renameRowActionTitle: String = "Rename"
+    
+    let deleteRowActionColor: UIColor = .red
+    let editRowActionColor: UIColor = .purple
+    let renameRowActionColor: UIColor = .blue
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.delegate = self
@@ -76,7 +84,43 @@ class WaypointViewController: UITableViewController {
         self.tableView.selectRow(at: ip, animated: false, scrollPosition: .middle)
     }
     
-    // MARK: Waypoint Table View Deleting
+    // MARK: Waypoint Table View Row Action Handling
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        
+        let deleteRowAction = UITableViewRowAction(style: .normal, title: self.deleteRowActionTitle) { (rowAction, indexPath) in
+            self.performDelete(forRowAt: indexPath)
+        }
+        
+        let editRowAction = UITableViewRowAction(style: .normal, title: self.editRowActionTitle) { (rowAction, indexPath) in
+            self.performEdit(forRowAt: indexPath)
+        }
+        
+        let renameRowAction = UITableViewRowAction(style: .normal, title: self.renameRowActionTitle) { (rowAction, indexPath) in
+            self.performRename(forRowAt: indexPath)
+        }
+        
+        deleteRowAction.backgroundColor = self.deleteRowActionColor
+        editRowAction.backgroundColor = self.editRowActionColor
+        renameRowAction.backgroundColor = self.renameRowActionColor
+        
+        return [renameRowAction, editRowAction, deleteRowAction]
+    }
+    
+    // MARK: Delete Row Action
+    func performDelete(forRowAt indexPath: IndexPath) {
+        print("delete \(indexPath)")
+    }
+
+    // MARK: Edit Row Action
+    func performEdit(forRowAt indexPath: IndexPath) {
+        print("edit \(indexPath)")
+    }
+    
+    // MARK: Rename Row Action
+    func performRename(forRowAt indexPath: IndexPath) {
+        print("rename \(indexPath)")
+    }
+    
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return !self.noWaypoints
     }
