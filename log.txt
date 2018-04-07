@@ -90,9 +90,13 @@ Week 11, April 3:
 		+Created code-able WaypointContainer
 	
 Week 12, April 10:
-	Edit names of waypoints
-	Use UUIDs to identify and access placed waypoints
-	Begin work on selecting waypoints and editing properties of them
+	NameableWaypoints
+		+Added ability to edit names of waypoints
+		+Implemented use of UUIDs to identify and access placed waypoints
+		+Made waypoints be placed with geometry selected from configuration vc
+		+Made waypoints be placed with color selected from configuration vc
+	To Do
+		Ability to edit properties of waypoints already placed
 
 ********************************************************************
 Final Expectations
