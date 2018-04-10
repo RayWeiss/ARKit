@@ -97,7 +97,16 @@ Week 12, April 10:
 		+Made waypoints be placed with geometry selected from configuration vc
 		+Made waypoints be placed with color selected from configuration vc
 
+Week 13, April 17:
+	Implement editing of currently placed waypoints
+		Edit from newly displayed VC from edit row action
+		Edit from AR scene view
+	Begin implementation of transition once user is within give proximity of waypoint
+
 ********************************************************************
+Drop down for sub-details view, click from sub details view to full details view
+
+
 Final Expectations
 
 Last meeting?
