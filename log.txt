@@ -93,10 +93,9 @@ Week 12, April 10:
 	NameableWaypoints
 		+Added ability to edit names of waypoints
 		+Implemented use of UUIDs to identify and access placed waypoints
+		+Added slider on configuration page for scale of waypoints
 		+Made waypoints be placed with geometry selected from configuration vc
 		+Made waypoints be placed with color selected from configuration vc
-	To Do
-		Ability to edit properties of waypoints already placed
 
 ********************************************************************
 Final Expectations
@@ -106,7 +105,7 @@ Last meeting?
 Final Feature Decisions / Expectations
 	+ Edit names (on details page or from tableview?)
 	+ Ability to rearrange waypoints
-
+	+Ability to edit properties of waypoints already placed
 	+ Is the collection ordered or unordered? Is this a path or a collection of related objects without a set order? Does it matter? 
 		- If it is ... recognize when a user is at a waypoint and switch to the next
 
