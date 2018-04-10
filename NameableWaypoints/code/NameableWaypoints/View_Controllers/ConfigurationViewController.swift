@@ -13,6 +13,8 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
     @IBOutlet weak var objectPicker: UIPickerView!
     @IBOutlet weak var colorPicker: UIPickerView!
     @IBOutlet weak var gravitySwitch: UISwitch!
+    @IBOutlet weak var scaleSlider: UISlider!
+    @IBOutlet weak var scaleLabel: UILabel!
     
     var arSceneViewController: ARSceneViewController!
     
@@ -30,6 +32,7 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
         super.viewDidLoad()
         addSwipeGesture()
         setupPickerViews()
+        setupSlider()
         setGravitySwitch()
     }
 
@@ -83,7 +86,19 @@ class ConfigurationViewController: UIViewController, UIPickerViewDataSource, UIP
         }
     }
     
-    //MARK: Gravity Switch
+    // MARK: Scale Slider
+    func setupSlider() {
+        let scale = self.arSceneViewController.defaultObejectToPlaceScale
+        self.scaleSlider.setValue(Float(scale), animated: false)
+        self.scaleLabel.text = String(format: "%.2f", scale)
+    }
+    
+    @IBAction func adjustScale(_ sender: UISlider) {
+        self.arSceneViewController.defaultObejectToPlaceScale = Double(sender.value)
+        self.scaleLabel.text = String(format: "%.2f", sender.value)
+    }
+    
+    // MARK: Gravity Switch
     func setGravitySwitch() {
         self.gravitySwitch.setOn(self.arSceneViewController.gravityIsOn, animated: false)
     }

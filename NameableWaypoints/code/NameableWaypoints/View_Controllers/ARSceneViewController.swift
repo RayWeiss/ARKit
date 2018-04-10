@@ -66,6 +66,7 @@ class ARSceneViewController: UIViewController {
     let selectableObjectChildName = "selectableChild"
     var defaultObjectToPlaceType: String = "sphere"
     var defaultObjectToPlaceColor: UIColor = .white
+    var defaultObejectToPlaceScale: Double = 1.0
     let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
                                               "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
     
@@ -78,7 +79,6 @@ class ARSceneViewController: UIViewController {
     var waypointContainer = WaypointContainer()
     let waypointGeometry = SCNBox()
     let waypointColor = UIColor.cyan
-    let waypointScale = 1.0 //0.05
     var waypointBeingTrackedID = ""
     
     // MARK: Heading Arrow Properties
@@ -308,7 +308,8 @@ class ARSceneViewController: UIViewController {
         
         objectNode.geometry?.firstMaterial!.diffuse.contents = self.defaultObjectToPlaceColor
         
-        objectNode.scale = SCNVector3(0.1,0.1,0.1)
+//        objectNode.scale = SCNVector3(0.1,0.1,0.1)
+        objectNode.scale = SCNVector3(self.defaultObejectToPlaceScale,self.defaultObejectToPlaceScale,self.defaultObejectToPlaceScale)
         objectNode.position = position
         objectNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
         self.arSceneView.scene.rootNode.addChildNode(objectNode)
@@ -401,7 +402,7 @@ class ARSceneViewController: UIViewController {
         wp.geometry = wp.geometry!.copy() as? SCNGeometry
         wp.geometry?.firstMaterial = wp.geometry?.firstMaterial!.copy() as? SCNMaterial
         wp.geometry?.firstMaterial!.diffuse.contents = self.defaultObjectToPlaceColor
-        wp.scale = SCNVector3(self.waypointScale, self.waypointScale, self.waypointScale)
+        wp.scale = SCNVector3(self.defaultObejectToPlaceScale, self.defaultObejectToPlaceScale, self.defaultObejectToPlaceScale)
         wp.position = position
         wp.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
         self.waypointContainer.add(waypoint: wp)
