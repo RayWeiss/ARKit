@@ -19,6 +19,7 @@
 		71672C302061D8F70014DEFC /* Waypoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71672C2F2061D8F70014DEFC /* Waypoint.swift */; };
 		71672C322061D9190014DEFC /* WaypointContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71672C312061D9190014DEFC /* WaypointContainer.swift */; };
 		7192274F2037346100A4762D /* arrow.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7192274E2037346100A4762D /* arrow.scn */; };
+		71A3E3CA2083AE9800BD2032 /* EditWaypointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71A3E3C92083AE9800BD2032 /* EditWaypointViewController.swift */; };
 		71BC5279205332C3000E141F /* PersistenceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC5278205332C3000E141F /* PersistenceViewController.swift */; };
 		71BC527D205459DE000E141F /* MathHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71BC527C205459DE000E141F /* MathHelper.swift */; };
 		71FE57F2201B696A005EC277 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 71FE57F1201B696A005EC277 /* AppDelegate.swift */; };
@@ -42,6 +43,7 @@
 		71672C2F2061D8F70014DEFC /* Waypoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Waypoint.swift; sourceTree = "<group>"; };
 		71672C312061D9190014DEFC /* WaypointContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaypointContainer.swift; sourceTree = "<group>"; };
 		7192274E2037346100A4762D /* arrow.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = arrow.scn; sourceTree = "<group>"; };
+		71A3E3C92083AE9800BD2032 /* EditWaypointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditWaypointViewController.swift; sourceTree = "<group>"; };
 		71BC5278205332C3000E141F /* PersistenceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceViewController.swift; sourceTree = "<group>"; };
 		71BC527C205459DE000E141F /* MathHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MathHelper.swift; sourceTree = "<group>"; };
 		71FE57EE201B696A005EC277 /* ObjectEditingAbility.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ObjectEditingAbility.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -70,6 +72,7 @@
 			children = (
 				71FE57F3201B696A005EC277 /* ARSceneViewController.swift */,
 				714DB09F20266F2100C702DD /* ConfigurationViewController.swift */,
+				71A3E3C92083AE9800BD2032 /* EditWaypointViewController.swift */,
 				715BEBD320483DCF007AC79B /* WaypointViewController.swift */,
 				71BC5278205332C3000E141F /* PersistenceViewController.swift */,
 			);
@@ -244,6 +247,7 @@
 				7137A5AF205BE7C70067E2A2 /* DateExtension.swift in Sources */,
 				714DB0A020266F2100C702DD /* ConfigurationViewController.swift in Sources */,
 				714DB0A22027580000C702DD /* UIColorExtension.swift in Sources */,
+				71A3E3CA2083AE9800BD2032 /* EditWaypointViewController.swift in Sources */,
 				71FFB2E22027B9B600747450 /* SelectableNode.swift in Sources */,
 				711127DD2025FC9200DC1E4E /* SCNNodeExtension.swift in Sources */,
 				71672C302061D8F70014DEFC /* Waypoint.swift in Sources */,

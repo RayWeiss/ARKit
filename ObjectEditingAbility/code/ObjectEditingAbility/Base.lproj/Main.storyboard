@@ -13,7 +13,7 @@
         <!--Scene View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ARSceneViewController" customModule="NameableWaypoints" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ARSceneViewController" customModule="ObjectEditingAbility" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -100,7 +100,7 @@
         <!--Persistence View Controller-->
         <scene sceneID="HOd-9p-xzD">
             <objects>
-                <viewController storyboardIdentifier="persistenceViewController" id="0pf-t8-od8" customClass="PersistenceViewController" customModule="NameableWaypoints" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="persistenceViewController" id="0pf-t8-od8" customClass="PersistenceViewController" customModule="ObjectEditingAbility" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Vid-9y-ews">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -169,10 +169,107 @@
             </objects>
             <point key="canvasLocation" x="140" y="859.52023988005999"/>
         </scene>
+        <!--Edit Waypoint View Controller-->
+        <scene sceneID="Heg-T5-haN">
+            <objects>
+                <viewController storyboardIdentifier="editWaypointViewController" id="7k3-hj-DDL" customClass="EditWaypointViewController" customModule="ObjectEditingAbility" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Xff-Uf-51m">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <navigationBar contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pKy-Oq-I3S">
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <items>
+                                    <navigationItem title="Edit Waypoint" id="f1g-uT-WrA">
+                                        <barButtonItem key="leftBarButtonItem" title="Done" id="qoB-Qi-g5G">
+                                            <connections>
+                                                <action selector="donePressed:" destination="7k3-hj-DDL" id="p8h-6p-8vJ"/>
+                                            </connections>
+                                        </barButtonItem>
+                                    </navigationItem>
+                                </items>
+                            </navigationBar>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xP1-fF-Sxx">
+                                <rect key="frame" x="0.0" y="102" width="375" height="162"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" identifier="objectPicker"/>
+                            </pickerView>
+                            <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="T6c-4d-x6O">
+                                <rect key="frame" x="0.0" y="272" width="375" height="162"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                                <accessibility key="accessibilityConfiguration" identifier="colorPicker"/>
+                            </pickerView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZcE-9C-dPx">
+                                <rect key="frame" x="16" y="442" width="37" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7u2-ED-zFr">
+                                <rect key="frame" x="296" y="442" width="63" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.05000000074505806" maxValue="1.5" translatesAutoresizingMaskIntoConstraints="NO" id="eHq-Hw-vzY">
+                                <rect key="frame" x="14" y="471" width="347" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="adjustScale:" destination="ODl-Ld-Tk4" eventType="valueChanged" id="J1g-Pm-GKn"/>
+                                    <action selector="adjustScale:" destination="7k3-hj-DDL" eventType="valueChanged" id="dGp-AB-4cy"/>
+                                </connections>
+                            </slider>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g1Y-sJ-zON">
+                                <rect key="frame" x="16" y="73" width="50" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="08H-Ef-6KA">
+                                <rect key="frame" x="74" y="73" width="285" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Object Color: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oGi-oj-srI">
+                                <rect key="frame" x="16" y="342" width="106" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Object Type: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Cj-ic-cmA">
+                                <rect key="frame" x="20" y="172" width="102" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="BkE-xj-Hdl"/>
+                    </view>
+                    <connections>
+                        <outlet property="colorPicker" destination="T6c-4d-x6O" id="PMZ-7R-lih"/>
+                        <outlet property="objectPicker" destination="xP1-fF-Sxx" id="ClO-HV-PZb"/>
+                        <outlet property="scaleLabel" destination="7u2-ED-zFr" id="eUn-NV-wsj"/>
+                        <outlet property="scaleSlider" destination="eHq-Hw-vzY" id="cEq-V3-zMM"/>
+                        <outlet property="waypointTitleLabel" destination="08H-Ef-6KA" id="1rA-52-O5F"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Vjw-gY-mxy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="928.79999999999995" y="859.52023988005999"/>
+        </scene>
         <!--Waypoint View Controller-->
         <scene sceneID="nkp-m4-KjV">
             <objects>
-                <tableViewController storyboardIdentifier="waypointViewController" id="ifc-5j-GGf" customClass="WaypointViewController" customModule="NameableWaypoints" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="waypointViewController" id="ifc-5j-GGf" customClass="WaypointViewController" customModule="ObjectEditingAbility" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="STw-SU-cLr">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -216,7 +313,7 @@
         <!--Configuration View Controller-->
         <scene sceneID="96W-Q4-Gy5">
             <objects>
-                <viewController storyboardIdentifier="configurationViewController" id="ODl-Ld-Tk4" customClass="ConfigurationViewController" customModule="NameableWaypoints" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="configurationViewController" id="ODl-Ld-Tk4" customClass="ConfigurationViewController" customModule="ObjectEditingAbility" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="oPS-WZ-h7g">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

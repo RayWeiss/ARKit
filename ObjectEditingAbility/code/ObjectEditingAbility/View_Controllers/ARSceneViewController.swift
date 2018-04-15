@@ -25,6 +25,7 @@ class ARSceneViewController: UIViewController {
     let configurationViewControllerStoryboardID = "configurationViewController"
     let waypointViewControllerStoryboardID = "waypointViewController"
     let persistenceViewControllerStoryboardID = "persistenceViewController"
+    let editWaypointViewControllerStoryboardID = "editWaypointViewController"
     
     // MARK: Location Manager Properties
     let locationManager = CLLocationManager()
