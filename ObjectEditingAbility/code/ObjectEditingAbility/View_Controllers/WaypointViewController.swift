@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SceneKit
 
 class WaypointViewController: UITableViewController {
     var arSceneViewController: ARSceneViewController!
@@ -128,13 +129,11 @@ class WaypointViewController: UITableViewController {
 
     // MARK: Edit Row Action
     func performEdit(forRowAt indexPath: IndexPath) {
-        print("edit \(indexPath)")
         let wp = self.arSceneViewController.waypointContainer.waypoints[indexPath.row]
         let storyboard = UIStoryboard(name: self.arSceneViewController.mainStoryboardName, bundle: nil)
         let editWaypointViewController = storyboard.instantiateViewController(withIdentifier: self.arSceneViewController.editWaypointViewControllerStoryboardID) as! EditWaypointViewController
         editWaypointViewController.arSceneViewController = self.arSceneViewController
         editWaypointViewController.waypointToEdit = wp
-        
         guard let navigationController = navigationController else { return }
         navigationController.pushViewController(editWaypointViewController, animated: false)
     }

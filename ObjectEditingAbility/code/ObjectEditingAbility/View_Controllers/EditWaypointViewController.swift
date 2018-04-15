@@ -23,6 +23,9 @@ class EditWaypointViewController: UIViewController, UIPickerViewDataSource, UIPi
     let objects: [String] = ["box", "capsule", "cone", "cylinder",
                              "sphere", "torus", "tube", "pyramid", "paperPlane.scn", "car.dae"]
     
+    let objectsDict: [String: SCNGeometry] = ["box":SCNBox(), "capsule":SCNCapsule(), "cone":SCNCone(), "cylinder":SCNCylinder(),
+                                              "sphere":SCNSphere(), "torus":SCNTorus(), "tube":SCNTube(), "pyramid":SCNPyramid()]
+
     let colors: [UIColor] = [.black, .blue, .brown, .cyan, .darkGray,
                              .gray, .green, .lightGray, .magenta, .orange,
                              .purple, .red, .white, .yellow]
@@ -48,15 +51,37 @@ class EditWaypointViewController: UIViewController, UIPickerViewDataSource, UIPi
     }
     
     func setupObjectPickerView() {
-        let selectedObject = self.arSceneViewController.defaultObjectToPlaceType
-        guard let selectedObjectIndex = objects.index(of: selectedObject) else { return }
+        let waypointToEditGeometry = self.waypointToEdit.geometry
+        var geometryString = "unkown geometry"
+        switch waypointToEditGeometry {
+        case is SCNBox:
+            geometryString = "box"
+        case is SCNCapsule:
+            geometryString = "capsule"
+        case is SCNCone:
+            geometryString = "cone"
+        case is SCNCylinder:
+            geometryString = "cylinder"
+        case is SCNSphere:
+            geometryString = "sphere"
+        case is SCNTorus:
+            geometryString = "torus"
+        case is SCNTube:
+            geometryString = "tube"
+        case is SCNPyramid:
+            geometryString = "pyramid"
+        default:
+            return
+        }
+        
+        guard let selectedObjectIndex = objects.index(of: geometryString) else { return }
         objectPicker.selectRow(selectedObjectIndex, inComponent: 0, animated: false)
         objectPicker.reloadComponent(0)
     }
     
     func setupColorPickerView() {
-        let selectedColor = self.arSceneViewController.defaultObjectToPlaceColor
-        guard let selectedColorIndex = colors.index(of: selectedColor) else { return }
+        guard let waypointToEditColor = self.waypointToEdit.geometry?.firstMaterial!.diffuse.contents as? UIColor else { return }
+        guard let selectedColorIndex = colors.index(of: waypointToEditColor) else { return }
         colorPicker.selectRow(selectedColorIndex, inComponent: 0, animated: false)
         colorPicker.reloadComponent(0)
     }
@@ -85,9 +110,38 @@ class EditWaypointViewController: UIViewController, UIPickerViewDataSource, UIPi
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView.accessibilityIdentifier == self.objectPickerID {
-//            self.arSceneViewController.defaultObjectToPlaceType = objects[row]
+            guard let originalColor = self.waypointToEdit.geometry?.firstMaterial!.diffuse.contents as? UIColor else { return }
+            if let newGeometry = self.objectsDict[objects[row]] {
+                switch newGeometry {
+                case is SCNBox:
+                    self.waypointToEdit.geometry = newGeometry as! SCNBox
+                case is SCNCapsule:
+                    self.waypointToEdit.geometry = newGeometry as! SCNCapsule
+                case is SCNCone:
+                    self.waypointToEdit.geometry = newGeometry as! SCNCone
+                case is SCNCylinder:
+                    self.waypointToEdit.geometry = newGeometry as! SCNCylinder
+                case is SCNSphere:
+                    self.waypointToEdit.geometry = newGeometry as! SCNSphere
+                case is SCNTorus:
+                    self.waypointToEdit.geometry = newGeometry as! SCNTorus
+                case is SCNTube:
+                    self.waypointToEdit.geometry = newGeometry as! SCNTube
+                case is SCNPyramid:
+                    self.waypointToEdit.geometry = newGeometry as! SCNPyramid
+                default:
+                    return
+                }
+            } else {
+                self.waypointToEdit.geometry = self.arSceneViewController.waypointGeometry
+            }
+            self.waypointToEdit.geometry = waypointToEdit.geometry!.copy() as? SCNGeometry
+            self.waypointToEdit.geometry?.firstMaterial = waypointToEdit.geometry?.firstMaterial!.copy() as? SCNMaterial
+            self.waypointToEdit.geometry?.firstMaterial!.diffuse.contents = originalColor
+            self.waypointToEdit.physicsBody = SCNPhysicsBody(type: .static, shape: nil)
+            
         } else if pickerView.accessibilityIdentifier == self.colorPickerID {
-//            self.arSceneViewController.defaultObjectToPlaceColor = colors[row]
+            self.waypointToEdit.geometry?.firstMaterial!.diffuse.contents = colors[row]
         }
     }
     
