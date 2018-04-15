@@ -98,28 +98,29 @@ Week 12, April 10:
 		+Made waypoints be placed with color selected from configuration vc
 
 Week 13, April 17:
-	Implement editing of currently placed waypoints
-		Edit from newly displayed VC from edit row action
-		Edit from AR scene view
-	Begin implementation of transition once user is within give proximity of waypoint
+	ObjectEditingAbility
+		+Added ability to change color of placed waypoints
+		+Added ability to change geometry of placed waypoints
+		+Added ability to size of placed waypoints
+
 
 ********************************************************************
-Drop down for sub-details view, click from sub details view to full details view
+TODO
+	Edit name of placed waypoint
+	Edit placed waypoints from AR scene view
+	Point to "next waypoint" once user is within give proximity of waypoint
+	Add "details" to waypoints
+		Drop down for sub-details view, click from sub details view to full details view
 
 
-Final Expectations
 
-Last meeting?
 
-Final Feature Decisions / Expectations
-	+ Edit names (on details page or from tableview?)
+Feature Decisions
 	+ Ability to rearrange waypoints
-	+Ability to edit properties of waypoints already placed
 	+ Is the collection ordered or unordered? Is this a path or a collection of related objects without a set order? Does it matter? 
 		- If it is ... recognize when a user is at a waypoint and switch to the next
 
 	+ Auto-save / load (how to handle location / heading accuracy?)
-	+ Unique waypoint id's for accessing and saving (related to auto-save/load)	*** -> let uuid = UUID().uuidString OR CFUUIDCreate(_:)
 	+ Click waypoints for "details page"
 		- Detail page will display name and notes about the waypoint
 		- Waypoint attributes will be editable from details page
@@ -133,46 +134,12 @@ Final Feature Decisions / Expectations
 	+ Separate view for map of user location and all waypoints
 
 
-
-NOTES
-+++++++++++++++++
-let uuid = UUID().uuidString
-FUUIDCreate(_:)
-
-
-Var timer: Timer?
-{
-	willSet {
-		newValue
-	}
-}
-
-
-
 --------------------------------------------------------------------
-Future:
+Old:
 	Make arrow point back north if you delete waypoint currently being tracked
 	Add ability to rearrange waypoints
-	Add ability to rename waypoints
 	Circle with 2D view of waypoints / Map for placed waypoints
 	Recognize when a user is at a waypoint and switch to the next
-
-	Move out literal values from persistence view controller
-	MapKit for distanceFrom and atDegreesLatitude
-
-
-X	Remove constants from code and move to properties
-	Plane recognition and placement of plane objects
-	Double tap on object to move to closest plane
-	SceneKit editor
-	CoreLocation
-	CoreML
-	Struct for angles, able to return radians or degrees
-	Is ARSceneViewController the appropriate place for the calculateXZAngle function?
-	If not where should it go?
-		extend SCNVector3
-		extend SCNNode (can't use ARCamera)
-		possible helpers class
 
 
 	
