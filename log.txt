@@ -103,6 +103,9 @@ Week 13, April 17:
 		+Added ability to change geometry of placed waypoints
 		+Added ability to size of placed waypoints
 
+Week 14, April 24th:
+	Display distance of currently selected waypoint to user in AR scene view
+	Make Waypoint selectable from AR scene view
 
 ********************************************************************
 TODO
