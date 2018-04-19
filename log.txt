@@ -104,8 +104,9 @@ Week 13, April 17:
 		+Added ability to size of placed waypoints
 
 Week 14, April 24th:
-	Display distance of currently selected waypoint to user in AR scene view
-	Make Waypoint selectable from AR scene view
+	ProximityDisplay
+		+Added view to display distance of currently selected waypoint to user in ARSceneView
+		+Added ability to select Waypoints from ARSceneView
 
 ********************************************************************
 TODO
