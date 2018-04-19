@@ -38,7 +38,7 @@ class ARSceneViewController: UIViewController {
     @IBOutlet weak var headingAccuracyThresholdLabel: UILabel!
     
     // MARK: Control Panel Properties
-    let controlPanelViewID = "controlPanelView"
+    let controlPanelViewTag = 2
     let controlPanelColor: UIColor = .gray
     let controlPanelAlpha: CGFloat = 0.5
     var arStatusBarHeight: CGFloat {
@@ -208,7 +208,7 @@ class ARSceneViewController: UIViewController {
                                                     width: self.controlPanelWidth, height: self.controlPanelHeight))
         controlPanelView.backgroundColor = self.controlPanelColor
         controlPanelView.alpha = self.controlPanelAlpha
-        controlPanelView.accessibilityIdentifier = self.controlPanelViewID
+        controlPanelView.tag = self.controlPanelViewTag
         
         // Configure left button
         let leftButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 0.0, y: 0.0,
@@ -253,16 +253,13 @@ class ARSceneViewController: UIViewController {
     }
     
     func layoutControlPanelView() {
-        guard let firstSubview = self.arSceneView.subviews.first else {return }
-        if firstSubview.accessibilityIdentifier == self.controlPanelViewID {
-            let controlPanelView = firstSubview
-            controlPanelView.frame = CGRect(x: 0.0, y: self.arSceneView.bounds.height - (self.arStatusBarHeight + self.controlPanelHeight),
-                                            width: self.controlPanelWidth, height: self.controlPanelHeight)
-            var buttonIndex = 0
-            for button in controlPanelView.subviews {
-                button.frame = CGRect(x: self.controlPanelButtonWidth * CGFloat(buttonIndex), y: 0.0, width: self.controlPanelButtonWidth, height: self.controlPanelHeight)
-                buttonIndex += 1
-            }
+        guard let controlPanelView = self.arSceneView.viewWithTag(self.controlPanelViewTag) else { return }
+        controlPanelView.frame = CGRect(x: 0.0, y: self.arSceneView.bounds.height - (self.arStatusBarHeight + self.controlPanelHeight),
+                                        width: self.controlPanelWidth, height: self.controlPanelHeight)
+        var buttonIndex = 0
+        for button in controlPanelView.subviews {
+            button.frame = CGRect(x: self.controlPanelButtonWidth * CGFloat(buttonIndex), y: 0.0, width: self.controlPanelButtonWidth, height: self.controlPanelHeight)
+            buttonIndex += 1
         }
     }
     
