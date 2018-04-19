@@ -40,6 +40,13 @@ class ARSceneViewController: UIViewController {
     // MARK: Proximity Display Properties
     var proximityDisplayView = UILabel()
     let proximityDisplayViewTag = 1
+    let proximityDisplayViewHeight = CGFloat(50.0)
+    let proximityDisplayViewSideMargin = CGFloat(10.0)
+    let proximityDisplayViewAlpha = CGFloat(0.5)
+    let proximityDisplayViewCornerRadius = CGFloat(10.0)
+    let proximityDisplayViewDefaultText = "Waypoint Distance: "
+    let proximityDisplayViewDefaultNilText = "N/A"
+    let proximityDisplayViewDefaultUnitText = "m"
     
     // MARK: Control Panel Properties
     let controlPanelViewTag = 2
@@ -208,16 +215,13 @@ class ARSceneViewController: UIViewController {
     
     // MARK: Proximity Display Configuration
     func addProximityDisplayView() {
-        let proximityDisplayViewHeight = CGFloat(50.0)
-        let sideMargin = CGFloat(10.0)
         let statusBarOffset = UIApplication.shared.statusBarFrame.size.height
-        self.proximityDisplayView.backgroundColor = UIColor(white: 1, alpha: 0.5)
-        self.proximityDisplayView.frame = CGRect(x: self.arSceneView.bounds.origin.x + sideMargin, y: self.arSceneView.bounds.origin.y + statusBarOffset,
-                                                 width: self.arSceneView.bounds.width / 2.5 - sideMargin, height: proximityDisplayViewHeight)
-        self.proximityDisplayView.layer.cornerRadius = 10.0
+        self.proximityDisplayView.backgroundColor = UIColor(white: 1, alpha: self.proximityDisplayViewAlpha)
+        self.proximityDisplayView.frame = CGRect(x: self.arSceneView.bounds.origin.x + self.proximityDisplayViewSideMargin, y: self.arSceneView.bounds.origin.y + statusBarOffset,
+                                                 width: self.arSceneView.bounds.width / 2.5 - self.proximityDisplayViewSideMargin, height: self.proximityDisplayViewHeight)
+        self.proximityDisplayView.layer.cornerRadius = self.proximityDisplayViewCornerRadius
         self.proximityDisplayView.clipsToBounds = true
         self.proximityDisplayView.tag = self.proximityDisplayViewTag
-        self.proximityDisplayView.text = "Waypoint Distance: "
         self.proximityDisplayView.numberOfLines = 0
         self.arSceneView.addSubview(self.proximityDisplayView)
     }
@@ -225,9 +229,9 @@ class ARSceneViewController: UIViewController {
     func updateProximityDisplayView(withDistance distance: Float?) {
         guard let proximityDisplayView = self.arSceneView.viewWithTag(self.proximityDisplayViewTag) as? UILabel else { return }
         if let d = distance {
-            proximityDisplayView.text = "Waypoint Distance: " + String(format: "%.2f", d) + " m"
+            proximityDisplayView.text = self.proximityDisplayViewDefaultText + String(format: "%.2f", d) + " " + proximityDisplayViewDefaultUnitText
         } else {
-            proximityDisplayView.text = "Waypoint Distance: N/A"
+            proximityDisplayView.text = self.proximityDisplayViewDefaultText + self.proximityDisplayViewDefaultNilText
         }
     }
     
