@@ -41,6 +41,15 @@ class MathHelper {
         }
     }
     
+    static func calculateXZdistanceBetween(_ a: SCNVector3, _ b: SCNVector3) -> Float {
+        let deltaX = b.x - a.x
+        let deltaZ = b.z - a.z
+        let dXSquared = deltaX * deltaX
+        let dZSquared = deltaZ * deltaZ
+        let sum = dXSquared + dZSquared
+        return sum.squareRoot()
+    }
+    
 }
 
 enum AngleMeasure {

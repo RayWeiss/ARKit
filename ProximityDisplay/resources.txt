@@ -1,0 +1,5 @@
+View Used for Proximity Display
+https://stackoverflow.com/questions/12991935/how-to-programmatically-get-ios-status-bar-height
+https://stackoverflow.com/questions/28798269/round-uivisualeffectview
+https://stackoverflow.com/questions/27439220/swift-uiview-background-color-opacity
+https://developer.apple.com/documentation/uikit/uilabel

@@ -37,6 +37,10 @@ class ARSceneViewController: UIViewController {
     @IBOutlet weak var headingAlertView: UIView!
     @IBOutlet weak var headingAccuracyThresholdLabel: UILabel!
     
+    // MARK: Proximity Display Properties
+    var proximityDisplayView = UILabel()
+    let proximityDisplayViewTag = 1
+    
     // MARK: Control Panel Properties
     let controlPanelViewTag = 2
     let controlPanelColor: UIColor = .gray
@@ -129,6 +133,7 @@ class ARSceneViewController: UIViewController {
         self.setupARSession()
         self.setGravity()
         self.addControlPanelView()
+        self.addProximityDisplayView()
     }
     
     func setupARConfiguration() {
@@ -199,6 +204,40 @@ class ARSceneViewController: UIViewController {
         let sotryboard = UIStoryboard(name: self.mainStoryboardName, bundle: nil)
         self.persistenceViewController = sotryboard.instantiateViewController(withIdentifier: self.persistenceViewControllerStoryboardID) as! PersistenceViewController
         self.persistenceViewController.arSceneViewController = self
+    }
+    
+    // MARK: Proximity Display Configuration
+    func addProximityDisplayView() {
+        let proximityDisplayViewHeight = CGFloat(50.0)
+        let sideMargin = CGFloat(10.0)
+        let statusBarOffset = UIApplication.shared.statusBarFrame.size.height
+        self.proximityDisplayView.backgroundColor = UIColor(white: 1, alpha: 0.5)
+        self.proximityDisplayView.frame = CGRect(x: self.arSceneView.bounds.origin.x + sideMargin, y: self.arSceneView.bounds.origin.y + statusBarOffset,
+                                                 width: self.arSceneView.bounds.width / 2.5 - sideMargin, height: proximityDisplayViewHeight)
+        self.proximityDisplayView.layer.cornerRadius = 10.0
+        self.proximityDisplayView.clipsToBounds = true
+        self.proximityDisplayView.tag = self.proximityDisplayViewTag
+        self.proximityDisplayView.text = "Waypoint Distance: "
+        self.proximityDisplayView.numberOfLines = 0
+        self.arSceneView.addSubview(self.proximityDisplayView)
+    }
+    
+    func updateProximityDisplayView(withDistance distance: Float?) {
+        guard let proximityDisplayView = self.arSceneView.viewWithTag(self.proximityDisplayViewTag) as? UILabel else { return }
+        if let d = distance {
+            proximityDisplayView.text = "Waypoint Distance: " + String(format: "%.2f", d) + " m"
+        } else {
+            proximityDisplayView.text = "Waypoint Distance: N/A"
+        }
+    }
+    
+    func manageTrackedWaypointDistance() {
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        guard let waypointBeingTracked = self.getWaypointBeingTracked() else { self.updateProximityDisplayView(withDistance: nil); return }
+        let cameraTransform = currentFrame.camera.transform
+        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
+        let distance = MathHelper.calculateXZdistanceBetween(cameraPosition, waypointBeingTracked.position)
+        self.updateProximityDisplayView(withDistance: distance)
     }
     
     // MARK: Control Panel View Configuration
@@ -666,6 +705,7 @@ extension ARSceneViewController: ARSessionDelegate {
     // handle frame updates
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.manageHeadingArrow()
+        self.manageTrackedWaypointDistance()
     }
 }
 
