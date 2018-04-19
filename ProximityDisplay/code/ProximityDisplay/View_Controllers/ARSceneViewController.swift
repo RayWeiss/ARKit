@@ -611,25 +611,28 @@ class ARSceneViewController: UIViewController {
         let hitTestResults = self.arSceneView.hitTest(tapLocation)
         
         if let node = hitTestResults.first?.node {
-            guard var selectableNode = node as? SelectableNode else { return }
-            if selectableNode.name == selectableObjectChildName {
-                if let parent = selectableNode.parent {
-                    if parent is SelectableNode {
-                        let parentAsSelectable = parent as! SelectableNode
-                        selectableNode = parentAsSelectable
+            if let waypoint = node as? Waypoint {
+                self.waypointBeingTrackedID = waypoint.name ?? ""
+            } else {
+                guard var selectableNode = node as? SelectableNode else { return }
+                if selectableNode.name == selectableObjectChildName {
+                    if let parent = selectableNode.parent {
+                        if parent is SelectableNode {
+                            let parentAsSelectable = parent as! SelectableNode
+                            selectableNode = parentAsSelectable
+                        }
                     }
                 }
-            }
-            
-            if selectableNode.isSelected {
-                selectableNode.unselectNode()
-            } else {
-                if let selectedNode = getSelectedNode() {
-                    selectedNode.unselectNode()
+                
+                if selectableNode.isSelected {
+                    selectableNode.unselectNode()
+                } else {
+                    if let selectedNode = getSelectedNode() {
+                        selectedNode.unselectNode()
+                    }
+                    selectableNode.selectNode()
                 }
-                selectableNode.selectNode()
             }
-            
         } else {
             let featurePointHitTestResult = self.arSceneView.hitTest(tapLocation, types: .featurePoint)
             if let firstResult = featurePointHitTestResult.first {
