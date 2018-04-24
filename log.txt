@@ -108,6 +108,12 @@ Week 14, April 24th:
 		+Added view to display distance of currently selected waypoint to user in ARSceneView
 		+Added ability to select Waypoints from ARSceneView
 
+Week 14, May 1st:
+	Alert / Signal when user reaches given proximity of currently selected waypoint
+	Switch to next waypoint in container if user wants to
+	Color selected waypoint to users color once within proximity
+	
+
 ********************************************************************
 TODO
 	Edit name of placed waypoint
