@@ -92,6 +92,8 @@ class ARSceneViewController: UIViewController {
     let waypointGeometry = SCNBox()
     let waypointColor = UIColor.cyan
     var waypointBeingTrackedID = ""
+    var lastWaypointReachedID = ""
+    let reachedWaypointThresholdDistance:Float = 1.0
     
     // MARK: Heading Arrow Properties
     let headingArrowSceneFileName = "arrow.scn"
@@ -242,6 +244,22 @@ class ARSceneViewController: UIViewController {
         let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
         let distance = MathHelper.calculateXZdistanceBetween(cameraPosition, waypointBeingTracked.position)
         self.updateProximityDisplayView(withDistance: distance)
+    }
+    
+    func handleReachingWaypoint() {
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        guard let waypointBeingTracked = self.getWaypointBeingTracked() else { self.updateProximityDisplayView(withDistance: nil); return }
+        let cameraTransform = currentFrame.camera.transform
+        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
+        let distance = MathHelper.calculateXZdistanceBetween(cameraPosition, waypointBeingTracked.position)
+        if distance < self.reachedWaypointThresholdDistance && waypointBeingTracked.name != self.lastWaypointReachedID {
+            self.lastWaypointReachedID = waypointBeingTracked.name ?? ""
+            self.reachedWaypointAction()
+        }
+    }
+    
+    func reachedWaypointAction() {
+        AlertHelper.alert(withTitle: "Congrats!", andMessage: "You reached the waypoint.", onViewController: self)
     }
     
     // MARK: Control Panel View Configuration
@@ -713,6 +731,7 @@ extension ARSceneViewController: ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.manageHeadingArrow()
         self.manageTrackedWaypointDistance()
+        self.handleReachingWaypoint()
     }
 }
 
