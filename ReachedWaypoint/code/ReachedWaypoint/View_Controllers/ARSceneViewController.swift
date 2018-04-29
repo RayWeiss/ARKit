@@ -246,22 +246,6 @@ class ARSceneViewController: UIViewController {
         self.updateProximityDisplayView(withDistance: distance)
     }
     
-    func handleReachingWaypoint() {
-        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
-        guard let waypointBeingTracked = self.getWaypointBeingTracked() else { self.updateProximityDisplayView(withDistance: nil); return }
-        let cameraTransform = currentFrame.camera.transform
-        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
-        let distance = MathHelper.calculateXZdistanceBetween(cameraPosition, waypointBeingTracked.position)
-        if distance < self.reachedWaypointThresholdDistance && waypointBeingTracked.name != self.lastWaypointReachedID {
-            self.lastWaypointReachedID = waypointBeingTracked.name ?? ""
-            self.reachedWaypointAction()
-        }
-    }
-    
-    func reachedWaypointAction() {
-        AlertHelper.alert(withTitle: "Congrats!", andMessage: "You reached the waypoint.", onViewController: self)
-    }
-    
     // MARK: Control Panel View Configuration
     func addControlPanelView() {
         // Configure control panel
@@ -470,6 +454,60 @@ class ARSceneViewController: UIViewController {
     
     func getWaypointBeingTracked() -> SCNNode? {
         return self.arSceneView.scene.rootNode.childNode(withName: self.waypointBeingTrackedID, recursively: false)
+    }
+    
+    func checkForReachingWaypoint() {
+        guard let currentFrame = self.arSceneView.session.currentFrame else { return }
+        guard let waypointBeingTracked = self.getWaypointBeingTracked() else { self.updateProximityDisplayView(withDistance: nil); return }
+        let cameraTransform = currentFrame.camera.transform
+        let cameraPosition = SCNVector3(cameraTransform.columns.3.x, cameraTransform.columns.3.y, cameraTransform.columns.3.z)
+        let distance = MathHelper.calculateXZdistanceBetween(cameraPosition, waypointBeingTracked.position)
+        if distance <= self.reachedWaypointThresholdDistance && waypointBeingTracked.name != self.lastWaypointReachedID {
+            self.lastWaypointReachedID = waypointBeingTracked.name ?? ""
+            self.reachedWaypointAction()
+        }
+    }
+    
+    let reachedWaypointMessgae = "Congrats! You reached the waypoint."
+    let reachedLastWaypointMessgae = "Congrats! You reached the last waypoint."
+    let switchToNextWaypointMessgae = "Switch to next waypoint?"
+    let reachedWaypointColor = UIColor.blue
+    
+    func reachedWaypointAction() {
+        self.colorCurrentWaypointReached()
+        guard let currentWaypoint = self.getWaypointBeingTracked() else { return }
+        if currentWaypoint == self.waypointContainer.waypoints.last {
+            self.alertLastWaypoint()
+        } else {
+            self.alertNextWaypoint()
+        }
+    }
+    
+    func alertNextWaypoint() {
+        let alert = UIAlertController(title:  reachedWaypointMessgae, message: switchToNextWaypointMessgae, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { alert in
+            self.switchToNextWaypoint()
+        }))
+        alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func alertLastWaypoint() {
+        let alert = UIAlertController(title:  self.reachedLastWaypointMessgae, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
+    }
+    
+    func colorCurrentWaypointReached() {
+        guard let currentWaypoint = self.getWaypointBeingTracked() else { return }
+        currentWaypoint.geometry?.firstMaterial!.diffuse.contents = self.reachedWaypointColor
+    }
+    
+    func switchToNextWaypoint() {
+        guard let currentWaypointIndex = self.waypointContainer.index(of: self.waypointBeingTrackedID) else { return }
+        let nextWaypointIndex = currentWaypointIndex + 1
+        guard nextWaypointIndex < self.waypointContainer.count else { return }
+        self.waypointBeingTrackedID = self.waypointContainer.waypoints[nextWaypointIndex].name ?? ""
     }
     
     // MARK: Heading Arrow
@@ -731,7 +769,7 @@ extension ARSceneViewController: ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.manageHeadingArrow()
         self.manageTrackedWaypointDistance()
-        self.handleReachingWaypoint()
+        self.checkForReachingWaypoint()
     }
 }
 
