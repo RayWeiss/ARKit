@@ -93,7 +93,11 @@ class ARSceneViewController: UIViewController {
     let waypointColor = UIColor.cyan
     var waypointBeingTrackedID = ""
     var lastWaypointReachedID = ""
+    let reachedWaypointMessgae = "Congrats! You reached the waypoint."
+    let reachedLastWaypointMessgae = "Congrats! You reached the last waypoint."
+    let switchToNextWaypointMessgae = "Switch to next waypoint?"
     let reachedWaypointThresholdDistance:Float = 1.0
+    let reachedWaypointColor = UIColor.red
     
     // MARK: Heading Arrow Properties
     let headingArrowSceneFileName = "arrow.scn"
@@ -452,10 +456,12 @@ class ARSceneViewController: UIViewController {
         self.arSceneView.scene.rootNode.addChildNode(wp)
     }
     
+    
     func getWaypointBeingTracked() -> SCNNode? {
         return self.arSceneView.scene.rootNode.childNode(withName: self.waypointBeingTrackedID, recursively: false)
     }
     
+    // MARK: Reached Wapoints
     func checkForReachingWaypoint() {
         guard let currentFrame = self.arSceneView.session.currentFrame else { return }
         guard let waypointBeingTracked = self.getWaypointBeingTracked() else { self.updateProximityDisplayView(withDistance: nil); return }
@@ -467,11 +473,6 @@ class ARSceneViewController: UIViewController {
             self.reachedWaypointAction()
         }
     }
-    
-    let reachedWaypointMessgae = "Congrats! You reached the waypoint."
-    let reachedLastWaypointMessgae = "Congrats! You reached the last waypoint."
-    let switchToNextWaypointMessgae = "Switch to next waypoint?"
-    let reachedWaypointColor = UIColor.blue
     
     func reachedWaypointAction() {
         self.colorCurrentWaypointReached()
