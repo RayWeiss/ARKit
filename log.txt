@@ -113,6 +113,11 @@ Week 15, May 1st:
 		+Added alert when user reaches currently selected waypoint
 		+Added option to switch to next waypoint once current waypoint is reached
 		+Added marking of waypoint with color once user reaches it
+
+Final Meeting Monday May 7th at 11am:
+	Time limit to complete
+	Record total objects collected
+	Record time it took to collect them
 	
 
 ********************************************************************
