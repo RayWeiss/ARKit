@@ -118,44 +118,5 @@ Final Meeting Monday May 7th at 11am:
 	Time limit to complete
 	Record total objects collected
 	Record time it took to collect them
-	
-
-********************************************************************
-TODO
-	Edit name of placed waypoint
-	Edit placed waypoints from AR scene view
-	Point to "next waypoint" once user is within give proximity of waypoint
-	Add "details" to waypoints
-		Drop down for sub-details view, click from sub details view to full details view
-
-
-
-
-Feature Decisions
-	+ Ability to rearrange waypoints
-	+ Is the collection ordered or unordered? Is this a path or a collection of related objects without a set order? Does it matter? 
-		- If it is ... recognize when a user is at a waypoint and switch to the next
-
-	+ Auto-save / load (how to handle location / heading accuracy?)
-	+ Click waypoints for "details page"
-		- Detail page will display name and notes about the waypoint
-		- Waypoint attributes will be editable from details page
-			> Notes
-			> Geometry
-			> Color
-			> Scale
-
-	+ Display distance of selected waypoint from users current position
-	+ On screen "radar" map of close waypoints
-	+ Separate view for map of user location and all waypoints
-
-
---------------------------------------------------------------------
-Old:
-	Make arrow point back north if you delete waypoint currently being tracked
-	Add ability to rearrange waypoints
-	Circle with 2D view of waypoints / Map for placed waypoints
-	Recognize when a user is at a waypoint and switch to the next
-
 
 	

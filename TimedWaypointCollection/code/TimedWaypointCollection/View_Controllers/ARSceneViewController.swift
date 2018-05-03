@@ -67,7 +67,7 @@ class ARSceneViewController: UIViewController {
             return self.view.bounds.width
         }
     }
-    let controlPanelButtonCount: CGFloat = 5.0
+    let controlPanelButtonCount: CGFloat = 2.0
     var controlPanelButtonWidth: CGFloat {
         get {
             return self.controlPanelWidth / self.controlPanelButtonCount
@@ -96,8 +96,9 @@ class ARSceneViewController: UIViewController {
     let reachedWaypointMessgae = "Congrats! You reached the waypoint."
     let reachedLastWaypointMessgae = "Congrats! You reached the last waypoint."
     let switchToNextWaypointMessgae = "Switch to next waypoint?"
-    let reachedWaypointThresholdDistance:Float = 1.0
+    let reachedWaypointThresholdDistance:Float = 2.0
     let reachedWaypointColor = UIColor.red
+    var numberOfWaypointsCollected = 0
     
     // MARK: Heading Arrow Properties
     let headingArrowSceneFileName = "arrow.scn"
@@ -109,6 +110,23 @@ class ARSceneViewController: UIViewController {
             return self.arSceneView.scene.rootNode.childNode(withName: self.headingArrowName, recursively: false) == nil
         }
     }
+    
+    // MARK: Timing Properties
+    var isRunning = false
+    var justRan = false
+    var startTime: NSDate?
+    var elapsedTime: TimeInterval?
+    var timeLimit: TimeInterval = 20.0
+    var timingDisplayView = UILabel()
+    let timingDisplayViewTag = 3
+    let timingDisplayViewHeight = CGFloat(50.0)
+    let timingDisplayViewSideMargin = CGFloat(10.0)
+    let timingDisplayViewAlpha = CGFloat(0.5)
+    let timingDisplayViewCornerRadius = CGFloat(10.0)
+    let timingDisplayViewDefaultUnitText = "seconds"
+    let finalScoreTitle = "Final Score"
+    let collectionMessage = "You collected "
+    let timeMessage = " waypoints in "
     
     // MARK: Lifecycle Functions
     override func viewDidLoad() {
@@ -146,7 +164,8 @@ class ARSceneViewController: UIViewController {
         self.setupARSession()
         self.setGravity()
         self.addControlPanelView()
-        self.addProximityDisplayView()
+//        self.addProximityDisplayView()
+        self.addTimingDisplayView()
     }
     
     func setupARConfiguration() {
@@ -259,43 +278,57 @@ class ARSceneViewController: UIViewController {
         controlPanelView.alpha = self.controlPanelAlpha
         controlPanelView.tag = self.controlPanelViewTag
         
-        // Configure left button
-        let leftButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 0.0, y: 0.0,
-                                                width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
-        leftButton.setTitle(" V", for: .normal)
-        leftButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
-        leftButton.addTarget(self, action: #selector(moveLeft), for: .touchUpInside)
-        controlPanelView.addSubview(leftButton)
+//        // Configure left button
+//        let leftButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 0.0, y: 0.0,
+//                                                width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
+//        leftButton.setTitle(" V", for: .normal)
+//        leftButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: CGFloat.pi / 2)
+//        leftButton.addTarget(self, action: #selector(moveLeft), for: .touchUpInside)
+//        controlPanelView.addSubview(leftButton)
+//
+//        // Configure up button
+//        let upButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 1.0, y: 0.0,
+//                                              width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
+//        upButton.setTitle("V", for: .normal)
+//        upButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: CGFloat.pi)
+//        upButton.addTarget(self, action: #selector(moveUp), for: .touchUpInside)
+//        controlPanelView.addSubview(upButton)
+//
+//        // Configure down button
+//        let downButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 2.0, y: 0.0,
+//                                                width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
+//        downButton.setTitle("V", for: .normal)
+//        downButton.addTarget(self, action: #selector(moveDown), for: .touchUpInside)
+//        controlPanelView.addSubview(downButton)
+//
+//        // Configure right button
+//        let rightButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 3.0, y: 0.0,
+//                                                 width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
+//        rightButton.setTitle(" V", for: .normal)
+//        rightButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
+//        rightButton.addTarget(self, action: #selector(moveRight), for: .touchUpInside)
+//        controlPanelView.addSubview(rightButton)
+//
+//        // Configure delete button
+//        let deleteButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 4.0, y: 0.0,
+//                                                  width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
+//        deleteButton.setTitle("X", for: .normal)
+//        deleteButton.addTarget(self, action: #selector(deleteSelected), for: .touchUpInside)
+//        controlPanelView.addSubview(deleteButton)
         
-        // Configure up button
-        let upButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 1.0, y: 0.0,
-                                              width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
-        upButton.setTitle("V", for: .normal)
-        upButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: CGFloat.pi)
-        upButton.addTarget(self, action: #selector(moveUp), for: .touchUpInside)
-        controlPanelView.addSubview(upButton)
-        
-        // Configure down button
-        let downButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 2.0, y: 0.0,
-                                                width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
-        downButton.setTitle("V", for: .normal)
-        downButton.addTarget(self, action: #selector(moveDown), for: .touchUpInside)
-        controlPanelView.addSubview(downButton)
-        
-        // Configure right button
-        let rightButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 3.0, y: 0.0,
-                                                 width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
-        rightButton.setTitle(" V", for: .normal)
-        rightButton.titleLabel?.transform  = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
-        rightButton.addTarget(self, action: #selector(moveRight), for: .touchUpInside)
-        controlPanelView.addSubview(rightButton)
-        
-        // Configure delete button
-        let deleteButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 4.0, y: 0.0,
+        // Configure start button
+        let startButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 0.0, y: 0.0,
                                                   width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
-        deleteButton.setTitle("X", for: .normal)
-        deleteButton.addTarget(self, action: #selector(deleteSelected), for: .touchUpInside)
-        controlPanelView.addSubview(deleteButton)
+        startButton.setTitle("START", for: .normal)
+        startButton.addTarget(self, action: #selector(startCollection), for: .touchUpInside)
+        controlPanelView.addSubview(startButton)
+        
+        // Configure reset button
+        let resetButton = UIButton(frame: CGRect(x: self.controlPanelButtonWidth * 1.0, y: 0.0,
+                                                 width: self.controlPanelButtonWidth, height: self.controlPanelHeight))
+        resetButton.setTitle("RESET", for: .normal)
+        resetButton.addTarget(self, action: #selector(resetCollectionWithButton), for: .touchUpInside)
+        controlPanelView.addSubview(resetButton)
         
         // Add control panel to arSceneView
         self.arSceneView.addSubview(controlPanelView)
@@ -313,7 +346,6 @@ class ARSceneViewController: UIViewController {
     }
     
     // MARK: Location Fucntions
-    
     @IBAction func continueAnywaysPressed(_ sender: UIButton) {
         self.headingAlertView.isHidden = true
         self.runARSession()
@@ -475,6 +507,9 @@ class ARSceneViewController: UIViewController {
     }
     
     func reachedWaypointAction() {
+        if self.isRunning {
+            self.numberOfWaypointsCollected += 1
+        }
         self.colorCurrentWaypointReached()
         guard let currentWaypoint = self.getWaypointBeingTracked() else { return }
         if currentWaypoint == self.waypointContainer.waypoints.last {
@@ -494,8 +529,14 @@ class ARSceneViewController: UIViewController {
     }
     
     func alertLastWaypoint() {
+        if self.isRunning {
+            self.stopCollection()
+        }
         let alert = UIAlertController(title:  self.reachedLastWaypointMessgae, message: nil, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: { alert in
+            guard self.justRan else { return }
+            self.alertScore()
+        }))
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -509,6 +550,74 @@ class ARSceneViewController: UIViewController {
         let nextWaypointIndex = currentWaypointIndex + 1
         guard nextWaypointIndex < self.waypointContainer.count else { return }
         self.waypointBeingTrackedID = self.waypointContainer.waypoints[nextWaypointIndex].name ?? ""
+    }
+    
+    // MARK: Timing Functions
+    func addTimingDisplayView() {
+        let statusBarOffset = UIApplication.shared.statusBarFrame.size.height
+        self.timingDisplayView.backgroundColor = UIColor(white: 1, alpha: self.timingDisplayViewAlpha)
+        self.timingDisplayView.frame = CGRect(x: self.arSceneView.bounds.origin.x + self.timingDisplayViewSideMargin, y: self.arSceneView.bounds.origin.y + statusBarOffset,
+                                                 width: self.arSceneView.bounds.width / 2.5 - self.timingDisplayViewSideMargin, height: self.timingDisplayViewHeight)
+        self.timingDisplayView.layer.cornerRadius = self.timingDisplayViewCornerRadius
+        self.timingDisplayView.clipsToBounds = true
+        self.timingDisplayView.tag = self.timingDisplayViewTag
+        self.timingDisplayView.numberOfLines = 0
+        self.arSceneView.addSubview(self.timingDisplayView)
+    }
+    
+    func updateTimingDisplayView(withTime time: TimeInterval) {
+        guard let timingDisplayView = self.arSceneView.viewWithTag(self.timingDisplayViewTag) as? UILabel else { return }
+        timingDisplayView.text = self.timingDisplayViewDefaultUnitText + ": " + String(format: "%.2f", time) + "\n" + "WPS: \(self.numberOfWaypointsCollected)"
+    }
+    
+    @objc func startCollection(_ sender: UIButton) {
+        guard !self.isRunning else { return }
+        if self.justRan { self.resetCollection() }
+        self.isRunning = true
+        self.startTime = Date() as NSDate
+    }
+    
+    func stopCollection() {
+        self.isRunning = false
+        self.justRan = true
+        self.alertScore()
+    }
+    
+    @objc func resetCollectionWithButton(_ sender: UIButton) {
+        self.resetCollection()
+    }
+    
+    func resetCollection() {
+        self.startTime = nil
+        self.elapsedTime = nil
+        self.numberOfWaypointsCollected = 0
+        self.isRunning = false
+        self.justRan = false
+        self.waypointBeingTrackedID = self.waypointContainer.waypoints.first?.name ?? ""
+    }
+    
+    func updateTiming() {
+        let timeRemaining = self.timeLimit - (self.elapsedTime ?? 0.0)
+        if timeRemaining <= 0.0 && self.isRunning{
+            self.elapsedTime = self.timeLimit
+            self.updateTimingDisplayView(withTime: 0.0)
+            self.stopCollection()
+            return
+        }
+        self.updateTimingDisplayView(withTime: timeRemaining)
+        guard self.isRunning else { return }
+        guard let strtTime = self.startTime else { return }
+        let currentTime = Date() as NSDate
+        self.elapsedTime = -1 * strtTime.timeIntervalSince(currentTime as Date)
+    }
+    
+    func alertScore() {
+        let alert = UIAlertController(title:  self.finalScoreTitle,
+                                      message: self.collectionMessage + String(self.numberOfWaypointsCollected) +
+                                               self.timeMessage + String(format: "%.2f", self.elapsedTime ?? 0.0) + " " + self.timingDisplayViewDefaultUnitText + ".",
+                                      preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // MARK: Heading Arrow
@@ -766,11 +875,13 @@ class ARSceneViewController: UIViewController {
 
 // MARK: AR Session Delegate Extension
 extension ARSceneViewController: ARSessionDelegate {
+    
     // handle frame updates
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         self.manageHeadingArrow()
         self.manageTrackedWaypointDistance()
-        self.checkForReachingWaypoint()
+        if self.isRunning { self.checkForReachingWaypoint() }
+        self.updateTiming()
     }
 }
 
