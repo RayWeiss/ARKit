@@ -164,7 +164,7 @@ class ARSceneViewController: UIViewController {
         self.setupARSession()
         self.setGravity()
         self.addControlPanelView()
-//        self.addProximityDisplayView()
+        self.addProximityDisplayView()
         self.addTimingDisplayView()
     }
     
@@ -556,7 +556,7 @@ class ARSceneViewController: UIViewController {
     func addTimingDisplayView() {
         let statusBarOffset = UIApplication.shared.statusBarFrame.size.height
         self.timingDisplayView.backgroundColor = UIColor(white: 1, alpha: self.timingDisplayViewAlpha)
-        self.timingDisplayView.frame = CGRect(x: self.arSceneView.bounds.origin.x + self.timingDisplayViewSideMargin, y: self.arSceneView.bounds.origin.y + statusBarOffset,
+        self.timingDisplayView.frame = CGRect(x: self.arSceneView.bounds.width - (self.arSceneView.bounds.width / 2.5) - self.timingDisplayViewSideMargin, y: self.arSceneView.bounds.origin.y + statusBarOffset,
                                                  width: self.arSceneView.bounds.width / 2.5 - self.timingDisplayViewSideMargin, height: self.timingDisplayViewHeight)
         self.timingDisplayView.layer.cornerRadius = self.timingDisplayViewCornerRadius
         self.timingDisplayView.clipsToBounds = true
@@ -593,7 +593,14 @@ class ARSceneViewController: UIViewController {
         self.numberOfWaypointsCollected = 0
         self.isRunning = false
         self.justRan = false
+        self.colorAllWaypoints(withColor: self.defaultObjectToPlaceColor)
         self.waypointBeingTrackedID = self.waypointContainer.waypoints.first?.name ?? ""
+    }
+    
+    func colorAllWaypoints(withColor color: UIColor) {
+        self.waypointContainer.waypoints.forEach({ waypoint in
+            waypoint.geometry?.firstMaterial!.diffuse.contents = color
+        })
     }
     
     func updateTiming() {
