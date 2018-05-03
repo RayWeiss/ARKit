@@ -115,8 +115,9 @@ Week 15, May 1st:
 		+Added marking of waypoint with color once user reaches it
 
 Final Meeting Monday May 7th at 11am:
-	Time limit to complete
-	Record total objects collected
-	Record time it took to collect them
+	TimedWaypointCollection
+		+Added timer with time limit
+		+Added recording of total objects collected
+		+Added recording of time it took to collect object
 
 	
