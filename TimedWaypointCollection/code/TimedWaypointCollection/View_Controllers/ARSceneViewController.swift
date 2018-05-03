@@ -116,7 +116,7 @@ class ARSceneViewController: UIViewController {
     var justRan = false
     var startTime: NSDate?
     var elapsedTime: TimeInterval?
-    var timeLimit: TimeInterval = 20.0
+    var timeLimit: TimeInterval = 45.0
     var timingDisplayView = UILabel()
     let timingDisplayViewTag = 3
     let timingDisplayViewHeight = CGFloat(50.0)
