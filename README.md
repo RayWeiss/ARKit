@@ -12,7 +12,7 @@ functionality can be reset via the reset button. Default waypoint types are
 shown and editable in the default settings screen accessed via a left swipe. All
 waypoints in the scene can be seen in the list view accessed via a right swipe.
 Waypoints in this list can be edited with different options shown if you swipe left
-ton them individually. Waypoints can be saved and loaded via the screen
+on them individually. Waypoints can be saved and loaded via the screen
 accessible by an up swipe. They are saved according to their current latitude and
 longitude. Precision is affected by current heading accuracy and location
 accuracy. Using the set thresholds, the error radius is approximately 18 meters.
