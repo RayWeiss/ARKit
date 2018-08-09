@@ -73,7 +73,7 @@ accuracy. Using the set thresholds, the error radius is approximately 18 meters.
 - Displays all waypoints placed in scene and order
 - Waypoints can be selected by tap from this screen
 - Swiping left on individual waypoint in list displays editing options
-- Edit options are delete, edit, and rename
+  - Edit options are delete, edit, and rename
 
 <table><tr>
 <td><img src="https://raw.githubusercontent.com/rayweiss/ARKit/master/images/image009.png" width="300"></td>
