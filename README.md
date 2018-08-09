@@ -1,6 +1,6 @@
 ## User Guide
 
-The app allows a user to interact with their current world via augmented reality.
+The final app allows a user to interact with their current world via augmented reality.
 It is implemented using Apple’s ARKit library for iOS devices. The app functions
 best outside because it uses GPS services. To use the app, start it and wait for
 the first screen to disappear once heading accuracy has improved or bypass via
